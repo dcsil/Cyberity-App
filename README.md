@@ -21,6 +21,7 @@ Our tech stack can be found here: https://stackshare.io/dcsil/cyberity
 
 ### Install Dependecies
 1. run `source run bootstrap`
+2. Create an AWS account and provide AWS Access Key and Secret key in `.env`. This is to access the database
 
 ### Run Development Server Locally
 1. run `source run dev server` and `source run dev client`
