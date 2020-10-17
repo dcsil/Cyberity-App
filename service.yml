@@ -1,0 +1,18 @@
+tools:
+  exceptions:
+  logging:
+  ci:
+
+services:
+  production:
+
+docs:
+  getting_started: ./README.md
+
+commands:
+  bootstrap: source run bootstrap
+  server:
+    dev: source run dev server
+    prod: source run prod
+  client: source run dev client
+

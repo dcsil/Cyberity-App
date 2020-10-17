@@ -17,4 +17,13 @@ The official cyberity repository can be found: https://github.com/dcsil/Cyberity
 Our tech stack can be found here: https://stackshare.io/dcsil/cyberity
 
 
+## Installation/Usage
 
+### Install Dependecies
+1. run `source run bootstrap`
+
+### Run Development Server Locally
+1. run `source run dev server` and `source run dev client`
+
+### Run Production Server Locally
+1. run `source run prod`
