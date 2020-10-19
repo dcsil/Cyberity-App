@@ -32,9 +32,7 @@ case $1 in
         cd ../scripts
         
         # Server side dependencies
-        pip3 install flask
-        pip3 install boto3
-        pip3 install gunicorn
+        pip3 install flask boto3 gunicorn pytest coverage
         
         # Export env variables
         if [ -f .env ]

@@ -1,8 +1,6 @@
-from flask import Flask, jsonify, request
+from flask import Flask
 import os
 import boto3
-import time
-import random
 
 # Get the service resource.
 dynamodb = boto3.resource('dynamodb')
@@ -19,6 +17,4 @@ def home():
     if environment == "development":
         return "Hello world"
     elif environment == "production":
-       return app.send_static_file('index.html')
-
-
+        return app.send_static_file('index.html')
