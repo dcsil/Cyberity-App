@@ -27,9 +27,9 @@ case $1 in
         nvm install node
         
         # Client side dependencies
-        cd ../client 
+        cd client
         npm install
-        cd ../scripts
+        cd ..
         
         # Server side dependencies
         pip3 install flask boto3 gunicorn pytest coverage
