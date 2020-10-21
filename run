@@ -32,7 +32,7 @@ case $1 in
         cd ..
         
         # Server side dependencies
-        pip3 install flask boto3 gunicorn pytest coverage
+        pip3 install flask Flask-PyMongo boto3 gunicorn pytest coverage
         
         # Export env variables
         if [ -f .env ]
@@ -42,7 +42,7 @@ case $1 in
 
     ;;
     "dev")
-        # export DYNAMO_ENABLE_LOCAL=False Not sure about this
+        export FLASK_APP=flaskr
         export FLASK_ENV=development
         case $2 in 
             "client")
@@ -51,8 +51,9 @@ case $1 in
                 cd ..
             ;;
             "server")
+                sudo service mongodb start 
                 cd server
-                python3 -m flask run
+                flask run
                 cd ..
             ;;
             *)
