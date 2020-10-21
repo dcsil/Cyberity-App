@@ -9,7 +9,7 @@ environment = os.environ['FLASK_ENV']
 if environment == "development":
     app = Flask(__name__)
 elif environment == "production":
-    app = Flask(__name__, static_folder='frontend/build', static_url_path='/')
+    app = Flask(__name__, static_folder='../client/build', static_url_path='/')
 
 # Routes
 @app.route('/api')

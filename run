@@ -32,7 +32,7 @@ case $1 in
         cd ..
         
         # Server side dependencies
-        pip3 install flask Flask-PyMongo boto3 gunicorn pytest coverage
+        pip3 install flask Flask-PyMongo boto3 gunicorn pytest pytest-cov
         
         # Export env variables
         if [ -f .env ]

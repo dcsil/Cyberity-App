@@ -1,0 +1,6 @@
+flask
+boto3
+gunicorn
+pytest
+pytest-cov
+Flask-PyMongo

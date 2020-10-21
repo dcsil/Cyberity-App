@@ -16,9 +16,9 @@ def create_app(test_config=None):
         app.config.from_mapping(test_config)
 
     # Setup MongoDB
-    mongo_uri = os.getenv("MONGO_URI", None):
+    mongo_uri = os.getenv("MONGO_URI", None)
     if not mongo_uri:
-        mongo_uri =  "mongodb://localhost:27017/myDatabase"
+        mongo_uri = "mongodb://localhost:27017/myDatabase"
     app.config["MONGO_URI"] = mongo_uri
     mongo = PyMongo(app)
 
