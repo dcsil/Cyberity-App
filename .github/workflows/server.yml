@@ -1,0 +1,29 @@
+name: Flask CI
+on: push
+
+defaults:
+  run:
+    working-directory: server
+
+jobs:
+  BuildServer:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+        architecture: 'x64'
+    - name: Cache pip3
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip3
+        key: ${{ runner.os }}-pip3-${{ hashFiles('requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip3-
+          ${{ runner.os }}-
+    - name: Install dependencies
+      run: pip3 install -r requirements.txt
+    - name: Test with pytest
+      run: python -m pytest tests.py --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
