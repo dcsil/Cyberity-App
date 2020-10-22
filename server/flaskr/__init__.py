@@ -1,7 +1,7 @@
 import os
 from flask import Flask
 from flask_pymongo import PyMongo
-from flaskr import routes
+from flaskr import routes, db
 
 
 def create_app(test_config=None):
@@ -15,12 +15,12 @@ def create_app(test_config=None):
         # load the test config if passed in
         app.config.from_mapping(test_config)
 
-    # Setup MongoDB
-    mongo_uri = os.getenv("MONGO_URI", None):
+    # Initalize MongoDB
+    mongo_uri = os.getenv("MONGO_URI", None)
     if not mongo_uri:
         mongo_uri =  "mongodb://localhost:27017/myDatabase"
-    app.config["MONGO_URI"] = mongo_uri
-    mongo = PyMongo(app)
+    mongo = db.mongo
+    mongo.init_app(app, mongo_uri)
 
     # Register Blueprints
     app.register_blueprint(routes.bp)

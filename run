@@ -55,6 +55,7 @@ case $1 in
                 cd server
                 flask run
                 cd ..
+                sudo service mongodb stop
             ;;
             *)
                 echo -e "\nUsage: source `basename $0` [bootstrap,dev,prod,help] [client,server]\n"
