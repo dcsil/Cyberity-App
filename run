@@ -18,6 +18,7 @@ case $1 in
         sudo apt-get install python3 python3-pip
         sudo snap install heroku --classic
         sudo apt-get install curl
+        sudo apt-get install mongodb
 
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
         curl https://cli-assets.heroku.com/install.sh | sh
@@ -32,7 +33,7 @@ case $1 in
         cd ..
         
         # Server side dependencies
-        pip3 install flask Flask-PyMongo boto3 gunicorn pytest pytest-cov
+        pip3 install -r requirements.txt
         
         # Export env variables
         if [ -f .env ]

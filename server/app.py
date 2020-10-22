@@ -2,9 +2,6 @@ from flask import Flask
 import os
 import boto3
 
-# Get the service resource.
-dynamodb = boto3.resource('dynamodb')
-environment = os.environ['FLASK_ENV']
 
 if environment == "development":
     app = Flask(__name__)
