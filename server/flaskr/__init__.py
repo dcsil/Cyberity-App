@@ -1,12 +1,20 @@
 import os
 from flask import Flask
 from flask_pymongo import PyMongo
-
+from flaskr import routes, db
+from flask_cors import CORS
 
 def create_app(test_config=None):
-    # create and configure the app
-    app = Flask(__name__, instance_relative_config=True)
+    # create and configure the app    
+    environment = os.environ['FLASK_ENV']
+    if environment == "production":
+        app = Flask(__name__, static_folder='../../client/build', 
+                    static_url_path='/',
+                    instance_relative_config=True)
+    else:
+        app = Flask(__name__, instance_relative_config=True)
 
+    CORS(app)
     if test_config is None:
         # load the instance config, if it exists, when not testing
         app.config.from_pyfile('config.py', silent=True)
@@ -14,7 +22,6 @@ def create_app(test_config=None):
         # load the test config if passed in
         app.config.from_mapping(test_config)
 
-    from flaskr import db, routes
     # Initalize MongoDB
     mongo_uri = os.getenv("MONGO_URI", None)
     if not mongo_uri:
