@@ -2,7 +2,7 @@ import os
 from flask import Flask
 from flask_pymongo import PyMongo
 from flaskr import routes, db
-from flask_cors import CORS
+#from flask_cors import CORS
 
 def create_app(test_config=None):
     # create and configure the app    
@@ -14,7 +14,7 @@ def create_app(test_config=None):
     else:
         app = Flask(__name__, instance_relative_config=True)
 
-    CORS(app)
+    #CORS(app)
     if test_config is None:
         # load the instance config, if it exists, when not testing
         app.config.from_pyfile('config.py', silent=True)
@@ -39,7 +39,7 @@ def create_app(test_config=None):
 
     @app.route('/testdb')
     def testdb():
-        mongo.db.users.insert({'name': "Mark"})
+        mongo.db.users.insert({'name': "Mark2.0"})
         return "Inserted"
 
     return app
