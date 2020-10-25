@@ -15,7 +15,7 @@ Table of Contents
   - [App Prerequisites](#app-prerequisites)
   - [Installation](#installation)
   - [Run in Development Mode Locally](#run-in-development-mode-locally)
-  - [Run in Production Mode Locally](#run-in-production-mode-locally
+  - [Run in Production Mode Locally](#run-in-production-mode-locally)
   - [Mongodb Atlas Integration](#mongodb-atlas-integration)
 - [Deployment](#deployment)
 - [Tech Stack](#tech-stack)
