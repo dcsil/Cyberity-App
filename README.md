@@ -4,6 +4,10 @@ Cyberity aims to provide a safer work environment for companies and prevent insi
 
 This repository is intended for application development purposes
 
+## Webapp
+
+The web application can be found: https://cyberity.herokuapp.com/
+
 ## Main page
 
 The official cyberity repository can be found: https://github.com/dcsil/Cyberity
