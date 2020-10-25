@@ -2,9 +2,11 @@ tools:
   exceptions:
   logging:
   ci:
+    frontend: https://github.com/dcsil/Cyberity-App/actions
+    backend: https://github.com/dcsil/Cyberity-App/actions
 
 services:
-  production:
+  production: http://cyberity.herokuapp.com/
 
 docs:
   getting_started: ./README.md
@@ -15,4 +17,5 @@ commands:
     dev: source run dev server
     prod: source run prod
   client: source run dev client
+  test: source run test
 

@@ -81,6 +81,14 @@ case $1 in
         npm run-script build
         cd ..
     ;;
+    "test")
+        export FLASK_ENV=development
+        cd server
+        python3 -m pytest
+        cd ../client
+        npm test -- --watchAll=false
+        cd ..
+    ;;
     "help")
         echo -e "\nUsage: source `basename $0` [bootstrap,dev,prod,build,help] [client,server]\n"
         echo -e "\tbootstrap: run this to install dependents for the project. Run once before anything else"
