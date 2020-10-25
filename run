@@ -3,11 +3,11 @@
 # Initial Deps
 if [[ $_ == $0 ]]; then
     echo "Script must be sourced"
-    echo -e "\nUsage: source `basename $0` [bootstrap,dev,prod,build,help] [client,server]\n"
+    echo -e "\nUsage: source `basename $0` [bootstrap,dev,prod,help] [client,server]\n"
     exit
 fi
 if [ $# -gt 2 ] || [ $# -lt 1 ]; then
-    echo -e "\nUsage: source `basename $0` [bootstrap,dev,prod,build,help] [client,server]\n"
+    echo -e "\nUsage: source `basename $0` [bootstrap,dev,prod,help] [client,server]\n"
     return
 fi
 
@@ -40,7 +40,6 @@ case $1 in
         then
             export $(cat .env | sed 's/#.*//g' | xargs)
         fi
-
     ;;
     "dev")
         export FLASK_APP=flaskr.py
@@ -59,7 +58,7 @@ case $1 in
                 sudo service mongodb stop
             ;;
             *)
-                echo -e "\nUsage: source `basename $0` [bootstrap,dev,prod,build,help] [client,server]\n"
+                echo -e "\nUsage: source `basename $0` [bootstrap,dev,prod,help] [client,server]\n"
             ;;
         esac
     ;;
@@ -68,30 +67,20 @@ case $1 in
         sudo service mongodb start 
         cd client 
         npm run-script build
-        #cd ..
-        #gunicorn -w 4 --chdir server wsgi:app
-        cd ../server
-        flask run
         cd ..
+        gunicorn -w 4 --chdir server wsgi:app
         sudo service mongodb stop
     ;;
-    "build")
-        cd client
-        npm install
-        npm run-script build
-        cd ..
-    ;;
     "help")
-        echo -e "\nUsage: source `basename $0` [bootstrap,dev,prod,build,help] [client,server]\n"
+        echo -e "\nUsage: source `basename $0` [bootstrap,dev,prod,help] [client,server]\n"
         echo -e "\tbootstrap: run this to install dependents for the project. Run once before anything else"
         echo -e "\tdev: run everything locally in development mode "
         echo -e "\t\tclient: runs client in dev mode"
         echo -e "\t\tserver: runs server in dev mode"
-        echo -e "\tbuild: Build production version for client and server"
         echo -e "\tprod: run everything locally in production mode, build and server front end"
         echo -e "\thelp: usage of `basename $0`"
     ;;
     *)
-        echo -e "\nUsage: source `basename $0` [bootstrap,dev,prod,build,help] [client,server]\n"
+        echo -e "\nUsage: source `basename $0` [bootstrap,dev,prod,help] [client,server]\n"
     ;;
 esac
