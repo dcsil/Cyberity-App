@@ -1,6 +1,6 @@
 tools:
-  exceptions:
-  logging:
+  exceptions: echo 'No exceptions yet'
+  logging: echo 'logging on heroku'
   ci:
     frontend: https://github.com/dcsil/Cyberity-App/actions
     backend: https://github.com/dcsil/Cyberity-App/actions
@@ -18,4 +18,6 @@ commands:
     prod: source run prod
   client: source run dev client
   test: source run test
-
+  database:
+    start: sudo service mongodb start
+    stop: sudo service mongodb stop
