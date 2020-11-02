@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../assets/logo_cyberity_text.png'
+import logo from './assets/logo_cyberity_text.png'
 import './App.css';
 
 function App() {
