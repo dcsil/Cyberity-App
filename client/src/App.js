@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import Login from './pages/Login.js';
 
-import Navbar from './pages/Navbar'
+import Nav from './pages/Nav'
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -30,7 +30,7 @@ function App() {
                     <Route exact path="/">
                         <Redirect to="/login"/>
                     </Route>
-                    <Route path="/app" component={Navbar} />
+                    <Route path="/app" component={Nav} />
                 </Switch>
             </div>
 
