@@ -24,7 +24,7 @@ function App() {
     const classes = useStyles();
     return (
         <Router>
-            <div className={classes.container}>
+            <div data-testid="test-root-app" className={classes.container}>
                 <Switch>
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/">
