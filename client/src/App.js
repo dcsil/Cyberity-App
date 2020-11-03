@@ -6,7 +6,6 @@ import {
     Redirect,
 } from "react-router-dom";
 import Login from './pages/Login.js';
-
 import Nav from './pages/Nav'
 import { makeStyles } from '@material-ui/core/styles';
 
