@@ -26,6 +26,7 @@ import Dashboard from './Dashboard';
 import InsiderThreats from './InsiderThreats';
 import Users from './Users';
 import UserTimeline from './UserTimline';
+import UserEventTimelineElement from './UserEventTimeline';
 
 const drawerWidth = 240;
 
@@ -170,6 +171,7 @@ export default function Navbar() {
                     <Route exact path="/app/usertimeline" children={<UserTimeline></UserTimeline>} />
                     <Route exact path="/app/users" children={<Users></Users>} />
                     <Route exact path="/app/insiderthreats" children={<InsiderThreats></InsiderThreats>} />
+                    <Route exact path="/app/usereventtimeline/:user" children={<UserEventTimelineElement></UserEventTimelineElement>}/>
                 </Switch>
             </main>
         </div>

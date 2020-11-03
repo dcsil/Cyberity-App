@@ -25,7 +25,9 @@ export default class UserTimeline extends React.Component {
             + currentdate.getHours() + ":"
             + currentdate.getMinutes() + ":"
             + currentdate.getSeconds();
-        elements.unshift(<UserTimelineElement date={datetime}></UserTimelineElement>);
+        let user = Math.random().toString(36).substring(7);
+        let role = "Software Dev";
+        elements.unshift(<UserTimelineElement role={role} user={user} date={datetime}></UserTimelineElement>);
         this.setState({
             elements: elements
         });
@@ -36,8 +38,8 @@ export default class UserTimeline extends React.Component {
         const elements = this.state.elements;
         return (
             <Container>
+                <Button variant="contained" color="primary" onClick={() => { this.handleClick() }}>Add Test Event</Button>
                 <Card variant="outlined">
-                <Button onClick={() => { this.handleClick() }}>ADD ONE MORE</Button>
                 <CardContent>
                     <VerticalTimeline >
                         {elements}
