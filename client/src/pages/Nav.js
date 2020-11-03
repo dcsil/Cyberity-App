@@ -11,7 +11,6 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Typography from '@material-ui/core/Typography';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ErrorIcon from '@material-ui/icons/Error';
 import GroupIcon from '@material-ui/icons/Group';
@@ -167,10 +166,10 @@ export default function Navbar() {
             >
                 <div className={classes.drawerHeader} />
                 <Switch >
-                    <Route exact path="/app/dashboard" children={Dashboard} />
-                    <Route exact path="/app/usertimeline" children={UserTimeline} />
-                    <Route exact path="/app/users" children={Users} />
-                    <Route exact path="/app/insiderthreats" children={InsiderThreats} />
+                    <Route exact path="/app/dashboard" children={<Dashboard></Dashboard>} />
+                    <Route exact path="/app/usertimeline" children={<UserTimeline></UserTimeline>} />
+                    <Route exact path="/app/users" children={<Users></Users>} />
+                    <Route exact path="/app/insiderthreats" children={<InsiderThreats></InsiderThreats>} />
                 </Switch>
             </main>
         </div>
