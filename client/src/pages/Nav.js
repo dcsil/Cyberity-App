@@ -11,6 +11,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Typography from '@material-ui/core/Typography';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ErrorIcon from '@material-ui/icons/Error';
 import GroupIcon from '@material-ui/icons/Group';
@@ -32,6 +33,9 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
+        width: '100%',/* Magic here */
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     appBarShift: {
         marginLeft: drawerWidth,
@@ -89,81 +93,86 @@ export default function Navbar() {
     };
 
     return (
-            <div className={classes.root}>
-                <CssBaseline />
-                <Drawer
-                    variant="permanent"
-                    className={clsx(classes.drawer, {
+        <div className={classes.root}>
+            <CssBaseline />
+            <Drawer
+                variant="permanent"
+                className={clsx(classes.drawer, {
+                    [classes.drawerOpen]: open,
+                    [classes.drawerClose]: !open,
+                })}
+                classes={{
+                    paper: clsx({
                         [classes.drawerOpen]: open,
                         [classes.drawerClose]: !open,
-                    })}
-                    classes={{
-                        paper: clsx({
-                            [classes.drawerOpen]: open,
-                            [classes.drawerClose]: !open,
-                        }),
-                    }}
-                >
-                    <div className={classes.toolbar}>
-                        <List>
-                            <ListItem>
-                                {open ?
-                                    <IconButton
-                                        onClick={handleDrawerClose}
-                                        className={clsx(classes.menuButton)}
-                                        edge="start"
-                                    >
-                                        <ChevronLeftIcon />
-                                    </IconButton>
-                                    :
-                                    <IconButton
-                                        color="inherit"
-                                        aria-label="open drawer"
-                                        onClick={handleDrawerOpen}
-                                        edge="start"
-                                        className={clsx(classes.menuButton, {
-                                            [classes.hide]: open,
-                                        })}
-                                    >
-                                        <MenuIcon />
-                                    </IconButton>
-                                }
-                            </ListItem>
-                        </List>
-                    </div>
-                    <Divider />
+                    }),
+                }}
+            >
+                <div className={classes.toolbar}>
                     <List>
-                        <ListItem button component={Link} to="/app/dashboard">
-                            <ListItemIcon><DashboardIcon></DashboardIcon></ListItemIcon>
-                            <ListItemText primary="Dashboard" />
-                        </ListItem>
-                        <ListItem button component={Link} to="/app/insiderthreats">
-                            <ListItemIcon><ErrorIcon></ErrorIcon></ListItemIcon>
-                            <ListItemText primary="Insider Threats" />
-                        </ListItem>
-                        <ListItem button component={Link} to="/app/users">
-                            <ListItemIcon><GroupIcon></GroupIcon></ListItemIcon>
-                            <ListItemText primary="Users" />
-                        </ListItem>
-                        <ListItem button component={Link} to="/app/usertimeline">
-                            <ListItemIcon><TimelineIcon></TimelineIcon></ListItemIcon>
-                            <ListItemText primary="User Timeline" />
-                        </ListItem>
-                        <Divider />
-                        <ListItem button component={Link} to="/login">
-                            <ListItemIcon><ExitToAppIcon></ExitToAppIcon></ListItemIcon>
-                            <ListItemText primary="Sign out" />
+                        <ListItem>
+                            {open ?
+                                <IconButton
+                                    onClick={handleDrawerClose}
+                                    className={clsx(classes.menuButton)}
+                                    edge="start"
+                                >
+                                    <ChevronLeftIcon />
+                                </IconButton>
+                                :
+                                <IconButton
+                                    color="inherit"
+                                    aria-label="open drawer"
+                                    onClick={handleDrawerOpen}
+                                    edge="start"
+                                    className={clsx(classes.menuButton, {
+                                        [classes.hide]: open,
+                                    })}
+                                >
+                                    <MenuIcon />
+                                </IconButton>
+                            }
                         </ListItem>
                     </List>
-                </Drawer>
-                <main className={classes.content}>
-                    <Switch>
-                        <Route exact path="/app/dashboard" children={Dashboard} />
-                        <Route exact path="/app/usertimeline" children={UserTimeline} />
-                        <Route exact path="/app/users" children={Users} />
-                        <Route exact path="/app/insiderthreats" children={InsiderThreats} />
-                    </Switch>
-                </main>
-            </div>
+                </div>
+                <Divider />
+                <List>
+                    <ListItem button component={Link} to="/app/dashboard">
+                        <ListItemIcon><DashboardIcon></DashboardIcon></ListItemIcon>
+                        <ListItemText primary="Dashboard" />
+                    </ListItem>
+                    <ListItem button component={Link} to="/app/insiderthreats">
+                        <ListItemIcon><ErrorIcon></ErrorIcon></ListItemIcon>
+                        <ListItemText primary="Insider Threats" />
+                    </ListItem>
+                    <ListItem button component={Link} to="/app/users">
+                        <ListItemIcon><GroupIcon></GroupIcon></ListItemIcon>
+                        <ListItemText primary="Users" />
+                    </ListItem>
+                    <ListItem button component={Link} to="/app/usertimeline">
+                        <ListItemIcon><TimelineIcon></TimelineIcon></ListItemIcon>
+                        <ListItemText primary="User Timeline" />
+                    </ListItem>
+                    <Divider />
+                    <ListItem button component={Link} to="/login">
+                        <ListItemIcon><ExitToAppIcon></ExitToAppIcon></ListItemIcon>
+                        <ListItemText primary="Sign out" />
+                    </ListItem>
+                </List>
+            </Drawer>
+            <main
+                className={clsx(classes.content, {
+                    [classes.contentShift]: open,
+                })}
+            >
+                <div className={classes.drawerHeader} />
+                <Switch >
+                    <Route exact path="/app/dashboard" children={Dashboard} />
+                    <Route exact path="/app/usertimeline" children={UserTimeline} />
+                    <Route exact path="/app/users" children={Users} />
+                    <Route exact path="/app/insiderthreats" children={InsiderThreats} />
+                </Switch>
+            </main>
+        </div>
     );
 }

@@ -9,6 +9,7 @@ import Login from './pages/Login.js';
 
 import Nav from './pages/Nav'
 import { makeStyles } from '@material-ui/core/styles';
+import { Container } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     content: {
@@ -16,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(3),
     },
     container: {
-        display: "flex"
+        display: "flex",
     }
 }));
 
@@ -33,7 +34,6 @@ function App() {
                     <Route path="/app" component={Nav} />
                 </Switch>
             </div>
-
         </Router>
     );
 }
