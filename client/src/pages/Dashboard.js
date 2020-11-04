@@ -1,36 +1,39 @@
 import React from 'react';
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent';
-import GridLayout from 'react-grid-layout';
-import 'react-grid-layout/css/styles.css';
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import TotalInsiderThreats from '../components/dashboard/TotatInsiderThreats.js'
+import ContainedInsiderThreats from '../components/dashboard/ContainedInsiderThreats.js';
+import LiveInsiderThreats from '../components/dashboard/LiveInsiderThreats.js';
+import SecurityRating from '../components/dashboard/SecurityRating.js';
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+      flexGrow: 1,
+    },
+    widget: {
+      padding: theme.spacing(2),
+      textAlign: 'center',
+      color: theme.palette.text.secondary,
+    },
+}));
 
 export default function Dashboard() {
-    const layout = [
-        {i: 'a', x: 0, y: 0, w: 1, h: 2, static: true},
-        {i: 'b', x: 1, y: 0, w: 3, h: 2, minW: 2, maxW: 4},
-        {i: 'c', x: 4, y: 0, w: 1, h: 2}
-      ];
-      return (
-        <GridLayout compactType='horizontal'  className="layout" layout={layout} cols={12} rowHeight={30} width={1200}>
-            <div key="a">
-                <Card key="a">
-                    <CardContent>
-                        HELLOOO
-                    </CardContent>
-                </Card>
-            </div>
-            <Card key="b">
-                    <CardContent>
-                        HELLOOO
-                    </CardContent>
-                </Card>
-          <div key="c">
-          <Card>
-                    <CardContent>
-                        HELLOOO
-                    </CardContent>
-                </Card>
-          </div>
-        </GridLayout>
-      );
-}
+    const classes = useStyles();
+    // Place all widgets here
+    const widgets = [
+        {xs:'3', widget: <TotalInsiderThreats/>},
+        {xs:'3', widget: <ContainedInsiderThreats/>},
+        {xs:'3', widget: <LiveInsiderThreats/>},
+        {xs:'3', widget: <SecurityRating/>},
+    ].map((widget) => 
+        <Grid item xs={widget.xs}>{widget.widget}</Grid>
+    );
+  
+    return (
+      <div  justify="space-evenly" className={classes.root}>
+        <Grid alignItems="center" alignContent="center" container spacing={3}>
+            {widgets}
+        </Grid>
+      </div>
+    );
+  }
