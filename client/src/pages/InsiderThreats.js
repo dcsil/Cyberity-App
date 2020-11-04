@@ -1,18 +1,14 @@
 import React from 'react';
-import { Icon, makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
-import {ArrowDropDown}  from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -39,7 +35,6 @@ function InsiderThreats() {
   const [orderBy, setOrderBy] = React.useState("date")
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -49,14 +44,6 @@ function InsiderThreats() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
-  const handleClick = (event) => {
-      setAnchorEl(event.currentTarget)
-  }
-
-  const handleClose = () => {
-      setAnchorEl(null)
-  }
 
   function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
