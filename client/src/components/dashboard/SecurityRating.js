@@ -26,7 +26,7 @@ export default function SecurityRating() {
     useEffect(() => {
         // Initial Fetch of data
         // Fetch data every few seconds
-        const interval = setInterval(() => {
+        const interval = setTimeout(() => {
             setSecurityRating("A");
         }, 1000);
         return () => {

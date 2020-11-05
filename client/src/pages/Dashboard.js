@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import TotalInsiderThreats from '../components/dashboard/TotatInsiderThreats.js'
+import TotalInsiderThreats from '../components/dashboard/TotalInsiderThreats.js'
 import ContainedInsiderThreats from '../components/dashboard/ContainedInsiderThreats.js';
 import LiveInsiderThreats from '../components/dashboard/LiveInsiderThreats.js';
 import SecurityRating from '../components/dashboard/SecurityRating.js';
@@ -33,7 +33,7 @@ export default function Dashboard() {
   
     return (
       <div  justify="space-evenly" className={classes.root}>
-        <Grid alignItems="center" alignContent="center" container spacing={3}>
+        <Grid container spacing={3}>
             {widgets}
         </Grid>
       </div>

@@ -11,8 +11,8 @@ const useStyles = makeStyles((theme) => ({
       textAlign: 'center',
       userSelect: 'none',
       flexGrow: 1,
-      maxHeight: '60%',
-      maxWidth: '60%'
+      height: '100%',
+      width: '100%'
     },
 }));
 
