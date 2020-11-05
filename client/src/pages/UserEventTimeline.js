@@ -21,7 +21,16 @@ class UserTimeline extends React.Component {
         }
     }
 
-    handleClick = () => {
+    componentDidMount() {
+        const interval = setInterval(() => {
+            this.addUserEventTimeline();
+        }, 2000);
+        return () => {
+            clearInterval(interval)
+        }
+    }
+
+    addUserEventTimeline = () => {
         const elements = this.state.elements.slice();
         var currentdate = new Date();
         var datetime = "Last Sync: " + currentdate.getDate() + "/"
@@ -43,7 +52,6 @@ class UserTimeline extends React.Component {
         const threatDetectedTime = "THIS TIME";
         return (
             <Container>
-                <Button variant="contained" color="primary" onClick={() => { this.handleClick() }}>Add Test Event</Button>
                 <Card variant="outlined">
                     <CardContent>
                         <h3 className="vertical-timeline-element-title">{user ? user : "Anonymous"}</h3>
