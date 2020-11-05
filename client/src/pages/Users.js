@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -9,16 +9,35 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import Tooltip from '@material-ui/core/Tooltip';
 import ErrorIcon from '@material-ui/icons/Error';
+import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 650,
+  },
+  box: {
+    margin: 10,
+    marginLeft: 50
+  },
+  small: {
+      height: 35,
+      width: 35
+  },
+  textfield: {
+    paddingBottom: 20,
+    paddingRight: 10
+  },
+  button: {
+    marginRight: 5,
   }
 }));
 
@@ -39,11 +58,11 @@ function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
     const classes = useStyles();
-  
+
     return (
         <React.Fragment>
             <TableRow>
-                <TableCell>
+                <TableCell padding="checkbox">
                     <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
                         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
@@ -53,15 +72,28 @@ function Row(props) {
                 </TableCell>
                 <TableCell>{row.department}</TableCell>
                 <TableCell>{row.last_activity_date}</TableCell>
-                <TableCell>
-                {row.flagged &&  <ErrorIcon /> }
+                <TableCell size="small">
+                {row.flagged &&  
+                    <Tooltip title={row.name + " has an active threat detected"}>
+                        <IconButton component={Link} to={"/app/usereventtimeline/" + row.name} >
+                            <ErrorIcon />
+                        </IconButton>
+                    </Tooltip> }
                 </TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box margin={1}>
-                            Put extra user info here
+                        <Box className={classes.box}>
+                        <Typography>Position: {row.role}</Typography>
+                        <Typography>Email: {row.email}</Typography>
+                        <Typography>Phone: {row.phone}</Typography>
+                        <Button variant="contained" color="primary" className={classes.button}>
+                            Profile
+                        </Button>
+                        <Button variant="contained" color="primary"className={classes.button}>
+                            Timeline
+                        </Button>
                         </Box>
                     </Collapse>
                 </TableCell>
@@ -112,12 +144,29 @@ function Users() {
   };
 
   return (
+    <React.Fragment>
+    <form>
+        <TextField
+            className={classes.textfield}
+            name="searchBar"
+            variant="outlined"
+            label="Search Users"
+            size="small"
+            autoFocus
+        />
+        <Button 
+            variant="contained" 
+            color="primary">
+        Search
+        </Button>
+    </form>
+
     <Paper className={classes.paper}>
         <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
             <TableHead>
             <TableRow>
-                <TableCell />
+                <TableCell padding="checkbox"/>
                 <TableCell>
                     <TableSortLabel
                         active={orderBy === "name"}
@@ -163,6 +212,7 @@ function Users() {
             onChangeRowsPerPage={handleChangeRowsPerPage}
         />
   </Paper>
+  </React.Fragment>
   );
 }
 
