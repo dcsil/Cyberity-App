@@ -5,6 +5,7 @@ import TotalInsiderThreats from '../components/dashboard/TotatInsiderThreats.js'
 import ContainedInsiderThreats from '../components/dashboard/ContainedInsiderThreats.js';
 import LiveInsiderThreats from '../components/dashboard/LiveInsiderThreats.js';
 import SecurityRating from '../components/dashboard/SecurityRating.js';
+import TruePositives from '../components/dashboard/TruePositives.js';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,6 +26,7 @@ export default function Dashboard() {
         {xs:'3', widget: <ContainedInsiderThreats/>},
         {xs:'3', widget: <LiveInsiderThreats/>},
         {xs:'3', widget: <SecurityRating/>},
+        {xs:'3', widget: <TruePositives/>},
     ].map((widget) => 
         <Grid item xs={widget.xs}>{widget.widget}</Grid>
     );
