@@ -33,13 +33,14 @@ def create_app(test_config=None):
     app.register_blueprint(routes.bp)
 
     # a simple page that says hello
-    @app.route('/hello')
+    @app.route('/api/hello', methods=['GET'])
     def hello():
         return 'Hello, World!'
 
-    @app.route('/testdb')
+    @app.route('/api/testdb', methods=['POST'])
     def testdb():
         mongo.db.users.insert({'name': "Mark2.0"})
         return "Inserted"
+
 
     return app
