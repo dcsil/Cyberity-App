@@ -1,6 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import CalendarHeatmap from 'reactjs-calendar-heatmap'
 import moment from 'moment';
@@ -57,7 +56,7 @@ export default function InsiderThreatCalender() {
         <Paper className={classes.card}>
             <CalendarHeatmap
                 data={data}
-                color={"#913973"}
+                color="#913973"
             />
         </Paper>
     );
