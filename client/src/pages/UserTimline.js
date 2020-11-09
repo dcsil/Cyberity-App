@@ -5,7 +5,7 @@ import 'react-vertical-timeline-component/style.min.css';
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { Button, Container } from '@material-ui/core';
+import {Container } from '@material-ui/core';
 
 export default class UserTimeline extends React.Component {
 
@@ -16,7 +16,16 @@ export default class UserTimeline extends React.Component {
         }
     }
 
-    handleClick = () => {
+    componentDidMount() {
+        const interval = setInterval(() => {
+            this.addUserThreat();
+        }, 2000);
+        return () => {
+            clearInterval(interval)
+        }
+    }
+
+    addUserThreat = () => {
         const elements = this.state.elements.slice();
         var currentdate = new Date();
         var datetime = "Last Sync: " + currentdate.getDate() + "/"
@@ -38,7 +47,6 @@ export default class UserTimeline extends React.Component {
         const elements = this.state.elements;
         return (
             <Container>
-                <Button variant="contained" color="primary" onClick={() => { this.handleClick() }}>Add Test Event</Button>
                 <Card variant="outlined">
                 <CardContent>
                     <VerticalTimeline >
