@@ -5,18 +5,17 @@ import App from './App.js';
 import * as serviceWorker from './serviceWorker';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { purple } from '@material-ui/core/colors';
 
 const theme = createMuiTheme({
     palette: {
         type: "dark",
         primary: {
-            // Purple and green play nicely together.
-            main: purple[500],
+            // Purple and green play nicely together.bb86fc
+            main: "#913973",
         },
         secondary: {
             // This is green.A700 as hex.
-            main: '#11cb5f',
+            main: '#b30077',
         },
     }
 });

@@ -5,8 +5,8 @@ import {
     Route,
     Redirect,
 } from "react-router-dom";
-import Login from './pages/Login.js';
-
+import SignIn from './pages/SignIn.js';
+import SignUp from './pages/SignUp.js';
 import Nav from './pages/Nav'
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(3),
     },
     container: {
-        display: "flex"
+        display: "flex",
     }
 }));
 
@@ -26,17 +26,15 @@ function App() {
         <Router>
             <div data-testid="test-root-app" className={classes.container}>
                 <Switch>
-                    <Route exact path="/login" component={Login} />
+                    <Route exact path="/signin" component={SignIn} />
+                    <Route exact path="/signup" component={SignUp} />
                     <Route exact path="/">
-                        <Redirect to="/login"/>
+                        <Redirect to="/signin"/>
                     </Route>
                     <Route path="/app" component={Nav} />
                 </Switch>
             </div>
-
         </Router>
     );
 }
-
-
 export default App;
