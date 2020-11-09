@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask_pymongo import PyMongo
 from flaskr import routes, db
 #from flask_cors import CORS
@@ -8,8 +8,7 @@ def create_app(test_config=None):
     # create and configure the app    
     environment = os.environ['FLASK_ENV']
     if environment == "production":
-        app = Flask(__name__, static_folder='../../client/build', 
-                    static_url_path='/',
+        app = Flask(__name__, static_folder='../../client/build',
                     instance_relative_config=True)
     else:
         app = Flask(__name__, instance_relative_config=True)
@@ -42,4 +41,15 @@ def create_app(test_config=None):
         mongo.db.users.insert({'name': "Mark2.0"})
         return "Inserted"
 
+    @app.route('/', defaults={'path': ''})
+    @app.route('/<path:path>')
+    def serve(path):
+        if path != "" and os.path.exists(app.static_folder + '/' + path):
+            return send_from_directory(app.static_folder, path)
+        else:
+            return send_from_directory(app.static_folder, 'index.html')
+
     return app
+
+
+    
