@@ -6,6 +6,7 @@ import ContainedInsiderThreats from '../components/dashboard/ContainedInsiderThr
 import LiveInsiderThreats from '../components/dashboard/LiveInsiderThreats.js';
 import SecurityRating from '../components/dashboard/SecurityRating.js';
 import TruePositives from '../components/dashboard/TruePositives.js';
+import PriorityInsiderThreat from '../components/dashboard/PriorityInsiderThreat.js';
 import InsiderThreatCalender from '../components/dashboard/InsiderThreatCalender.js';
 
 const useStyles = makeStyles((theme) => ({
@@ -23,12 +24,13 @@ export default function Dashboard() {
     const classes = useStyles();
     // Place all widgets here
     const widgets = [
-        {xs:'3', widget: <TotalInsiderThreats/>},
-        {xs:'3', widget: <ContainedInsiderThreats/>},
-        {xs:'3', widget: <LiveInsiderThreats/>},
-        {xs:'3', widget: <SecurityRating/>},
-        {xs:'3', widget: <TruePositives/>},
+        {xs:'4', widget: <ContainedInsiderThreats/>},
+        {xs:'4', widget: <LiveInsiderThreats/>},
+        {xs:'4', widget: <SecurityRating/>},
         {xs:'12', widget: <InsiderThreatCalender/>},
+        {xs:'3', widget: <TotalInsiderThreats/>},
+        {xs:'3', widget: <TruePositives/>},
+        {xs:'3', widget: <PriorityInsiderThreat/>},
     ].map((widget) => 
         <Grid item xs={widget.xs}>{widget.widget}</Grid>
     );
