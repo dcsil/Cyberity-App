@@ -47,8 +47,6 @@ let data = d3.timeDays(time_ago, now).map(function (dateElement, index) {
     }.init()
 })
 
-  
-
 export default function InsiderThreatCalender() { 
     const classes = useStyles();
 
