@@ -9,10 +9,10 @@ if environment == "production":
 else:
     bp = Blueprint("routes", __name__)
 
-@bp.route("/")
-def test_bp_route():
-    mongo.db.users.insert({'name': "Jay"})
-    try:
-        return render_template('index.html')
-    except TemplateNotFound:
-        abort(404)
+# @bp.route("/")
+# def test_bp_route():
+#     mongo.db.users.insert({'name': "Jay"})
+#     try:
+#         return render_template('index.html')
+#     except TemplateNotFound:
+#         abort(404)
