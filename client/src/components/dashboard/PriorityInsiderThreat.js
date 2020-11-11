@@ -1,12 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-      flexGrow: 1,
-    },
     card: {
       padding: theme.spacing(2),
       textAlign: 'center',
@@ -20,17 +17,14 @@ const useStyles = makeStyles((theme) => ({
         marginTop: "5px",
         marginBottom: "5px"
       },
-    link: {
-        textDecoration: 'none'
-    }
-}));
 
+}));
 
 export default function PriorityInsiderThreat() { 
     const classes = useStyles();
-    const [criticalThreats, setCriticalThreats] = useState("F");
-    const [highThreats, SetHighThreats] = useState("F");
-    const [lowThreats, setLowThreats] = useState("F");
+    //const [criticalThreats, setCriticalThreats] = useState("F");
+    //const [highThreats, SetHighThreats] = useState("F");
+    //const [lowThreats, setLowThreats] = useState("F");
 
     
 
