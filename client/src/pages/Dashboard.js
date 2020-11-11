@@ -7,7 +7,7 @@ import LiveInsiderThreats from '../components/dashboard/LiveInsiderThreats.js';
 import SecurityRating from '../components/dashboard/SecurityRating.js';
 import TruePositives from '../components/dashboard/TruePositives.js';
 import PriorityInsiderThreat from '../components/dashboard/PriorityInsiderThreat.js';
-
+import InsiderThreatCalender from '../components/dashboard/InsiderThreatCalender.js';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -30,6 +30,7 @@ export default function Dashboard() {
         {xs:'3', widget: <SecurityRating/>},
         {xs:'3', widget: <TruePositives/>},
         {xs:'3', widget: <PriorityInsiderThreat/>}
+        {xs:'12', widget: <InsiderThreatCalender/>},
     ].map((widget) => 
         <Grid item xs={widget.xs}>{widget.widget}</Grid>
     );
