@@ -31,7 +31,7 @@ def create_app(test_config=None):
     mongo.init_app(app, mongo_uri)
 
     # Register Blueprints
-    app.register_blueprint(routes.bp
+    app.register_blueprint(routes.bp)
 
     # a simple page that says hello
     @app.route('/hello')

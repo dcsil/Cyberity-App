@@ -41,9 +41,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function createData(name, role, email, department, last_activity_date, phone, flagged) {
-    return { name, role, email, department, last_activity_date, phone, flagged};
-  }
+// function createData(name, role, email, department, last_activity_date, phone, flagged) {
+//     return { name, role, email, department, last_activity_date, phone, flagged};
+//   }
   
 // const rows = [
 //     createData('Mark Abdullah', "Software Dev", "mark@company.com", "Operations", "10/27/2020 10:05:14", "123-456-7890", false),
