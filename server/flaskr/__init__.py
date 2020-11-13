@@ -2,6 +2,7 @@ import os
 from flask import Flask, send_from_directory
 from flask_pymongo import PyMongo
 from flaskr import routes, db
+import flask_login
 #from flask_cors import CORS
 
 def create_app(test_config=None):
@@ -20,6 +21,7 @@ def create_app(test_config=None):
     else:
         # load the test config if passed in
         app.config.from_mapping(test_config)
+    app.secret_key = "ahsfkjhdsfkjdfsksj"
 
     # Initalize MongoDB
     mongo_uri = os.getenv("MONGO_URI", None)
