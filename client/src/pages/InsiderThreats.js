@@ -16,25 +16,25 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function createData(name, role, email, status, date, phone) {
-    return { name, role, email, status, date, phone };
-  }
-  
-  const rows = [
-    createData('Mark Abdullah', "Software Dev", "mark@company.com", "Contained", "10/27/2020", "123-456-7890"),
-    createData('Rob Moss', "Software Dev", "rob@company.com", "Threat Detected", "10/28/2020", "123-456-7890"),
-    createData('Vinay Komaravolu', "Software Dev", "vinay@company.com", "Contained", "11/1/2020", "123-456-7890"),
-    createData('Dipanker Bagga', "Financial Lead", "dipanker@company.com", "Contained", "10/30/2020", "123-456-7890"),
-    createData('Mina Gobrail', "Physician ", "mina@company.com", "Threat Detected", "10/13/2020", "123-456-7890"),
-    createData('Cora', "Data Analyst", "cora@company.com", "Contained", "10/14/2020", "123-456-7890")
-  ];
 
 function InsiderThreats() {
   const classes = useStyles();
+  const [rows, setRows] = React.useState([]);
   const [order, setOrder] = React.useState("asc")
-  const [orderBy, setOrderBy] = React.useState("date")
+  const [orderBy, setOrderBy] = React.useState("dateDetected")
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  React.useEffect(() => {
+    fetch('/api/getAllThreats', {
+        method: 'GET'
+    })
+    .then(response => response.json())
+    .then(data => setRows(data))
+    .catch(err => {
+        console.log(err)
+    })
+  }, []);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -93,10 +93,10 @@ function InsiderThreats() {
                 </TableCell>
                 <TableCell>
                     <TableSortLabel
-                        active={orderBy === "date"}
-                        direction={orderBy === "date" ? order : "asc"}
-                        onClick={sortHandler("date")}>
-                        Date
+                        active={orderBy === "detectionDate"}
+                        direction={orderBy === "detectionDate" ? order : "asc"}
+                        onClick={sortHandler("detectionDate")}>
+                        Detection Date
                     </TableSortLabel>
                 </TableCell>
                 <TableCell>Phone Number</TableCell>
@@ -113,7 +113,7 @@ function InsiderThreats() {
                 <TableCell>{row.role}</TableCell>
                 <TableCell>{row.email}</TableCell>
                 <TableCell>{row.status}</TableCell>
-                <TableCell>{row.date}</TableCell>
+                <TableCell>{row.detectionDate}</TableCell>
                 <TableCell>{row.phone}</TableCell>
                 </TableRow>
             ))}

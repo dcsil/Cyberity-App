@@ -12,17 +12,44 @@ if environment == "production":
 else:
     bp = Blueprint("routes", __name__)
 
+
+@bp.route("/api/getAllThreats", methods=["GET"])
+def getAllThreats():
+    active = mongo.db.activeThreats.aggregate([
+        {'$lookup': {
+            'from': "employees",
+            'localField': "user_id",
+            'foreignField': "_id",
+            'as': "fromItems"
+        }},
+        {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
+        { "$project": { 'fromItems': 0 }}
+    ])
+
+    contained = mongo.db.contianedThreats.aggregate([
+        {'$lookup': {
+            'from': "employees",
+            'localField': "user_id",
+            'foreignField': "_id",
+            'as': "fromItems"
+        }},
+        {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
+        { "$project": { 'fromItems': 0 }}
+    ])
+
+    return json_util.dumps(list(active) + list(contained))
+
+
 @bp.route("/api/getEmployees", methods=["GET"])
-def test_bp_route():
+def getEmployees():
     searchTerm = ""
-    print("This is the request *********:", request.json)
     if request.json and 'searchTerm' in request.json:
         searchTerm = request.json['searchTerm']
 
     employees = list(mongo.db.employees.find({'name': {'$regex': searchTerm, '$options': 'i'}}))
 
-    print("these are the employees\n", employees)
-    return json_util.dumps(employees)
+    return json_util.dumps(employees), 200
+
 
 @bp.route('/api/register', methods=('GET', 'POST'))
 def register():
@@ -39,6 +66,7 @@ def register():
         mongo.db.users.insert({'username': username, 'password': generate_password_hash(password), 'name': name, 'email': email})
         return "User successfully created", 201
     return "Could not register,", 400
+
 
 @bp.route('/api/signin', methods=('GET', 'POST'))
 def signin():
