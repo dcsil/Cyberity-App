@@ -6,7 +6,7 @@ async function checkAuth(){
         method: "GET",
         headers: new Headers({
             "content-type": "application/json",
-            "Authorization": "Bearer " + token,
+            "Authorization": getAuthTokenHeaderValue(),
         })
     }).then(response => {
         console.log(response);
@@ -22,8 +22,8 @@ function getAuthToken(){
     return localStorage.getItem("token");
 }
 
-function getAuthTokenHeader(){
-    return {"Authorization": "Bearer " + localStorage.getItem("token")};
+function getAuthTokenHeaderValue(){
+    return "Bearer " + localStorage.getItem("token");
 }
 
 /*async function getToken(username, password ){
