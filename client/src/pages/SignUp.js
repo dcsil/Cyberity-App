@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -9,6 +9,7 @@ import CyberityLogo from '../assets/logo_cyberity_text.png';
 import Paper from '@material-ui/core/Paper';
 import {Link} from 'react-router-dom';
 import Container from '@material-ui/core/Container';
+import { useHistory } from "react-router-dom";
 
   
   const useStyles = makeStyles((theme) => ({
@@ -43,9 +44,39 @@ import Container from '@material-ui/core/Container';
     },
   }));
   
-  export default function SignInSide() {
+  export default function SignUp() {
     const classes = useStyles();
+    const history = useHistory();
+    const [userSignUpInfo, setUserSignUpInfo] = useState({
+            "username": "",
+            "password": "",
+            "name": "",
+            "email": ""
+    });
   
+    function register() {
+        console.log(userSignUpInfo)
+        fetch('/api/register', {
+            method: "POST",
+            body: JSON.stringify(userSignUpInfo),
+            headers: new Headers({
+                "content-type": "application/json"
+            })
+        }).then(response => {
+            if(response.status === 422){
+                alert("Missing Information");
+            } else if (response.status === 403){
+                alert("Username Already Exists");
+            } else if (response.status === 201){
+                alert ("Account Successfully Created")
+                history.push("/signin");
+            }
+            //history.push("/signin")
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+
     return (
       <Grid container component="main" className={classes.root}>
         <CssBaseline />
@@ -59,27 +90,20 @@ import Container from '@material-ui/core/Container';
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
                 autoComplete="fname"
-                name="firstName"
+                name="Full Name"
                 variant="outlined"
                 required
                 fullWidth
-                id="firstName"
-                label="First Name"
+                id="fullName"
+                label="Full Name"
                 autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
+                onChange={event => {
+                    const { value } = event.target;
+                    setUserSignUpInfo(Object.assign(userSignUpInfo, {"name": value}));
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -91,6 +115,26 @@ import Container from '@material-ui/core/Container';
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                onChange={event => {
+                    const { value } = event.target;
+                    setUserSignUpInfo(Object.assign(userSignUpInfo, {"email": value}));
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="username"
+                label="Username"
+                type="username"
+                id="username"
+                autoComplete="current-username"
+                onChange={event => {
+                    const { value } = event.target;
+                    setUserSignUpInfo(Object.assign(userSignUpInfo, {"username": value}));
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -103,17 +147,19 @@ import Container from '@material-ui/core/Container';
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={event => {
+                    const { value } = event.target;
+                    setUserSignUpInfo(Object.assign(userSignUpInfo, {"password": value}));
+                }}
               />
             </Grid>
           </Grid>
           <Button
-            type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
-            component={Link}
-            to="/signin"
+            onClick={register}
           >
             Sign Up
           </Button>

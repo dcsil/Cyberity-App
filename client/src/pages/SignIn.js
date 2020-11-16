@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -11,6 +11,7 @@ import CyberityLogo from '../assets/logo_cyberity_text.png';
 import Paper from '@material-ui/core/Paper';
 import {Link} from 'react-router-dom';
 import Container from '@material-ui/core/Container';
+import { useHistory } from "react-router-dom";
 
   
   const useStyles = makeStyles((theme) => ({
@@ -45,8 +46,34 @@ import Container from '@material-ui/core/Container';
       },
   }));
   
-  export default function SignInSide() {
+  export default function SignIn() {
     const classes = useStyles();
+    const history = useHistory();
+    const [userSignInInfo, setUserSignInInfo] = useState({
+        "username": "",
+        "password": "",
+    });
+
+    function login() {
+        fetch('/api/login', {
+            method: "POST",
+            body: JSON.stringify(userSignInInfo),
+            headers: new Headers({
+                "content-type": "application/json"
+            })
+        }).then(response => {
+            if(response.status === 403){
+                alert("Incorrect Credentials");
+            }else if(response.status === 200){
+                response.json().then(data => {
+                    localStorage.setItem("token", data.token);
+                    history.push("/app/dashboard")
+                });
+            }
+        }).catch((error) => {
+            console.log(error)
+        });
+    }
   
     return (
       <Grid container component="main" className={classes.root}>
@@ -71,6 +98,10 @@ import Container from '@material-ui/core/Container';
                 name="username"
                 autoComplete="username"
                 autoFocus
+                onChange={event => {
+                    const { value } = event.target;
+                    setUserSignInInfo(Object.assign(userSignInInfo, {"username": value}));
+                }}
               />
               <TextField
                 variant="outlined"
@@ -82,19 +113,21 @@ import Container from '@material-ui/core/Container';
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={event => {
+                    const { value } = event.target;
+                    setUserSignInInfo(Object.assign(userSignInInfo, {"password": value}));
+                }}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
               />
               <Button
-                type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"
                 className={classes.submit}
-                component={Link}
-                to="/app/dashboard"
+                onClick={login}
               >
                 Sign In
               </Button>

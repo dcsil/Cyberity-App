@@ -2,7 +2,7 @@ import os
 from flask import Flask, send_from_directory
 from flask_pymongo import PyMongo
 from flaskr import routes, db
-import flask_login
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 #from flask_cors import CORS
 
 def create_app(test_config=None):
@@ -21,8 +21,9 @@ def create_app(test_config=None):
     else:
         # load the test config if passed in
         app.config.from_mapping(test_config)
-    app.secret_key = "ahsfkjhdsfkjdfsksj"
-
+    app.config['SECRET_KEY'] = '11152020bOBrOSsScYbEriTY'
+    app.config["JWT_SECRET_KEY"] = "BAfASFBasf9bblkjnGYAGIfa@&b332"
+    JWTManager(app)
     # Initalize MongoDB
     mongo_uri = os.getenv("MONGO_URI", None)
     if not mongo_uri:
