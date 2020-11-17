@@ -18,70 +18,92 @@ else:
 @bp.route("/api/getAllThreats", methods=["GET"])
 @jwt_required
 def getAllThreats():
-    active = mongo.db.activeThreats.aggregate([
-        {'$lookup': {
-            'from': "employees",
-            'localField': "user_id",
-            'foreignField': "_id",
-            'as': "fromItems"
-        }},
-        {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
-        { "$project": { 'fromItems': 0 }}
-    ])
-    contained = mongo.db.contianedThreats.aggregate([
-        {'$lookup': {
-            'from': "employees",
-            'localField': "user_id",
-            'foreignField': "_id",
-            'as': "fromItems"
-        }},
-        {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
-        { "$project": { 'fromItems': 0 }}
-    ])
+    try: 
+        active = mongo.db.activeThreats.aggregate([
+            {'$lookup': {
+                'from': "employees",
+                'localField': "user_id",
+                'foreignField': "_id",
+                'as': "fromItems"
+            }},
+            {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
+            { "$project": { 'fromItems': 0 }}
+        ])
+        contained = mongo.db.contianedThreats.aggregate([
+            {'$lookup': {
+                'from': "employees",
+                'localField': "user_id",
+                'foreignField': "_id",
+                'as': "fromItems"
+            }},
+            {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
+            { "$project": { 'fromItems': 0 }}
+        ])
 
-    return json_util.dumps(list(active) + list(contained))
+        return json_util.dumps(list(active) + list(contained))
 
+    except:
+        return "There was an Error", 400
 
 @bp.route("/api/getEmployees", methods=["GET"])
 @jwt_required
 def getEmployees():
-    searchTerm = ""
-    if request.json and 'searchTerm' in request.json:
-        searchTerm = request.json['searchTerm']
+    try:
+        searchTerm = ""
+        if request.json and 'searchTerm' in request.json:
+            searchTerm = request.json['searchTerm']
 
-    employees = list(mongo.db.employees.find({'name': {'$regex': searchTerm, '$options': 'i'}}))
+        employees = list(mongo.db.employees.find({'name': {'$regex': searchTerm, '$options': 'i'}}))
 
-    return json_util.dumps(employees), 200
+        return json_util.dumps(employees), 200
+    
+    except:
+        return "There was an Error", 400
 
 
 @bp.route('/api/register', methods=('GET', 'POST'))
 def register():
-    if request.method == 'POST':
-        username = request.json['username']
-        password = request.json['password']
-        name = request.json['name']
-        email = request.json['email']
+    try: 
+        if request.method == 'POST':
+            if not all (k in request.json for k in ('username', 'password', 'name', 'email')):
+                return "Missing parameters", 404
 
-        if (username == '') or (password == '') or (name == '') or (email == ''):
-            return "Missing/Incorrect Information", 422
-        if mongo.db.users.find_one({'username': username}):
-            return "Username Already Exists", 403
-        mongo.db.users.insert_one({'username': username, 'password': generate_password_hash(password), 'name': name, 'email': email})
-        return "User successfully created", 201
-    return "Could not register", 400
+            username = request.json['username']
+            password = request.json['password']
+            name = request.json['name']
+            email = request.json['email']
+
+            if (username == '') or (password == '') or (name == '') or (email == ''):
+                return "Missing/Incorrect Information", 422
+            if mongo.db.users.find_one({'username': username}):
+                return "Username Already Exists", 403
+            mongo.db.users.insert_one({'username': username, 'password': generate_password_hash(password), 'name': name, 'email': email})
+            return "User successfully created", 201
+        return "Could not register", 400
+    
+    except:
+        return "There was an Error", 400
 
 @bp.route('/api/login', methods=('GET', 'POST'))
 def login():
-    if request.method == 'POST':
-        username = request.json['username']
-        password = request.json['password']
-        user = mongo.db.users.find_one({'username': username})
-        if user:
-            if check_password_hash(user['password'], password):
-                token = create_access_token(identity=str(user['_id']))
-                return jsonify({"token": token}), 200
-        return "Incorrect credentials", 403
-    return "Could not login,", 400
+    try:
+        if request.method == 'POST':
+            if not all (k in request.json for k in ('username', 'password')):
+                return "Missing parameters", 404
+
+            username = request.json['username']
+            password = request.json['password']
+
+            user = mongo.db.users.find_one({'username': username})
+            if user:
+                if check_password_hash(user['password'], password):
+                    token = create_access_token(identity=str(user['_id']))
+                    return jsonify({"token": token}), 200
+            return "Incorrect credentials", 403
+        return "Could not login,", 400
+
+    except:
+        return "There was an Error", 400
 
 @bp.route('/api/checkauth', methods=["GET"])
 @jwt_required
