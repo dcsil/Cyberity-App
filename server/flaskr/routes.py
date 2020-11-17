@@ -28,7 +28,6 @@ def getAllThreats():
         {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
         { "$project": { 'fromItems': 0 }}
     ])
-
     contained = mongo.db.contianedThreats.aggregate([
         {'$lookup': {
             'from': "employees",
@@ -67,7 +66,7 @@ def register():
             return "Missing/Incorrect Information", 422
         if mongo.db.users.find_one({'username': username}):
             return "Username Already Exists", 403
-        mongo.db.users.insert({'username': username, 'password': generate_password_hash(password), 'name': name, 'email': email})
+        mongo.db.users.insert_one({'username': username, 'password': generate_password_hash(password), 'name': name, 'email': email})
         return "User successfully created", 201
     return "Could not register", 400
 
