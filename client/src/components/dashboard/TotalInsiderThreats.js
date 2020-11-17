@@ -70,7 +70,6 @@ export default function TotalInsiderThreats() {
         const interval = setInterval(() => {
             setTotalInsiderThreats(totalInsiderThreats => totalInsiderThreats + 2);
             let newValue = threatData[1]["value"] + 2;
-            console.log(newValue);
             setThreatData([
                 {
                     "id": "Contained",

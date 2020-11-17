@@ -22,6 +22,8 @@ import {
     Link,
 } from "react-router-dom";
 
+import PrivateRoute from '../components/PrivateRoute'
+
 import Dashboard from './Dashboard';
 import InsiderThreats from './InsiderThreats';
 import Users from './Users';
@@ -154,7 +156,7 @@ export default function Navbar() {
                         <ListItemText primary="User Timeline" />
                     </ListItem>
                     <Divider />
-                    <ListItem button component={Link} to="/signin">
+                    <ListItem onClick={() => {localStorage.removeItem('token');}} button component={Link} to="/signin">
                         <ListItemIcon><ExitToAppIcon></ExitToAppIcon></ListItemIcon>
                         <ListItemText primary="Sign out" />
                     </ListItem>
@@ -167,7 +169,7 @@ export default function Navbar() {
             >
                 <div className={classes.drawerHeader} />
                 <Switch >
-                    <Route exact path="/app/dashboard" children={<Dashboard></Dashboard>} />
+                    <PrivateRoute exact path="/app/dashboard" component={Dashboard} />
                     <Route exact path="/app/usertimeline" children={<UserTimeline></UserTimeline>} />
                     <Route exact path="/app/users" children={<Users></Users>} />
                     <Route exact path="/app/insiderthreats" children={<InsiderThreats></InsiderThreats>} />

@@ -5,6 +5,8 @@ from flaskr.db import mongo
 from werkzeug.security import check_password_hash, generate_password_hash
 import os
 from bson import json_util
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+
 
 environment = os.environ['FLASK_ENV']
 if environment == "production":
@@ -54,28 +56,35 @@ def getEmployees():
 @bp.route('/api/register', methods=('GET', 'POST'))
 def register():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        name = request.form['name']
-        email = request.form['email']
+        username = request.json['username']
+        password = request.json['password']
+        name = request.json['name']
+        email = request.json['email']
 
-        if (not username) or (not password) or (not name) or (not email):
-            return "Missing information", 400
+        if (username == '') or (password == '') or (name == '') or (email == ''):
+            return "Missing/Incorrect Information", 422
         if mongo.db.users.find_one({'username': username}):
-            return "User {} Already Exists".format(username), 403
+            return "Username Already Exists", 403
         mongo.db.users.insert({'username': username, 'password': generate_password_hash(password), 'name': name, 'email': email})
         return "User successfully created", 201
-    return "Could not register,", 400
+    return "Could not register", 400
 
-
-@bp.route('/api/signin', methods=('GET', 'POST'))
-def signin():
+@bp.route('/api/login', methods=('GET', 'POST'))
+def login():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        username = request.json['username']
+        password = request.json['password']
         user = mongo.db.users.find_one({'username': username})
         if user:
             if check_password_hash(user['password'], password):
-                return "signin successfull", 200
+                token = create_access_token(identity=str(user['_id']))
+                return jsonify({"token": token}), 200
         return "Incorrect credentials", 403
-    return "Could not signin,", 400
+    return "Could not login,", 400
+
+@bp.route('/api/checkauth', methods=["GET"])
+@jwt_required
+def checkAuthentication():
+    if request.method == 'GET':
+        return "Success", 200
+    return "Failure", 400
