@@ -9,6 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
+import {getAuthTokenHeaderValue} from '../util/auth'
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -27,7 +28,11 @@ function InsiderThreats() {
 
   React.useEffect(() => {
     fetch('/api/getAllThreats', {
-        method: 'GET'
+        method: 'GET',
+        headers: new Headers({
+            "content-type": "application/json",
+            "Authorization": getAuthTokenHeaderValue(),
+        })
     })
     .then(response => response.json())
     .then(data => setRows(data))

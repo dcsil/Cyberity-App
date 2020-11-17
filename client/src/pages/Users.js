@@ -19,6 +19,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Tooltip from '@material-ui/core/Tooltip';
 import ErrorIcon from '@material-ui/icons/Error';
 import {Link} from 'react-router-dom';
+import {getAuthTokenHeaderValue} from '../util/auth'
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -115,7 +116,11 @@ function Users() {
 
   React.useEffect(() => {
     fetch('/api/getEmployees', {
-        method: 'GET'
+        method: 'GET',
+        headers: new Headers({
+            "content-type": "application/json",
+            "Authorization": getAuthTokenHeaderValue(),
+        })
     })
     .then(response => response.json())
     .then(data => setRows(data))

@@ -16,6 +16,7 @@ else:
 
 
 @bp.route("/api/getAllThreats", methods=["GET"])
+@jwt_required
 def getAllThreats():
     active = mongo.db.activeThreats.aggregate([
         {'$lookup': {
@@ -43,6 +44,7 @@ def getAllThreats():
 
 
 @bp.route("/api/getEmployees", methods=["GET"])
+@jwt_required
 def getEmployees():
     searchTerm = ""
     if request.json and 'searchTerm' in request.json:

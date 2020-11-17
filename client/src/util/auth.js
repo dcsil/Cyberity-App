@@ -1,5 +1,3 @@
-import { local } from "d3";
-
 async function checkAuth(){
     /*const token = localStorage.getItem("token");
     fetch("/api/checkauth", {
@@ -18,9 +16,9 @@ async function checkAuth(){
     return true;
 }
 
-function getAuthToken(){
+/*function getAuthToken(){
     return localStorage.getItem("token");
-}
+}*/
 
 function getAuthTokenHeaderValue(){
     return "Bearer " + localStorage.getItem("token");
@@ -46,4 +44,4 @@ function getAuthTokenHeaderValue(){
     });
 }*/
 
-export {checkAuth};
+export {checkAuth, getAuthTokenHeaderValue};
