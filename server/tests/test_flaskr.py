@@ -17,7 +17,7 @@ def test_login(client):
         "username": "test_admin", "password": "test_admin"
     })
     response_json = response.get_json()
-    response = response = client.get("/api/checkauth", headers={
+    response = client.get("/api/checkauth", headers={
         "Authorization": "Bearer " + response_json['token']
     })
     assert response.status_code == 200
