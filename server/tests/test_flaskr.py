@@ -138,7 +138,24 @@ def test_numTotalThreats(client):
     response = client.get("/api/numTotalThreats", headers={
         "Authorization": "Bearer " + response_json['token']
     })
-    assert response.status_code == 200
+    pre_num_total_threats = int(response.data)
+    mongo.db.activeThreats.insert_one({
+        "detectionDate": "Today",
+        "status": "test",
+        "name": "Ross",
+        "email": "Ross@gmail.com",
+        "role": "Developer",
+        "department": "Software",
+        "last_activity_date": "Today",
+        "phone": "555",
+        "flagged": True
+    })
+    response = client.get("/api/numTotalThreats", headers={
+        "Authorization": "Bearer " + response_json['token']
+    })
+    post_num_total_threats = int(response.data)
+    assert response.status_code == 200 and (pre_num_total_threats + 1) == post_num_total_threats 
+
 
 def test_securityRating(client):
     test_register(client)

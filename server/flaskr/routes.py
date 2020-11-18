@@ -248,17 +248,17 @@ def securityRating():
         rating = 'S'
         if numTT != 0:
             threatContainmentRatio = float(numCT) / float(numTT)
-            if threatContainmentRatio >= 0.9:
+            if threatContainmentRatio >= 0.8:
                 rating = 'S'
-            elif threatContainmentRatio >= 0.8:
-                rating = 'A'
             elif threatContainmentRatio >= 0.7:
-                rating = 'B'
+                rating = 'A'
             elif threatContainmentRatio >= 0.6:
-                rating = 'C'
-            elif threatContainmentRatio >= 0.5:
-                rating = 'D'
+                rating = 'B'
             elif threatContainmentRatio >= 0.4:
+                rating = 'C'
+            elif threatContainmentRatio >= 0.3:
+                rating = 'D'
+            elif threatContainmentRatio >= 0.2:
                 rating = 'E'
             else:
                 rating = 'F'
