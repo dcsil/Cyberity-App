@@ -47,7 +47,7 @@ def getAllThreats():
             {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
             { "$project": { 'fromItems': 0 }}
         ])
-        contained = mongo.db.contianedThreats.aggregate([
+        contained = mongo.db.containedThreats.aggregate([
             {'$lookup': {
                 'from': "employees",
                 'localField': "user_id",
@@ -157,7 +157,7 @@ def truePositiveRate():
 @jwt_required
 def numContainedThreats():
     if request.method == 'GET':
-        contained = mongo.db.contianedThreats.aggregate([
+        contained = mongo.db.containedThreats.aggregate([
             {'$lookup': {
                 'from': "employees",
                 'localField': "user_id",
@@ -170,9 +170,9 @@ def numContainedThreats():
         return json_util.dumps(len(list(contained))), 200
     return "Could not get number of contained threats", 400
 
-@bp.route('/api/numLiveThreatsThreats', methods=["GET"])
+@bp.route('/api/numActiveThreats', methods=["GET"])
 @jwt_required
-def numLiveThreatsThreats():
+def numActiveThreatsThreats():
     if request.method == 'GET':
         active = mongo.db.activeThreats.aggregate([
             {'$lookup': {
@@ -186,7 +186,7 @@ def numLiveThreatsThreats():
         ])
 
         return json_util.dumps(len(list(active))), 200
-    return "Could not get number of live threats", 400
+    return "Could not get number of active threats", 400
 
 @bp.route('/api/numTotalThreats', methods=["GET"])
 @jwt_required
@@ -203,7 +203,7 @@ def numTotalThreats():
             { "$project": { 'fromItems': 0 }}
         ])
 
-        contained = mongo.db.contianedThreats.aggregate([
+        contained = mongo.db.containedThreats.aggregate([
             {'$lookup': {
                 'from': "employees",
                 'localField': "user_id",
@@ -232,7 +232,7 @@ def securityRating():
             { "$project": { 'fromItems': 0 }}
         ])
 
-        contained = mongo.db.contianedThreats.aggregate([
+        contained = mongo.db.containedThreats.aggregate([
             {'$lookup': {
                 'from': "employees",
                 'localField': "user_id",
@@ -245,24 +245,23 @@ def securityRating():
         numCT = len(list(contained))
         numLT = len(list(active))
         numTT = numLT + numCT
-        rating = "S"
+        rating = 'S'
         if numTT != 0:
-            print(numTT)
             threatContainmentRatio = float(numCT) / float(numTT)
             if threatContainmentRatio >= 0.9:
-                rating = "S"
+                rating = 'S'
             elif threatContainmentRatio >= 0.8:
-                rating = "A"
+                rating = 'A'
             elif threatContainmentRatio >= 0.7:
-                rating = "B"
+                rating = 'B'
             elif threatContainmentRatio >= 0.6:
-                rating = "C"
+                rating = 'C'
             elif threatContainmentRatio >= 0.5:
-                rating = "D"
+                rating = 'D'
             elif threatContainmentRatio >= 0.4:
-                rating = "E"
+                rating = 'E'
             else:
-                rating = "F"
+                rating = 'F'
 
         return json_util.dumps(rating) , 200
     return "Could not get security rating", 400

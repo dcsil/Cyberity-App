@@ -1,4 +1,5 @@
 from flaskr import create_app
+from flaskr.db import mongo
 from flask import json, jsonify
 
 def test_hello(client):
@@ -83,18 +84,50 @@ def test_numContainedThreats(client):
     response = client.get("/api/numContainedThreats", headers={
         "Authorization": "Bearer " + response_json['token']
     })
-    assert response.status_code == 200
+    pre_num_contained_threats = int(response.data)
+    mongo.db.containedThreats.insert_one({
+        "detectionDate": "Today",
+        "status": "test",
+        "name": "Ross",
+        "email": "Ross@gmail.com",
+        "role": "Developer",
+        "department": "Software",
+        "last_activity_date": "Today",
+        "phone": "555",
+        "flagged": False
+    })
+    response = client.get("/api/numContainedThreats", headers={
+        "Authorization": "Bearer " + response_json['token']
+    })
+    post_num_contained_threats = int(response.data)
+    assert response.status_code == 200 and (pre_num_contained_threats + 1) == post_num_contained_threats 
 
-def test_numLiveThreatsThreats(client):
+def test_numActiveThreatsThreats(client):
     test_register(client)
     response = client.post("/api/login", json={
         "username": "test_admin", "password": "test_admin"
     })
     response_json = response.get_json()
-    response = client.get("/api/numLiveThreatsThreats", headers={
+    response = client.get("/api/numActiveThreats", headers={
         "Authorization": "Bearer " + response_json['token']
     })
-    assert response.status_code == 200
+    pre_num_active_threats = int(response.data)
+    mongo.db.activeThreats.insert_one({
+        "detectionDate": "Today",
+        "status": "test",
+        "name": "Ross",
+        "email": "Ross@gmail.com",
+        "role": "Developer",
+        "department": "Software",
+        "last_activity_date": "Today",
+        "phone": "555",
+        "flagged": True
+    })
+    response = client.get("/api/numActiveThreats", headers={
+        "Authorization": "Bearer " + response_json['token']
+    })
+    post_num_active_threats = int(response.data)
+    assert response.status_code == 200 and (pre_num_active_threats + 1) == post_num_active_threats 
 
 def test_numTotalThreats(client):
     test_register(client)
@@ -116,4 +149,4 @@ def test_securityRating(client):
     response = client.get("/api/securityRating", headers={
         "Authorization": "Bearer " + response_json['token']
     })
-    assert response.status_code == 200
+    assert response.status_code == 200 and response.data 
