@@ -89,3 +89,124 @@ def checkAuthentication():
     if request.method == 'GET':
         return "Success", 200
     return "Failure", 400
+
+@bp.route('/api/truePositiveRate', methods=["GET"])
+@jwt_required
+def truePositiveRate():
+    if request.method == 'GET':
+        return "Success", 200
+    return "Could not get true positive rate", 400
+
+@bp.route('/api/numContainedThreats', methods=["GET"])
+@jwt_required
+def numContainedThreats():
+    if request.method == 'GET':
+        contained = mongo.db.contianedThreats.aggregate([
+            {'$lookup': {
+                'from': "employees",
+                'localField': "user_id",
+                'foreignField': "_id",
+                'as': "fromItems"
+            }},
+            {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
+            { "$project": { 'fromItems': 0 }}
+        ])
+        return json_util.dumps(len(list(contained))), 200
+    return "Could not get number of contained threats", 400
+
+@bp.route('/api/numLiveThreatsThreats', methods=["GET"])
+@jwt_required
+def numLiveThreatsThreats():
+    if request.method == 'GET':
+        active = mongo.db.activeThreats.aggregate([
+            {'$lookup': {
+                'from': "employees",
+                'localField': "user_id",
+                'foreignField': "_id",
+                'as': "fromItems"
+            }},
+            {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
+            { "$project": { 'fromItems': 0 }}
+        ])
+
+        return json_util.dumps(len(list(active))), 200
+    return "Could not get number of live threats", 400
+
+@bp.route('/api/numTotalThreats', methods=["GET"])
+@jwt_required
+def numTotalThreats():
+    if request.method == 'GET':
+        active = mongo.db.activeThreats.aggregate([
+            {'$lookup': {
+                'from': "employees",
+                'localField': "user_id",
+                'foreignField': "_id",
+                'as': "fromItems"
+            }},
+            {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
+            { "$project": { 'fromItems': 0 }}
+        ])
+
+        contained = mongo.db.contianedThreats.aggregate([
+            {'$lookup': {
+                'from': "employees",
+                'localField': "user_id",
+                'foreignField': "_id",
+                'as': "fromItems"
+            }},
+            {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
+            { "$project": { 'fromItems': 0 }}
+        ])
+        return json_util.dumps(len(list(active)) + len(list(contained))), 200
+    return "Could not get number of total threats", 400
+
+
+@bp.route('/api/securityRating', methods=["GET"])
+@jwt_required
+def securityRating():
+    if request.method == 'GET':
+        active = mongo.db.activeThreats.aggregate([
+            {'$lookup': {
+                'from': "employees",
+                'localField': "user_id",
+                'foreignField': "_id",
+                'as': "fromItems"
+            }},
+            {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
+            { "$project": { 'fromItems': 0 }}
+        ])
+
+        contained = mongo.db.contianedThreats.aggregate([
+            {'$lookup': {
+                'from': "employees",
+                'localField': "user_id",
+                'foreignField': "_id",
+                'as': "fromItems"
+            }},
+            {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
+            { "$project": { 'fromItems': 0 }}
+        ])
+        numCT = len(list(contained))
+        numLT = len(list(active))
+        numTT = numLT + numCT
+        rating = "S"
+        if numTT != 0:
+            print(numTT)
+            threatContainmentRatio = float(numCT) / float(numTT)
+            if threatContainmentRatio >= 0.9:
+                rating = "S"
+            elif threatContainmentRatio >= 0.8:
+                rating = "A"
+            elif threatContainmentRatio >= 0.7:
+                rating = "B"
+            elif threatContainmentRatio >= 0.6:
+                rating = "C"
+            elif threatContainmentRatio >= 0.5:
+                rating = "D"
+            elif threatContainmentRatio >= 0.4:
+                rating = "E"
+            else:
+                rating = "F"
+
+        return json_util.dumps(rating) , 200
+    return "Could not get security rating", 400

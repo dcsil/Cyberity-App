@@ -21,3 +21,58 @@ def test_login(client):
         "Authorization": "Bearer " + response_json['token']
     })
     assert response.status_code == 200
+
+def test_truePositiveRate(client):
+    test_register(client)
+    response = client.post("/api/login", json={
+        "username": "test_admin", "password": "test_admin"
+    })
+    response_json = response.get_json()
+    response = client.get("/api/truePositiveRate", headers={
+        "Authorization": "Bearer " + response_json['token']
+    })
+    assert response.status_code == 200
+
+def test_numContainedThreats(client):
+    test_register(client)
+    response = client.post("/api/login", json={
+        "username": "test_admin", "password": "test_admin"
+    })
+    response_json = response.get_json()
+    response = client.get("/api/numContainedThreats", headers={
+        "Authorization": "Bearer " + response_json['token']
+    })
+    assert response.status_code == 200
+
+def test_numLiveThreatsThreats(client):
+    test_register(client)
+    response = client.post("/api/login", json={
+        "username": "test_admin", "password": "test_admin"
+    })
+    response_json = response.get_json()
+    response = client.get("/api/numLiveThreatsThreats", headers={
+        "Authorization": "Bearer " + response_json['token']
+    })
+    assert response.status_code == 200
+
+def test_numTotalThreats(client):
+    test_register(client)
+    response = client.post("/api/login", json={
+        "username": "test_admin", "password": "test_admin"
+    })
+    response_json = response.get_json()
+    response = client.get("/api/numTotalThreats", headers={
+        "Authorization": "Bearer " + response_json['token']
+    })
+    assert response.status_code == 200
+
+def test_securityRating(client):
+    test_register(client)
+    response = client.post("/api/login", json={
+        "username": "test_admin", "password": "test_admin"
+    })
+    response_json = response.get_json()
+    response = client.get("/api/securityRating", headers={
+        "Authorization": "Bearer " + response_json['token']
+    })
+    assert response.status_code == 200
