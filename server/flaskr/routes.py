@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, abort, request
+from flask import Blueprint, render_template, abort, request, Response
 from flask.json import jsonify
 from jinja2 import TemplateNotFound
 from flaskr.db import mongo
@@ -18,6 +18,24 @@ else:
 @bp.route("/api/getAllThreats", methods=["GET"])
 @jwt_required
 def getAllThreats():
+    """
+    Return Format:
+    [
+        {
+            _id: ObjectId,
+            detectionDate: Str,
+            status: Str,
+            name: Str
+            email: Str:
+            role: Str,
+            department: Str,
+            last_activity_date: Str,
+            phone: Str,
+            flagged: Bool
+        },
+        ...
+    ]
+    """
     try: 
         active = mongo.db.activeThreats.aggregate([
             {'$lookup': {
@@ -40,7 +58,7 @@ def getAllThreats():
             { "$project": { 'fromItems': 0 }}
         ])
 
-        return json_util.dumps(list(active) + list(contained))
+        return Response(json_util.dumps(list(active) + list(contained)), mimetype='application/json'), 200
 
     except:
         return "There was an Error", 400
@@ -48,6 +66,22 @@ def getAllThreats():
 @bp.route("/api/getEmployees", methods=["GET"])
 @jwt_required
 def getEmployees():
+    """
+    Return Format:
+    [
+        {
+            _id: ObjectId,
+            name: Str
+            email: Str:
+            role: Str,
+            department: Str,
+            last_activity_date: Str,
+            phone: Str,
+            flagged: Bool
+        },
+        ...
+    ]
+    """
     try:
         searchTerm = ""
         if request.json and 'searchTerm' in request.json:
@@ -55,7 +89,7 @@ def getEmployees():
 
         employees = list(mongo.db.employees.find({'name': {'$regex': searchTerm, '$options': 'i'}}))
 
-        return json_util.dumps(employees), 200
+        return Response(json_util.dumps(employees), mimetype='application/json'), 200
     
     except:
         return "There was an Error", 400
@@ -65,7 +99,7 @@ def getEmployees():
 def register():
     try: 
         if request.method == 'POST':
-            if not all (k in request.json for k in ('username', 'password', 'name', 'email')):
+            if not all(k in request.json for k in ('username', 'password', 'name', 'email')):
                 return "Missing parameters", 404
 
             username = request.json['username']
@@ -88,7 +122,7 @@ def register():
 def login():
     try:
         if request.method == 'POST':
-            if not all (k in request.json for k in ('username', 'password')):
+            if not all(k in request.json for k in ('username', 'password')):
                 return "Missing parameters", 404
 
             username = request.json['username']
