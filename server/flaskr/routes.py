@@ -84,6 +84,7 @@ def getEmployees():
     """
     try:
         searchTerm = ""
+        print(request.json)
         if request.json and 'searchTerm' in request.json:
             searchTerm = request.json['searchTerm']
 
