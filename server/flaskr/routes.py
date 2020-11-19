@@ -24,20 +24,19 @@ def getAllThreats():
         {
             _id: ObjectId,
             detectionDate: Str,
-            status: Str,
+            status: ['active', 'contained', 'false'],
             name: Str
             email: Str:
             role: Str,
             department: Str,
             last_activity_date: Str,
-            phone: Str,
-            flagged: Bool
+            phone: Str
         },
         ...
     ]
     """
     try: 
-        active = mongo.db.activeThreats.aggregate([
+        threats = mongo.db.userThreats.aggregate([
             {'$lookup': {
                 'from': "employees",
                 'localField': "user_id",
@@ -45,20 +44,11 @@ def getAllThreats():
                 'as': "fromItems"
             }},
             {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
-            { "$project": { 'fromItems': 0 }}
-        ])
-        contained = mongo.db.containedThreats.aggregate([
-            {'$lookup': {
-                'from': "employees",
-                'localField': "user_id",
-                'foreignField': "_id",
-                'as': "fromItems"
-            }},
-            {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
-            { "$project": { 'fromItems': 0 }}
+            {'$project': { 'fromItems': 0 }},
+            {'$unset': {'quantity': ""}}
         ])
 
-        return Response(json_util.dumps(list(active) + list(contained)), mimetype='application/json'), 200
+        return Response(json_util.dumps(list(threats)), mimetype='application/json'), 200
 
     except:
         return "There was an Error", 400
