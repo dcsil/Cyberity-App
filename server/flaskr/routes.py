@@ -15,9 +15,9 @@ else:
     bp = Blueprint("routes", __name__)
 
 
-@bp.route("/api/getAllThreats", methods=["GET"])
+@bp.route("/api/getAllThreats/<num>", methods=["GET"])
 @jwt_required
-def getAllThreats():
+def getAllThreats(num=None):
     """
     Return Format:
     [
@@ -36,7 +36,7 @@ def getAllThreats():
     ]
     """
     try: 
-        threats = mongo.db.userThreats.aggregate([
+        threats = list(mongo.db.userThreats.aggregate([
             {'$lookup': {
                 'from': "employees",
                 'localField': "user_id",
@@ -46,9 +46,12 @@ def getAllThreats():
             {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
             {'$project': { 'fromItems': 0 }},
             {'$unset': {'quantity': ""}}
-        ])
+        ]).sort({'detectionDate': 1}))
+        
+        if num:
+            threats = threats[-num:]
 
-        return Response(json_util.dumps(list(threats)), mimetype='application/json'), 200
+        return Response(json_util.dumps(threats), mimetype='application/json'), 200
 
     except:
         return "There was an Error", 400
