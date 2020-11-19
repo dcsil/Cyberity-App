@@ -14,7 +14,7 @@ if environment == "production":
 else:
     bp = Blueprint("routes", __name__)
 
-
+@bp.route("/api/getAllThreats", methods=["GET"])
 @bp.route("/api/getAllThreats/<num>", methods=["GET"])
 @jwt_required
 def getAllThreats(num=None):
@@ -45,9 +45,9 @@ def getAllThreats(num=None):
             }},
             {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
             {'$project': { 'fromItems': 0 }},
-            {'$unset': {'quantity': ""}}
-        ]).sort({'detectionDate': 1}))
-        
+            {'$sort': {'detectionDate': 1}}
+        ]))
+
         if num:
             threats = threats[-num:]
 
@@ -56,9 +56,11 @@ def getAllThreats(num=None):
     except:
         return "There was an Error", 400
 
+
 @bp.route("/api/getEmployees", methods=["GET"])
+@bp.route("/api/getEmployees/<search>", methods=["GET"])
 @jwt_required
-def getEmployees():
+def getEmployees(searchTerm=""):
     """
     Return Format:
     [
@@ -76,12 +78,7 @@ def getEmployees():
     ]
     """
     try:
-        searchTerm = ""
-        if request.json and 'searchTerm' in request.json:
-            searchTerm = request.json['searchTerm']
-
         employees = list(mongo.db.employees.find({'name': {'$regex': searchTerm, '$options': 'i'}}))
-
         return Response(json_util.dumps(employees), mimetype='application/json'), 200
     
     except:
