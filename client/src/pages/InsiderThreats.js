@@ -9,6 +9,11 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import {getAuthTokenHeaderValue} from '../util/auth'
 
 const useStyles = makeStyles((theme) => ({
@@ -17,6 +22,55 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+function Row(props) {
+  const { row } = props;
+  const [open, setOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const classes = useStyles();
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+    setOpen(!open);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    setOpen(!open);
+  };
+
+  let dropdown;
+  if (row.status == "active") {
+    dropdown = <TableCell>
+      <IconButton onClick={handleClick}>
+        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+      </IconButton>
+      <Menu
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}>
+        <MenuItem>Set to Contained</MenuItem>
+        <MenuItem>Set to False Alert</MenuItem>
+      </Menu>
+    </TableCell>
+  }
+
+  return (
+    <React.Fragment>
+      <TableRow key={row._id}>
+        <TableCell component="th" scope="row">
+            {row.name}
+        </TableCell>
+        <TableCell>{row.role}</TableCell>
+        <TableCell>{row.email}</TableCell>
+        <TableCell>{row.status}</TableCell>
+        <TableCell>{row.detectionDate}</TableCell>
+        <TableCell>{row.phone}</TableCell>
+        {dropdown}
+      </TableRow>
+    </React.Fragment>
+  )
+
+}
 
 function InsiderThreats() {
   const classes = useStyles();
@@ -111,16 +165,7 @@ function InsiderThreats() {
             {rows.sort(getComparator(order, orderBy))
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row) => (
-                <TableRow key={row.name}>
-                <TableCell component="th" scope="row">
-                    {row.name}
-                </TableCell>
-                <TableCell>{row.role}</TableCell>
-                <TableCell>{row.email}</TableCell>
-                <TableCell>{row.status}</TableCell>
-                <TableCell>{row.detectionDate}</TableCell>
-                <TableCell>{row.phone}</TableCell>
-                </TableRow>
+              <Row key={row._id} row={row} />
             ))}
             </TableBody>
         </Table>
