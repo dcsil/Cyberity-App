@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { CircularProgressbar, buildStyles  } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import {getAuthTokenHeaderValue} from "../../util/auth"
 
 const useStyles = makeStyles((theme) => ({
     card: {
@@ -19,19 +20,21 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TruePositives() { 
     const classes = useStyles();
-    const [truePositiveRate, setTruePositiveRate] = useState(0);
+    const [truePositiveRate, setTruePositiveRate] = useState();
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            if(truePositiveRate >= 100){
-                setTruePositiveRate(0);
-            }else{
-                setTruePositiveRate(truePositiveRate => truePositiveRate + 10);
-            }
-        }, 1000);
-        return () => {
-            clearInterval(interval)
-        }
+        fetch('/api/truePositiveRate', {
+            method: 'GET',
+            headers: new Headers({
+                "content-type": "application/json",
+                "Authorization": getAuthTokenHeaderValue(),
+            })
+        })
+        .then(response => response.json())
+        .then(data => setTruePositiveRate(Math.floor(data * 100)))
+        .catch(err => {
+            console.log(err)
+        })
     },[truePositiveRate]);
 
     return (

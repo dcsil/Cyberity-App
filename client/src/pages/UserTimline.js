@@ -39,5 +39,6 @@ export default function UserTimeline() {
                 </CardContent>
             </Card>
         </Container>
+
     );
 }

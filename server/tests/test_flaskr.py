@@ -1,6 +1,10 @@
 from flaskr import create_app
 from flaskr.db import mongo
 from flask import json, jsonify
+from datetime import datetime
+
+def getCurrentTimeStamp():
+    return str(datetime.now())
 
 def test_hello(client):
     response = client.get("/hello")
@@ -85,9 +89,9 @@ def test_numContainedThreats(client):
         "Authorization": "Bearer " + response_json['token']
     })
     pre_num_contained_threats = int(response.data)
-    mongo.db.containedThreats.insert_one({
-        "detectionDate": "Today",
-        "status": "test",
+    mongo.db.userThreats.insert_one({
+        "detectionDate": getCurrentTimeStamp(),
+        "status": "contained",
         "name": "Ross",
         "email": "Ross@gmail.com",
         "role": "Developer",
@@ -100,7 +104,7 @@ def test_numContainedThreats(client):
         "Authorization": "Bearer " + response_json['token']
     })
     post_num_contained_threats = int(response.data)
-    assert response.status_code == 200 and (pre_num_contained_threats + 1) == post_num_contained_threats 
+    assert response.status_code == 200 and ((pre_num_contained_threats + 1) == post_num_contained_threats) 
 
 def test_numActiveThreatsThreats(client):
     test_register(client)
@@ -112,9 +116,9 @@ def test_numActiveThreatsThreats(client):
         "Authorization": "Bearer " + response_json['token']
     })
     pre_num_active_threats = int(response.data)
-    mongo.db.activeThreats.insert_one({
-        "detectionDate": "Today",
-        "status": "test",
+    mongo.db.userThreats.insert_one({
+        "detectionDate": getCurrentTimeStamp(),
+        "status": "active",
         "name": "Ross",
         "email": "Ross@gmail.com",
         "role": "Developer",
@@ -127,7 +131,35 @@ def test_numActiveThreatsThreats(client):
         "Authorization": "Bearer " + response_json['token']
     })
     post_num_active_threats = int(response.data)
-    assert response.status_code == 200 and (pre_num_active_threats + 1) == post_num_active_threats 
+    assert response.status_code == 200 and ((pre_num_active_threats + 1) == post_num_active_threats) 
+
+def test_numFalseThreatsThreats(client):
+    test_register(client)
+    response = client.post("/api/login", json={
+        "username": "test_admin", "password": "test_admin"
+    })
+    response_json = response.get_json()
+    response = client.get("/api/numFalseThreats", headers={
+        "Authorization": "Bearer " + response_json['token']
+    })
+    pre_num_false_threats = int(response.data)
+    mongo.db.userThreats.insert_one({
+        "detectionDate": getCurrentTimeStamp(),
+        "status": "false",
+        "name": "Ross",
+        "email": "Ross@gmail.com",
+        "role": "Developer",
+        "department": "Software",
+        "last_activity_date": "Today",
+        "phone": "555",
+        "flagged": True
+    })
+    response = client.get("/api/numFalseThreats", headers={
+        "Authorization": "Bearer " + response_json['token']
+    })
+    post_num_false_threats = int(response.data)
+    assert response.status_code == 200 and ((pre_num_false_threats + 1) == post_num_false_threats) 
+
 
 def test_numTotalThreats(client):
     test_register(client)
@@ -139,9 +171,9 @@ def test_numTotalThreats(client):
         "Authorization": "Bearer " + response_json['token']
     })
     pre_num_total_threats = int(response.data)
-    mongo.db.activeThreats.insert_one({
-        "detectionDate": "Today",
-        "status": "test",
+    mongo.db.userThreats.insert_one({
+        "detectionDate": getCurrentTimeStamp(),
+        "status": "contained",
         "name": "Ross",
         "email": "Ross@gmail.com",
         "role": "Developer",
@@ -154,7 +186,7 @@ def test_numTotalThreats(client):
         "Authorization": "Bearer " + response_json['token']
     })
     post_num_total_threats = int(response.data)
-    assert response.status_code == 200 and (pre_num_total_threats + 1) == post_num_total_threats 
+    assert response.status_code == 200 and ((pre_num_total_threats + 1) == post_num_total_threats) 
 
 
 def test_securityRating(client):
@@ -167,3 +199,30 @@ def test_securityRating(client):
         "Authorization": "Bearer " + response_json['token']
     })
     assert response.status_code == 200 and response.data 
+
+def test_truePositiveRate(client):
+    test_register(client)
+    response = client.post("/api/login", json={
+        "username": "test_admin", "password": "test_admin"
+    })
+    response_json = response.get_json()
+    response = client.get("/api/truePositiveRate", headers={
+        "Authorization": "Bearer " + response_json['token']
+    })
+    pre_truepositive_rate = float(response.data)
+    mongo.db.userThreats.insert_one({
+        "detectionDate": getCurrentTimeStamp(),
+        "status": "false",
+        "name": "Ross",
+        "email": "Ross@gmail.com",
+        "role": "Developer",
+        "department": "Software",
+        "last_activity_date": "Today",
+        "phone": "555",
+        "flagged": True
+    })
+    response = client.get("/api/truePositiveRate", headers={
+        "Authorization": "Bearer " + response_json['token']
+    })
+    post_truepositive_rate = float(response.data)
+    assert response.status_code == 200 and (pre_truepositive_rate >= post_truepositive_rate)

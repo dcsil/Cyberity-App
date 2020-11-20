@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, abort, request, Response
+from flask.helpers import total_seconds
 from flask.json import jsonify
 from jinja2 import TemplateNotFound
 from flaskr.db import mongo
@@ -66,7 +67,7 @@ def getAllThreats(num=None):
             }},
             {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
             {'$project': { 'fromItems': 0 }},
-            {'$sort': {'detectionDate': 1}}
+            {'$sort': {'detectionDate': -1}}
         ]))
 
         if num:
@@ -160,119 +161,86 @@ def checkAuthentication():
 @bp.route('/api/truePositiveRate', methods=["GET"])
 @jwt_required
 def truePositiveRate():
-    if request.method == 'GET':
-        return "Success", 200
-    return "Could not get true positive rate", 400
+    try:
+        if request.method == 'GET':
+            false_count = mongo.db.userThreats.count_documents({"status": "false"})
+            total_count = mongo.db.userThreats.count_documents({})
+            return json_util.dumps(float(total_count - false_count) / float(total_count)), 200
+        return "Could not get true positive rate", 400
+    except:
+        return "There was an Error", 400
 
 @bp.route('/api/numContainedThreats', methods=["GET"])
 @jwt_required
 def numContainedThreats():
-    if request.method == 'GET':
-        contained = mongo.db.containedThreats.aggregate([
-            {'$lookup': {
-                'from': "employees",
-                'localField': "user_id",
-                'foreignField': "_id",
-                'as': "fromItems"
-            }},
-            {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
-            { "$project": { 'fromItems': 0 }}
-        ])
-        return json_util.dumps(len(list(contained))), 200
-    return "Could not get number of contained threats", 400
+    try:
+        if request.method == 'GET':
+            contained_count = mongo.db.userThreats.count_documents({"status":"contained"})
+            return json_util.dumps(contained_count), 200
+        return "Could not get number of contained threats", 400
+    except:
+        return "There was an Error", 400
 
 @bp.route('/api/numActiveThreats', methods=["GET"])
 @jwt_required
 def numActiveThreatsThreats():
-    if request.method == 'GET':
-        active = mongo.db.activeThreats.aggregate([
-            {'$lookup': {
-                'from': "employees",
-                'localField': "user_id",
-                'foreignField': "_id",
-                'as': "fromItems"
-            }},
-            {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
-            { "$project": { 'fromItems': 0 }}
-        ])
+    try:
+        if request.method == 'GET':
+            active_count = mongo.db.userThreats.count_documents({"status":"active"})
+            return json_util.dumps(active_count), 200
+        return "Could not get number of active threats", 400
+    except:
+        return "There was an Error", 400
 
-        return json_util.dumps(len(list(active))), 200
-    return "Could not get number of active threats", 400
+@bp.route('/api/numFalseThreats', methods=["GET"])
+@jwt_required
+def numFalseThreatsThreats():
+    try:
+        if request.method == 'GET':
+            false_count = mongo.db.userThreats.count_documents({"status":"false"})
+            return json_util.dumps(false_count), 200
+        return "Could not get number of false positive threats", 400
+    except:
+        return "There was an Error", 400
 
 @bp.route('/api/numTotalThreats', methods=["GET"])
 @jwt_required
 def numTotalThreats():
-    if request.method == 'GET':
-        active = mongo.db.activeThreats.aggregate([
-            {'$lookup': {
-                'from': "employees",
-                'localField': "user_id",
-                'foreignField': "_id",
-                'as': "fromItems"
-            }},
-            {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
-            { "$project": { 'fromItems': 0 }}
-        ])
-
-        contained = mongo.db.containedThreats.aggregate([
-            {'$lookup': {
-                'from': "employees",
-                'localField': "user_id",
-                'foreignField': "_id",
-                'as': "fromItems"
-            }},
-            {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
-            { "$project": { 'fromItems': 0 }}
-        ])
-        return json_util.dumps(len(list(active)) + len(list(contained))), 200
-    return "Could not get number of total threats", 400
+    try:
+        if request.method == 'GET':
+            total_count = mongo.db.userThreats.count_documents({})
+            return json_util.dumps(total_count), 200
+        return "Could not get number of total threats", 400
+    except:
+        return "There was an Error", 400
 
 
 @bp.route('/api/securityRating', methods=["GET"])
 @jwt_required
 def securityRating():
-    if request.method == 'GET':
-        active = mongo.db.activeThreats.aggregate([
-            {'$lookup': {
-                'from': "employees",
-                'localField': "user_id",
-                'foreignField': "_id",
-                'as': "fromItems"
-            }},
-            {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
-            { "$project": { 'fromItems': 0 }}
-        ])
+    try:
+        if request.method == 'GET':
+            contained_count = mongo.db.userThreats.count_documents({"status":"contained"})
+            total_count = mongo.db.userThreats.count_documents({})
+            rating = 'S'
+            if total_count != 0:
+                threatContainmentRatio = float(contained_count) / float(total_count)
+                if threatContainmentRatio >= 0.8:
+                    rating = 'S'
+                elif threatContainmentRatio >= 0.7:
+                    rating = 'A'
+                elif threatContainmentRatio >= 0.6:
+                    rating = 'B'
+                elif threatContainmentRatio >= 0.4:
+                    rating = 'C'
+                elif threatContainmentRatio >= 0.3:
+                    rating = 'D'
+                elif threatContainmentRatio >= 0.2:
+                    rating = 'E'
+                else:
+                    rating = 'F'
 
-        contained = mongo.db.containedThreats.aggregate([
-            {'$lookup': {
-                'from': "employees",
-                'localField': "user_id",
-                'foreignField': "_id",
-                'as': "fromItems"
-            }},
-            {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
-            { "$project": { 'fromItems': 0 }}
-        ])
-        numCT = len(list(contained))
-        numLT = len(list(active))
-        numTT = numLT + numCT
-        rating = 'S'
-        if numTT != 0:
-            threatContainmentRatio = float(numCT) / float(numTT)
-            if threatContainmentRatio >= 0.8:
-                rating = 'S'
-            elif threatContainmentRatio >= 0.7:
-                rating = 'A'
-            elif threatContainmentRatio >= 0.6:
-                rating = 'B'
-            elif threatContainmentRatio >= 0.4:
-                rating = 'C'
-            elif threatContainmentRatio >= 0.3:
-                rating = 'D'
-            elif threatContainmentRatio >= 0.2:
-                rating = 'E'
-            else:
-                rating = 'F'
-
-        return json_util.dumps(rating) , 200
-    return "Could not get security rating", 400
+            return json_util.dumps(rating), 200
+        return "Could not get security rating", 400
+    except:
+        return "There was an Error", 400

@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TotalInsiderThreats() {
     const classes = useStyles();
-    const [totalInsiderThreats, setTotalInsiderThreats] = useState(1923);
+    const [totalInsiderThreats, setTotalInsiderThreats] = useState(0);
     const [threatData, setThreatData] = useState([
         {
             "id": "Contained",
@@ -34,8 +34,13 @@ export default function TotalInsiderThreats() {
             "label": "Live",
             "value": 1,
             "color": "hsl(152, 70%, 50%)"
-        }
-
+        },
+        {
+            "id": "False",
+            "label": "False",
+            "value": 90,
+            "color": "hsl(152, 70%, 50%)"
+        },
     ]);
     const [shadow, setShadow] = useState(0);
 
@@ -63,20 +68,6 @@ export default function TotalInsiderThreats() {
             }
         }
     };
-    /*
-    {
-                    "id": "Contained",
-                    "label": "Contained",
-                    "value": newValue + 20,
-                    "color": "hsl(21, 70%, 50%)"
-                },
-                {
-                    "id": "Live",
-                    "label": "Live",
-                    "value": newValue + 4,
-                    "color": "hsl(152, 70%, 50%)"
-                }
-    */
 
     useEffect(() => {
         Promise.all([
@@ -93,6 +84,13 @@ export default function TotalInsiderThreats() {
                     "content-type": "application/json",
                     "Authorization": getAuthTokenHeaderValue(),
                 })
+            }),
+            fetch('/api/numFalseThreats', {
+                method: 'GET',
+                headers: new Headers({
+                    "content-type": "application/json",
+                    "Authorization": getAuthTokenHeaderValue(),
+                })
             })
         ]).then(function (responses) {
             // Get a JSON object from each of the responses
@@ -100,7 +98,7 @@ export default function TotalInsiderThreats() {
                 return response.json();
             }));
         }).then(function (data) {
-            setTotalInsiderThreats(data[0] + data[1]);
+            setTotalInsiderThreats(data[0] + data[1] + data[2]);
             setThreatData([{
                 "id": "Contained",
                 "label": "Contained",
@@ -111,6 +109,12 @@ export default function TotalInsiderThreats() {
                 "id": "Live",
                 "label": "Live",
                 "value": data[1],
+                "color": "hsl(152, 70%, 50%)"
+            },
+            {
+                "id": "False",
+                "label": "False",
+                "value": data[2],
                 "color": "hsl(152, 70%, 50%)"
             }])
         }).catch(function (error) {

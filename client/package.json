@@ -17,6 +17,7 @@
     "react-circular-progressbar": "^2.0.3",
     "react-dom": "^16.14.0",
     "react-grid-layout": "^1.1.1",
+    "react-infinite-scroll-component": "^5.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "react-vertical-timeline-component": "^3.3.1",
