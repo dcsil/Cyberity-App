@@ -26,9 +26,6 @@ export default function PriorityInsiderThreat() {
     //const [highThreats, SetHighThreats] = useState("F");
     //const [lowThreats, setLowThreats] = useState("F");
 
-    
-
-
     return (
         <Paper varient="elevation" className={classes.card}>
             <Paper variant="outlined" className={classes.paper}>

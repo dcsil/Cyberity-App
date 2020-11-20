@@ -30,7 +30,7 @@ export default function Dashboard() {
         {xs:12,key: "InsiderThreatCalender",  widget: <InsiderThreatCalender/>},
         {xs:3,key: "TotalInsiderThreats",  widget: <TotalInsiderThreats/>},
         {xs:3,key: "TruePositives",  widget: <TruePositives/>},
-        {xs:3,key: "PriorityInsiderThreat",  widget: <PriorityInsiderThreat/>},
+        {xs:6,key: "PriorityInsiderThreat",  widget: <PriorityInsiderThreat/>},
     ].map((widget) => 
         <Grid key={widget.key} item xs={widget.xs}>{widget.widget}</Grid>
     );

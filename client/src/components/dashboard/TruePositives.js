@@ -10,11 +10,20 @@ const useStyles = makeStyles((theme) => ({
     card: {
       padding: theme.spacing(2),
       textAlign: 'center',
-      userSelect: 'none',
       flexGrow: 1,
       height: '100%',
       width: '100%'
     },
+    progressBarHolder: {
+      height: '100%',
+      width: '73%',
+      padding: theme.spacing(2),
+      textAlign: 'center',
+      flexGrow: 1,
+      alignContent: 'center',
+      alignItems: 'center',
+      margin: "auto",
+    }
 }));
 
 
@@ -42,7 +51,7 @@ export default function TruePositives() {
             <Typography component="h1" variant="h5">
                 True Positives
             </Typography>
-            <Paper variant="outlined" style={{padding:"5%"}}>
+            <div className={classes.progressBarHolder}>
                 <CircularProgressbar 
                 value={truePositiveRate} 
                 text={`${truePositiveRate}%`}
@@ -54,7 +63,8 @@ export default function TruePositives() {
                     textColor: 'white',
                     backgroundColor: '#3e98c7',
                 })}/>
-            </Paper>
+            </div>
+            
         </Paper>
     );
 }
