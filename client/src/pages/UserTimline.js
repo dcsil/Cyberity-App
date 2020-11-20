@@ -1,18 +1,17 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { VerticalTimeline } from 'react-vertical-timeline-component';
 import UserTimelineElement from '../components/UserTimelineElement'
 import 'react-vertical-timeline-component/style.min.css';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { Container } from '@material-ui/core';
-import {getAuthTokenHeaderValue} from "../util/auth"
+import {Button, Container } from '@material-ui/core';
+import { getAuthTokenHeaderValue } from "../util/auth"
 
 export default function UserTimeline() {
     const [userTimelineElements, setUserTimelineElements] = useState([])
-
     useEffect(() => {
         // TODO: SORT THEM BY 
-        fetch('/api/getAllThreats', {
+        fetch('/api/getAllThreats/' + 50, {
             method: 'GET',
             headers: new Headers({
                 "content-type": "application/json",
@@ -31,14 +30,9 @@ export default function UserTimeline() {
 
     return (
         <Container>
-            <Card variant="outlined">
-                <CardContent>
-                    <VerticalTimeline >
-                        {userTimelineElements}
-                    </VerticalTimeline>
-                </CardContent>
-            </Card>
+            <VerticalTimeline >
+                {userTimelineElements}
+            </VerticalTimeline>
         </Container>
-
     );
 }

@@ -37,7 +37,7 @@ def userThreat(id=None):
 
 
 @bp.route("/api/getAllThreats", methods=["GET"])
-@bp.route("/api/getAllThreats/<num>", methods=["GET"])
+@bp.route("/api/getAllThreats/<int:num>", methods=["GET"])
 @jwt_required
 def getAllThreats(num=None):
     """
@@ -57,22 +57,32 @@ def getAllThreats(num=None):
         ...
     ]
     """
-    try: 
-        threats = list(mongo.db.userThreats.aggregate([
-            {'$lookup': {
-                'from': "employees",
-                'localField': "user_id",
-                'foreignField': "_id",
-                'as': "fromItems"
-            }},
-            {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
-            {'$project': { 'fromItems': 0 }},
-            {'$sort': {'detectionDate': -1}}
-        ]))
-
+    try:
         if num:
-            threats = threats[-num:]
-
+            threats = list(mongo.db.userThreats.aggregate([
+                {'$lookup': {
+                    'from': "employees",
+                    'localField': "user_id",
+                    'foreignField': "_id",
+                    'as': "fromItems"
+                }},
+                {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
+                {'$project': { 'fromItems': 0 }},
+                {'$sort': {'detectionDate': -1}},
+                { "$limit" : num}
+            ]))
+        else:
+            threats = list(mongo.db.userThreats.aggregate([
+                {'$lookup': {
+                    'from': "employees",
+                    'localField': "user_id",
+                    'foreignField': "_id",
+                    'as': "fromItems"
+                }},
+                {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
+                {'$project': { 'fromItems': 0 }},
+                {'$sort': {'detectionDate': -1}},
+            ]))
         return Response(json_util.dumps(threats), mimetype='application/json'), 200
 
     except:

@@ -21,8 +21,8 @@ export default function UserTimelineElement(props) {
     return (
         <VerticalTimelineElement
             className="vertical-timeline-element--work"
-            contentStyle={{ background: 'rgb(46,46,51)', color: '#fff' }}
-            contentArrowStyle={{ borderRight: '12px solid  rgb(46,46,51)' }}
+            contentStyle={{ background: 'rgb(66,66,66)', color: '#fff' }}
+            contentArrowStyle={{ borderRight: '12px solid  rgb(66,66,66)' }}
             date={props.date ? props.date : null}
             iconStyle={{ background: 'rgb(179,0,119)', color: '#fff'}}
             icon={<ErrorOutlineIcon fontSize='large' />}
