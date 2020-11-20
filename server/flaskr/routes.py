@@ -19,16 +19,13 @@ else:
 @bp.route("/api/userThreat/<id>", methods=["PATCH"])
 @jwt_required
 def userThreat(id=None):
-    print(request.json)
     try:
         req = request.get_json()
-        print(req)
 
         updated = mongo.db.userThreats.update(
             { "_id" : ObjectId(id)},
             { "$set": req }
         )
-        print(updated)
 
         if updated['ok']:
             return "Updated user threat status", 200

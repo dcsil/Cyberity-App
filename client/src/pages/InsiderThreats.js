@@ -26,7 +26,6 @@ function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const classes = useStyles();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -77,7 +76,7 @@ function Row(props) {
             onClose={handleClose}>
             <MenuItem disabled={row.status==='contained'}onClick={updateThreatStatus(row._id, "contained")}>Set as Contained</MenuItem>
             <MenuItem disabled={row.status==='false'} onClick={updateThreatStatus(row._id, "false")}>Set as False Alert</MenuItem>
-            <MenuItem disabled={row.status==='active'} onClick={updateThreatStatus(row._id, "false")}>Set as Active</MenuItem>
+            <MenuItem disabled={row.status==='active'} onClick={updateThreatStatus(row._id, "active")}>Set as Active</MenuItem>
           </Menu>
         </TableCell>
       </TableRow>
