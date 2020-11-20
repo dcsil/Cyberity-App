@@ -9,6 +9,12 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import {getAuthTokenHeaderValue} from '../util/auth'
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -16,25 +22,91 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function createData(name, role, email, status, date, phone) {
-    return { name, role, email, status, date, phone };
+function Row(props) {
+  const { row } = props;
+  const [open, setOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+    setOpen(!open);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    setOpen(!open);
+  };
+
+  const updateThreatStatus = (id, status) => (event) => {
+    handleClose()
+    row.status = status
+    
+    // fetch - update this threats status
+    fetch('/api/userThreat/' + id.$oid, {
+      method: 'PATCH',
+      headers: new Headers({
+          "content-type": "application/json",
+          "Authorization": getAuthTokenHeaderValue(),
+      }),
+      body: JSON.stringify({
+        "status": status
+      })
+    })
+    
   }
-  
-  const rows = [
-    createData('Mark Abdullah', "Software Dev", "mark@company.com", "Contained", "10/27/2020", "123-456-7890"),
-    createData('Rob Moss', "Software Dev", "rob@company.com", "Threat Detected", "10/28/2020", "123-456-7890"),
-    createData('Vinay Komaravolu', "Software Dev", "vinay@company.com", "Contained", "11/1/2020", "123-456-7890"),
-    createData('Dipanker Bagga', "Financial Lead", "dipanker@company.com", "Contained", "10/30/2020", "123-456-7890"),
-    createData('Mina Gobrail', "Physician ", "mina@company.com", "Threat Detected", "10/13/2020", "123-456-7890"),
-    createData('Cora', "Data Analyst", "cora@company.com", "Contained", "10/14/2020", "123-456-7890")
-  ];
+
+  return (
+    <React.Fragment>
+      <TableRow key={row._id}>
+        <TableCell component="th" scope="row">
+            {row.name}
+        </TableCell>
+        <TableCell>{row.role}</TableCell>
+        <TableCell>{row.email}</TableCell>
+        <TableCell>{row.status}</TableCell>
+        <TableCell>{row.detectionDate}</TableCell>
+        <TableCell>{row.phone}</TableCell>
+        <TableCell>
+          <IconButton size="small" onClick={handleClick}>
+            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </IconButton>
+          <Menu
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}>
+            <MenuItem disabled={row.status==='contained'}onClick={updateThreatStatus(row._id, "contained")}>Set as Contained</MenuItem>
+            <MenuItem disabled={row.status==='false'} onClick={updateThreatStatus(row._id, "false")}>Set as False Alert</MenuItem>
+            <MenuItem disabled={row.status==='active'} onClick={updateThreatStatus(row._id, "active")}>Set as Active</MenuItem>
+          </Menu>
+        </TableCell>
+      </TableRow>
+    </React.Fragment>
+  )
+
+}
 
 function InsiderThreats() {
   const classes = useStyles();
+  const [rows, setRows] = React.useState([]);
   const [order, setOrder] = React.useState("asc")
-  const [orderBy, setOrderBy] = React.useState("date")
+  const [orderBy, setOrderBy] = React.useState("dateDetected")
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  React.useEffect(() => {
+    fetch('/api/getAllThreats', {
+        method: 'GET',
+        headers: new Headers({
+            "content-type": "application/json",
+            "Authorization": getAuthTokenHeaderValue(),
+        })
+    })
+    .then(response => response.json())
+    .then(data => setRows(data))
+    .catch(err => {
+        console.log(err)
+    })
+  }, []);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -93,10 +165,10 @@ function InsiderThreats() {
                 </TableCell>
                 <TableCell>
                     <TableSortLabel
-                        active={orderBy === "date"}
-                        direction={orderBy === "date" ? order : "asc"}
-                        onClick={sortHandler("date")}>
-                        Date
+                        active={orderBy === "detectionDate"}
+                        direction={orderBy === "detectionDate" ? order : "asc"}
+                        onClick={sortHandler("detectionDate")}>
+                        Detection Date
                     </TableSortLabel>
                 </TableCell>
                 <TableCell>Phone Number</TableCell>
@@ -106,16 +178,7 @@ function InsiderThreats() {
             {rows.sort(getComparator(order, orderBy))
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row) => (
-                <TableRow key={row.name}>
-                <TableCell component="th" scope="row">
-                    {row.name}
-                </TableCell>
-                <TableCell>{row.role}</TableCell>
-                <TableCell>{row.email}</TableCell>
-                <TableCell>{row.status}</TableCell>
-                <TableCell>{row.date}</TableCell>
-                <TableCell>{row.phone}</TableCell>
-                </TableRow>
+              <Row key={row._id} row={row} />
             ))}
             </TableBody>
         </Table>

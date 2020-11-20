@@ -4,9 +4,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { ResponsivePie } from '@nivo/pie'
 import { Link } from 'react-router-dom';
+import {getAuthTokenHeaderValue} from "../../util/auth"
 
 const useStyles = makeStyles((theme) => ({
-
     card: {
         padding: theme.spacing(2),
         textAlign: 'center',
@@ -63,16 +63,8 @@ export default function TotalInsiderThreats() {
             }
         }
     };
-
-    useEffect(() => {
-        // Initial Fetch of data
-        // Fetch data every few seconds
-        const interval = setInterval(() => {
-            setTotalInsiderThreats(totalInsiderThreats => totalInsiderThreats + 2);
-            let newValue = threatData[1]["value"] + 2;
-            console.log(newValue);
-            setThreatData([
-                {
+    /*
+    {
                     "id": "Contained",
                     "label": "Contained",
                     "value": newValue + 20,
@@ -84,13 +76,48 @@ export default function TotalInsiderThreats() {
                     "value": newValue + 4,
                     "color": "hsl(152, 70%, 50%)"
                 }
-        
-            ]);
-        }, 1000);
-        return () => {
-            clearInterval(interval)
-        }
-    });
+    */
+
+    useEffect(() => {
+        Promise.all([
+            fetch('/api/numContainedThreats', {
+                method: 'GET',
+                headers: new Headers({
+                    "content-type": "application/json",
+                    "Authorization": getAuthTokenHeaderValue(),
+                })
+            }),
+            fetch('/api/numActiveThreats', {
+                method: 'GET',
+                headers: new Headers({
+                    "content-type": "application/json",
+                    "Authorization": getAuthTokenHeaderValue(),
+                })
+            })
+        ]).then(function (responses) {
+            // Get a JSON object from each of the responses
+            return Promise.all(responses.map(function (response) {
+                return response.json();
+            }));
+        }).then(function (data) {
+            setTotalInsiderThreats(data[0] + data[1]);
+            setThreatData([{
+                "id": "Contained",
+                "label": "Contained",
+                "value": data[0],
+                "color": "hsl(21, 70%, 50%)"
+            },
+            {
+                "id": "Live",
+                "label": "Live",
+                "value": data[1],
+                "color": "hsl(152, 70%, 50%)"
+            }])
+        }).catch(function (error) {
+            // if there's an error, log it
+            console.log(error);
+        });
+    }, []);
 
     return (
         <Link to="/app/insiderthreats" className={classes.link}>

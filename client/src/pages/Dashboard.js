@@ -24,15 +24,15 @@ export default function Dashboard() {
     const classes = useStyles();
     // Place all widgets here
     const widgets = [
-        {xs:'4', widget: <ContainedInsiderThreats/>},
-        {xs:'4', widget: <LiveInsiderThreats/>},
-        {xs:'4', widget: <SecurityRating/>},
-        {xs:'12', widget: <InsiderThreatCalender/>},
-        {xs:'3', widget: <TotalInsiderThreats/>},
-        {xs:'3', widget: <TruePositives/>},
-        {xs:'3', widget: <PriorityInsiderThreat/>},
+        {xs:4,key: "ContainedInsiderThreats", widget: <ContainedInsiderThreats/>},
+        {xs:4,key: "LiveInsiderThreats",  widget: <LiveInsiderThreats/>},
+        {xs:4,key: "SecurityRating",  widget: <SecurityRating/>},
+        {xs:12,key: "InsiderThreatCalender",  widget: <InsiderThreatCalender/>},
+        {xs:3,key: "TotalInsiderThreats",  widget: <TotalInsiderThreats/>},
+        {xs:3,key: "TruePositives",  widget: <TruePositives/>},
+        {xs:3,key: "PriorityInsiderThreat",  widget: <PriorityInsiderThreat/>},
     ].map((widget) => 
-        <Grid item xs={widget.xs}>{widget.widget}</Grid>
+        <Grid key={widget.key} item xs={widget.xs}>{widget.widget}</Grid>
     );
   
     return (

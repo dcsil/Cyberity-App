@@ -3,6 +3,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import {Link} from 'react-router-dom';
+import {getAuthTokenHeaderValue} from "../../util/auth"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,7 +26,7 @@ export default function ContainedInsiderThreats() {
     const [containedInsiderThreats, setContainedInsiderThreats] = useState(1899);
     const [shadow, setShadow] = useState(0);
 
-    useEffect(() => {
+    /*useEffect(() => {
         // Initial Fetch of data
         // Fetch data every few seconds
         const interval = setInterval(() => {
@@ -34,7 +35,22 @@ export default function ContainedInsiderThreats() {
         return () => {
             clearInterval(interval)
         }
-    },[]);
+    },[]);*/
+
+    useEffect(() => {
+        fetch('/api/numContainedThreats', {
+            method: 'GET',
+            headers: new Headers({
+                "content-type": "application/json",
+                "Authorization": getAuthTokenHeaderValue(),
+            })
+        })
+        .then(response => response.json())
+        .then(data => setContainedInsiderThreats(data))
+        .catch(err => {
+            console.log(err)
+        })
+      },[]);
 
     return (
         <Link to="/app/insiderthreats" className={classes.link}>
