@@ -38,18 +38,36 @@ function Row(props) {
     setOpen(!open);
   };
 
+  const updateThreatStatus = (id, status) => (event) => {
+    handleClose()
+    row.status = status
+    // fetch - update this threats status
+    fetch('/api/userThreat/' + id.$oid, {
+      method: 'PATCH',
+      headers: new Headers({
+          "content-type": "application/json",
+          "Authorization": getAuthTokenHeaderValue(),
+      }),
+      body: JSON.stringify({
+        "status": status
+      })
+    })
+    
+  }
+
+
   let dropdown;
-  if (row.status == "active") {
+  if (row.status === "active") {
     dropdown = <TableCell>
-      <IconButton onClick={handleClick}>
+      <IconButton size="small" onClick={handleClick}>
         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
       </IconButton>
       <Menu
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}>
-        <MenuItem>Set to Contained</MenuItem>
-        <MenuItem>Set to False Alert</MenuItem>
+        <MenuItem onClick={updateThreatStatus(row._id, "contained")}>Set as Contained</MenuItem>
+        <MenuItem onClick={updateThreatStatus(row._id, "false")}>Set as False Alert</MenuItem>
       </Menu>
     </TableCell>
   }

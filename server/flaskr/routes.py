@@ -5,6 +5,7 @@ from flaskr.db import mongo
 from werkzeug.security import check_password_hash, generate_password_hash
 import os
 from bson import json_util
+from bson.objectid import ObjectId
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 
@@ -13,6 +14,29 @@ if environment == "production":
     bp = Blueprint("routes", __name__, template_folder='../../client/build')
 else:
     bp = Blueprint("routes", __name__)
+
+
+@bp.route("/api/userThreat/<id>", methods=["PATCH"])
+@jwt_required
+def userThreat(id=None):
+    print(request.json)
+    try:
+        req = request.get_json()
+        print(req)
+
+        updated = mongo.db.userThreats.update(
+            { "_id" : ObjectId(id)},
+            { "$set": req }
+        )
+        print(updated)
+
+        if updated['ok']:
+            return "Updated user threat status", 200
+        else:
+            return "No user status updated", 404
+    except:
+        return "Error", 500
+
 
 @bp.route("/api/getAllThreats", methods=["GET"])
 @bp.route("/api/getAllThreats/<num>", methods=["GET"])
