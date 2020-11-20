@@ -56,23 +56,6 @@ function Row(props) {
     
   }
 
-
-  let dropdown;
-  if (row.status === "active") {
-    dropdown = <TableCell>
-      <IconButton size="small" onClick={handleClick}>
-        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-      </IconButton>
-      <Menu
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}>
-        <MenuItem onClick={updateThreatStatus(row._id, "contained")}>Set as Contained</MenuItem>
-        <MenuItem onClick={updateThreatStatus(row._id, "false")}>Set as False Alert</MenuItem>
-      </Menu>
-    </TableCell>
-  }
-
   return (
     <React.Fragment>
       <TableRow key={row._id}>
@@ -84,7 +67,19 @@ function Row(props) {
         <TableCell>{row.status}</TableCell>
         <TableCell>{row.detectionDate}</TableCell>
         <TableCell>{row.phone}</TableCell>
-        {dropdown}
+        <TableCell>
+          <IconButton size="small" onClick={handleClick}>
+            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </IconButton>
+          <Menu
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}>
+            <MenuItem disabled={row.status==='contained'}onClick={updateThreatStatus(row._id, "contained")}>Set as Contained</MenuItem>
+            <MenuItem disabled={row.status==='false'} onClick={updateThreatStatus(row._id, "false")}>Set as False Alert</MenuItem>
+            <MenuItem disabled={row.status==='active'} onClick={updateThreatStatus(row._id, "false")}>Set as Active</MenuItem>
+          </Menu>
+        </TableCell>
       </TableRow>
     </React.Fragment>
   )
