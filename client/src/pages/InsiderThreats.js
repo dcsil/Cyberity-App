@@ -41,6 +41,7 @@ function Row(props) {
   const updateThreatStatus = (id, status) => (event) => {
     handleClose()
     row.status = status
+    
     // fetch - update this threats status
     fetch('/api/userThreat/' + id.$oid, {
       method: 'PATCH',
