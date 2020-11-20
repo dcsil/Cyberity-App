@@ -102,6 +102,14 @@ def getEmployees(searchTerm=""):
     ]
     """
     try:
+<<<<<<< HEAD
+=======
+        searchTerm = ""
+        print(request.json)
+        if request.json and 'searchTerm' in request.json:
+            searchTerm = request.json['searchTerm']
+
+>>>>>>> f75910de9cb6cbd0a6b9b4e152c1494125f5c3f1
         employees = list(mongo.db.employees.find({'name': {'$regex': searchTerm, '$options': 'i'}}))
         return Response(json_util.dumps(employees), mimetype='application/json'), 200
     

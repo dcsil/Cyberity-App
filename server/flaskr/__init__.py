@@ -3,6 +3,7 @@ from flask import Flask, send_from_directory
 from flask_pymongo import PyMongo
 from flaskr import routes, db
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from datetime import timedelta
 #from flask_cors import CORS
 
 def create_app(test_config=None):
@@ -23,6 +24,7 @@ def create_app(test_config=None):
         app.config.from_mapping(test_config)
     app.config['SECRET_KEY'] = '11152020bOBrOSsScYbEriTY'
     app.config["JWT_SECRET_KEY"] = "BAfASFBasf9bblkjnGYAGIfa@&b332"
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=1)
     JWTManager(app)
     # Initalize MongoDB
     mongo_uri = os.getenv("MONGO_URI", None)
