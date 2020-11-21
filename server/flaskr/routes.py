@@ -140,7 +140,7 @@ def register():
     except:
         return "There was an Error", 400
     
-@bp.route('/api/refresh', methods=['POST'])
+@bp.route('/api/refreshtoken/', methods=['POST'])
 @jwt_refresh_token_required
 def refresh():
     try:

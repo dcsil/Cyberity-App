@@ -18,7 +18,6 @@ import TimelineIcon from '@material-ui/icons/Timeline';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {
     Switch,
-    Route,
     Link,
     useHistory
 } from "react-router-dom";
@@ -159,19 +158,19 @@ export default function Navbar() {
                 </div>
                 <Divider />
                 <List>
-                    <ListItem button component={Link} to="/app/dashboard">
+                    <ListItem button onClick={() => {history.push("/app/dashboard")}}>
                         <ListItemIcon><DashboardIcon></DashboardIcon></ListItemIcon>
                         <ListItemText primary="Dashboard" />
                     </ListItem>
-                    <ListItem button component={Link} to="/app/insiderthreats">
+                    <ListItem button onClick={() => {history.push("/app/insiderthreats")}} >
                         <ListItemIcon><ErrorIcon></ErrorIcon></ListItemIcon>
                         <ListItemText primary="Insider Threats" />
                     </ListItem>
-                    <ListItem button component={Link} to="/app/users">
+                    <ListItem button onClick={() => {history.push("/app/users")}}>
                         <ListItemIcon><GroupIcon></GroupIcon></ListItemIcon>
                         <ListItemText primary="Users" />
                     </ListItem>
-                    <ListItem button component={Link} to="/app/usertimeline">
+                    <ListItem button onClick={() => {history.push("/app/usertimeline")}}>
                         <ListItemIcon><TimelineIcon></TimelineIcon></ListItemIcon>
                         <ListItemText primary="User Timeline" />
                     </ListItem>
@@ -189,11 +188,11 @@ export default function Navbar() {
             >
                 <div className={classes.drawerHeader} />
                 <Switch >
-                    <PrivateRoute exact path="/app/dashboard" component={Dashboard} />
-                    <Route exact path="/app/usertimeline" children={<UserTimeline></UserTimeline>} />
-                    <Route exact path="/app/users" children={<Users></Users>} />
-                    <Route exact path="/app/insiderthreats" children={<InsiderThreats></InsiderThreats>} />
-                    <Route exact path="/app/usereventtimeline/:user" children={<UserEventTimelineElement></UserEventTimelineElement>} />
+                    <PrivateRoute exact={true} path="/app/dashboard" component={Dashboard} />
+                    <PrivateRoute exact={true} path="/app/usertimeline" component={UserTimeline} />
+                    <PrivateRoute exact={true} path="/app/users" component={Users} />
+                    <PrivateRoute exact={true} path="/app/insiderthreats" component={InsiderThreats} />
+                    <PrivateRoute exact={true} path="/app/usereventtimeline" component={UserEventTimelineElement} />
                 </Switch>
             </main>
         </div>
