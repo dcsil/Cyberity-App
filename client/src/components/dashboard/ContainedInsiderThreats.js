@@ -54,7 +54,7 @@ export default function ContainedInsiderThreats() {
 
     return (
         <Link to="/app/insiderthreats" className={classes.link}>
-        <Paper varient="elevation" onMouseOut={() => setShadow(0)} onMouseOver={() => setShadow(24)} elevation={shadow} className={classes.card}>
+        <Paper style={shadow === 0 ? {} : {backgroundColor: "rgba(255, 255, 255, 0.1)"}} varient="elevation" onMouseOut={() => setShadow(0)} onMouseOver={() => setShadow(24)} elevation={shadow} className={classes.card}>
             <Typography component="h1" variant="h5">
                 Contained Threats
             </Typography>

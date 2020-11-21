@@ -6,7 +6,7 @@ import ContainedInsiderThreats from '../components/dashboard/ContainedInsiderThr
 import LiveInsiderThreats from '../components/dashboard/LiveInsiderThreats.js';
 import SecurityRating from '../components/dashboard/SecurityRating.js';
 import TruePositives from '../components/dashboard/TruePositives.js';
-import PriorityInsiderThreat from '../components/dashboard/PriorityInsiderThreat.js';
+import RecentInsiderThreat from '../components/dashboard/RecentInsiderThreat.js';
 import InsiderThreatCalender from '../components/dashboard/InsiderThreatCalender.js';
 
 const useStyles = makeStyles((theme) => ({
@@ -30,7 +30,7 @@ export default function Dashboard() {
         {xs:12,key: "InsiderThreatCalender",  widget: <InsiderThreatCalender/>},
         {xs:3,key: "TotalInsiderThreats",  widget: <TotalInsiderThreats/>},
         {xs:3,key: "TruePositives",  widget: <TruePositives/>},
-        {xs:6,key: "PriorityInsiderThreat",  widget: <PriorityInsiderThreat/>},
+        {xs:6,key: "RecentInsiderThreat",  widget: <RecentInsiderThreat/>},
     ].map((widget) => 
         <Grid key={widget.key} item xs={widget.xs}>{widget.widget}</Grid>
     );

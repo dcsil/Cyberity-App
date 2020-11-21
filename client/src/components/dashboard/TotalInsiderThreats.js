@@ -12,6 +12,8 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
         userSelect: 'none',
         flexGrow: 1,
+        height: "100%",
+        width: "100%"
     },
     link: {
         textDecoration: 'none'
@@ -125,7 +127,7 @@ export default function TotalInsiderThreats() {
 
     return (
         <Link to="/app/insiderthreats" className={classes.link}>
-            <Paper varient="elevation" onMouseOut={() => setShadow(0)} onMouseOver={() => setShadow(24)} elevation={shadow} className={classes.card}>
+            <Paper style={shadow === 0 ? {} : {backgroundColor: "rgba(255, 255, 255, 0.1)"}} varient="elevation" onMouseOut={() => setShadow(0)} onMouseOver={() => setShadow(24)} elevation={shadow} className={classes.card}>
                 <Typography component="h1" variant="h5">
                     Total Insider Threats
             </Typography>
