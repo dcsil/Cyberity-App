@@ -8,7 +8,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { getAuthTokenHeaderValue } from "../../util/auth"
 import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
@@ -30,8 +29,8 @@ const useStyles = makeStyles((theme) => ({
     },
     table: {
         minWidth: 650,
-      },
-    tableCell:{
+    },
+    tableCell: {
         backgroundColor: "#913973",
     }
 }));
@@ -52,12 +51,11 @@ export default function RecentInsiderThreat() {
             method: 'GET',
             headers: new Headers({
                 "content-type": "application/json",
-                "Authorization": getAuthTokenHeaderValue(),
             })
         })
             .then(response => response.json())
             .then(data => {
-                const elements = data.map((userdata) => createData(userdata["name"],userdata["role"],userdata["status"], userdata["detectionDate"]))
+                const elements = data.map((userdata) => createData(userdata["name"], userdata["role"], userdata["status"], userdata["detectionDate"]))
                 setRecentThreatElements(elements)
             })
             .catch(err => {
@@ -67,9 +65,9 @@ export default function RecentInsiderThreat() {
 
     return (
         <Link to="/app/insiderthreats" className={classes.link}>
-            <Paper style={shadow === 0 ? {} : {backgroundColor: "rgba(255, 255, 255, 0.1)"}} varient="elevation" onMouseOut={() => setShadow(0)} onMouseOver={() => setShadow(24)} elevation={shadow} className={classes.card}>
+            <Paper style={shadow === 0 ? {} : { backgroundColor: "rgba(255, 255, 255, 0.1)" }} varient="elevation" onMouseOut={() => setShadow(0)} onMouseOver={() => setShadow(24)} elevation={shadow} className={classes.card}>
                 <Typography component="h1" variant="h5">
-                Recent Threats
+                    Recent Threats
                 </Typography>
                 <TableContainer component={Paper}>
                     <Table className={classes.table} aria-label="simple table">

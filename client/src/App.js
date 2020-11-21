@@ -29,7 +29,7 @@ function App() {
                     <Route exact path="/signin" component={SignIn} />
                     <Route exact path="/signup" component={SignUp} />
                     <Route exact path="/">
-                        <Redirect to="/signin"/>
+                        <Redirect to="/signin" />
                     </Route>
                     <Route path="/app" component={Nav} />
                 </Switch>

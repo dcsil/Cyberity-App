@@ -7,19 +7,19 @@ import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
 import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-      flexGrow: 1,
-      width: '100%',/* Magic here */
+        flexGrow: 1,
+        width: '100%',/* Magic here */
     },
-  }));
+}));
 
-const statusIcon = (status) =>{
-    switch(status) {
+const statusIcon = (status) => {
+    switch (status) {
         case "active":
             return <ErrorOutlineIcon fontSize='large' />
         case "contained":
@@ -28,25 +28,25 @@ const statusIcon = (status) =>{
             return <CancelOutlinedIcon fontSize='large' />
         default:
             return <HelpOutlineOutlinedIcon fontSize='large' />
-      }
+    }
 }
 
-const statusIconColor = (status) =>{
-    switch(status) {
+const statusIconColor = (status) => {
+    switch (status) {
         case "active":
-            return { background: 'rgb(179,0,119)', color: '#fff'}
+            return { background: 'rgb(179,0,119)', color: '#fff' }
         case "contained":
-            return { background: 'rgb(126, 201, 105)', color: '#fff'}
+            return { background: 'rgb(126, 201, 105)', color: '#fff' }
         case "false":
-            return { background: 'rgb(204, 104, 106)', color: '#fff'}
+            return { background: 'rgb(204, 104, 106)', color: '#fff' }
         default:
-            return { background: 'rgb(179,0,119)', color: '#fff'}
-      }
+            return { background: 'rgb(179,0,119)', color: '#fff' }
+    }
 }
 
 export default function UserTimelineElement(props) {
     const classes = useStyles();
-    
+
     return (
         <VerticalTimelineElement
             className="vertical-timeline-element--work"
@@ -68,7 +68,7 @@ export default function UserTimelineElement(props) {
                     </Grid>
                 </Grid>
             </div>
-            
+
         </VerticalTimelineElement>
     );
 }

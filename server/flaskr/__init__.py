@@ -2,9 +2,13 @@ import os
 from flask import Flask, send_from_directory
 from flask_pymongo import PyMongo
 from flaskr import routes, db
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    jwt_refresh_token_required, create_refresh_token,
+    get_jwt_identity, set_access_cookies,
+    set_refresh_cookies, unset_jwt_cookies
+)
 from datetime import timedelta
-#from flask_cors import CORS
 
 def create_app(test_config=None):
     # create and configure the app    
@@ -25,6 +29,12 @@ def create_app(test_config=None):
     app.config['SECRET_KEY'] = '11152020bOBrOSsScYbEriTY'
     app.config["JWT_SECRET_KEY"] = "BAfASFBasf9bblkjnGYAGIfa@&b332"
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=1)
+    app.config['JWT_TOKEN_LOCATION'] = ['cookies']
+    app.config['JWT_COOKIE_SECURE'] = False
+    app.config['JWT_ACCESS_COOKIE_PATH'] = '/api/'
+    app.config['JWT_REFRESH_COOKIE_PATH'] = '/token/refresh'
+    app.config['JWT_COOKIE_CSRF_PROTECT'] = True
+
     JWTManager(app)
     # Initalize MongoDB
     mongo_uri = os.getenv("MONGO_URI", None)

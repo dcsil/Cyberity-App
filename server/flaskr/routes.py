@@ -7,15 +7,18 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import os
 from bson import json_util
 from bson.objectid import ObjectId
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-
+from flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    jwt_refresh_token_required, create_refresh_token,
+    get_jwt_identity, set_access_cookies,
+    set_refresh_cookies, unset_jwt_cookies
+)
 
 environment = os.environ['FLASK_ENV']
 if environment == "production":
     bp = Blueprint("routes", __name__, template_folder='../../client/build')
 else:
     bp = Blueprint("routes", __name__)
-
 
 @bp.route("/api/userThreat/<id>", methods=["PATCH"])
 @jwt_required
@@ -34,7 +37,6 @@ def userThreat(id=None):
             return "No user status updated", 404
     except:
         return "Error", 500
-
 
 @bp.route("/api/getAllThreats", methods=["GET"])
 @bp.route("/api/getAllThreats/<int:num>", methods=["GET"])
@@ -88,7 +90,6 @@ def getAllThreats(num=None):
     except:
         return "There was an Error", 400
 
-
 @bp.route("/api/getEmployees", methods=["GET"])
 @bp.route("/api/getEmployees/<search>", methods=["GET"])
 @jwt_required
@@ -116,7 +117,6 @@ def getEmployees(searchTerm=""):
     except:
         return "There was an Error", 400
 
-
 @bp.route('/api/register', methods=('GET', 'POST'))
 def register():
     try: 
@@ -139,6 +139,31 @@ def register():
     
     except:
         return "There was an Error", 400
+    
+@bp.route('/api/refresh', methods=['POST'])
+@jwt_refresh_token_required
+def refresh():
+    try:
+         # Create the new access token
+        current_user = get_jwt_identity()
+        access_token = create_access_token(identity=current_user)
+
+        # Set the access JWT and CSRF double submit protection cookies
+        # in this response
+        resp = jsonify({})
+        set_access_cookies(resp, access_token)
+        return resp, 200
+    except :
+        return "Could not login,", 400
+
+@bp.route('/api/logout', methods=['POST'])
+def logout():
+    try:
+        resp = jsonify({})
+        unset_jwt_cookies(resp)
+        return resp, 200
+    except:
+        return "There was an Error", 400
 
 @bp.route('/api/login', methods=('GET', 'POST'))
 def login():
@@ -153,8 +178,12 @@ def login():
             user = mongo.db.users.find_one({'username': username})
             if user:
                 if check_password_hash(user['password'], password):
-                    token = create_access_token(identity=str(user['_id']))
-                    return jsonify({"token": token}), 200
+                    access_token = create_access_token(identity=str(user['_id']))
+                    refresh_token = create_refresh_token(identity=str(user['_id']))
+                    resp = jsonify({})
+                    set_access_cookies(resp, access_token)
+                    set_refresh_cookies(resp, refresh_token)
+                    return resp, 200
             return "Incorrect credentials", 403
         return "Could not login,", 400
 
@@ -223,7 +252,6 @@ def numTotalThreats():
         return "Could not get number of total threats", 400
     except:
         return "There was an Error", 400
-
 
 @bp.route('/api/securityRating', methods=["GET"])
 @jwt_required

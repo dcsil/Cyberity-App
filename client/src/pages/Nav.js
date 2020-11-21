@@ -20,15 +20,15 @@ import {
     Switch,
     Route,
     Link,
+    useHistory
 } from "react-router-dom";
-
 import PrivateRoute from '../components/PrivateRoute'
-
 import Dashboard from './Dashboard';
 import InsiderThreats from './InsiderThreats';
 import Users from './Users';
 import UserTimeline from './UserTimline';
 import UserEventTimelineElement from './UserEventTimeline';
+
 
 const drawerWidth = 240;
 
@@ -84,6 +84,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Navbar() {
     const classes = useStyles();
+    const history = useHistory();
     const [open, setOpen] = React.useState(false);
 
     const handleDrawerOpen = () => {
@@ -93,6 +94,25 @@ export default function Navbar() {
     const handleDrawerClose = () => {
         setOpen(false);
     };
+
+    function logout() {
+        fetch('/api/logout', {
+            method: "POST",
+            headers: new Headers({
+                "content-type": "application/json"
+            })
+        }).then(response => {
+            if (response.status === 400) {
+                alert("Could not log out");
+            } else if (response.status === 200) {
+                response.json().then(data => {
+                    history.push("/signin")
+                });
+            }
+        }).catch((error) => {
+            console.log(error)
+        });
+    }
 
     return (
         <div className={classes.root}>
@@ -156,7 +176,7 @@ export default function Navbar() {
                         <ListItemText primary="User Timeline" />
                     </ListItem>
                     <Divider />
-                    <ListItem onClick={() => {localStorage.removeItem('token');}} button component={Link} to="/signin">
+                    <ListItem onClick={logout}>
                         <ListItemIcon><ExitToAppIcon></ExitToAppIcon></ListItemIcon>
                         <ListItemText primary="Sign out" />
                     </ListItem>
@@ -173,7 +193,7 @@ export default function Navbar() {
                     <Route exact path="/app/usertimeline" children={<UserTimeline></UserTimeline>} />
                     <Route exact path="/app/users" children={<Users></Users>} />
                     <Route exact path="/app/insiderthreats" children={<InsiderThreats></InsiderThreats>} />
-                    <Route exact path="/app/usereventtimeline/:user" children={<UserEventTimelineElement></UserEventTimelineElement>}/>
+                    <Route exact path="/app/usereventtimeline/:user" children={<UserEventTimelineElement></UserEventTimelineElement>} />
                 </Switch>
             </main>
         </div>

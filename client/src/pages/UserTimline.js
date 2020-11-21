@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { VerticalTimeline } from 'react-vertical-timeline-component';
 import UserTimelineElement from '../components/UserTimelineElement'
 import 'react-vertical-timeline-component/style.min.css';
-import {Container } from '@material-ui/core';
-import { getAuthTokenHeaderValue } from "../util/auth"
+import { Container } from '@material-ui/core';
 
 export default function UserTimeline() {
     const [userTimelineElements, setUserTimelineElements] = useState([])
@@ -13,7 +12,6 @@ export default function UserTimeline() {
             method: 'GET',
             headers: new Headers({
                 "content-type": "application/json",
-                "Authorization": getAuthTokenHeaderValue(),
             })
         })
             .then(response => response.json())

@@ -4,7 +4,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { ResponsivePie } from '@nivo/pie'
 import { Link } from 'react-router-dom';
-import {getAuthTokenHeaderValue} from "../../util/auth"
 
 const useStyles = makeStyles((theme) => ({
     card: {
@@ -77,21 +76,18 @@ export default function TotalInsiderThreats() {
                 method: 'GET',
                 headers: new Headers({
                     "content-type": "application/json",
-                    "Authorization": getAuthTokenHeaderValue(),
                 })
             }),
             fetch('/api/numActiveThreats', {
                 method: 'GET',
                 headers: new Headers({
                     "content-type": "application/json",
-                    "Authorization": getAuthTokenHeaderValue(),
                 })
             }),
             fetch('/api/numFalseThreats', {
                 method: 'GET',
                 headers: new Headers({
                     "content-type": "application/json",
-                    "Authorization": getAuthTokenHeaderValue(),
                 })
             })
         ]).then(function (responses) {
@@ -127,7 +123,7 @@ export default function TotalInsiderThreats() {
 
     return (
         <Link to="/app/insiderthreats" className={classes.link}>
-            <Paper style={shadow === 0 ? {} : {backgroundColor: "rgba(255, 255, 255, 0.1)"}} varient="elevation" onMouseOut={() => setShadow(0)} onMouseOver={() => setShadow(24)} elevation={shadow} className={classes.card}>
+            <Paper style={shadow === 0 ? {} : { backgroundColor: "rgba(255, 255, 255, 0.1)" }} varient="elevation" onMouseOut={() => setShadow(0)} onMouseOver={() => setShadow(24)} elevation={shadow} className={classes.card}>
                 <Typography component="h1" variant="h5">
                     Total Insider Threats
             </Typography>

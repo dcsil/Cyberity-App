@@ -1,4 +1,4 @@
-async function checkAuth(){
+async function checkAuth() {
     /*const token = localStorage.getItem("token");
     fetch("/api/checkauth", {
         method: "GET",
@@ -20,7 +20,7 @@ async function checkAuth(){
     return localStorage.getItem("token");
 }*/
 
-function getAuthTokenHeaderValue(){
+function getAuthTokenHeaderValue() {
     return "Bearer " + localStorage.getItem("token");
 }
 
@@ -44,4 +44,4 @@ function getAuthTokenHeaderValue(){
     });
 }*/
 
-export {checkAuth, getAuthTokenHeaderValue};
+export { checkAuth, getAuthTokenHeaderValue };
