@@ -21,34 +21,26 @@ const useStyles = makeStyles((theme) => ({
 const statusIcon = (status) =>{
     switch(status) {
         case "active":
-          return <ErrorOutlineIcon fontSize='large' />
-          break
+            return <ErrorOutlineIcon fontSize='large' />
         case "contained":
-          return <CheckCircleOutlineIcon fontSize='large' />
-          break;
+            return <CheckCircleOutlineIcon fontSize='large' />
         case "false":
             return <CancelOutlinedIcon fontSize='large' />
-            break;
         default:
             return <HelpOutlineOutlinedIcon fontSize='large' />
-            break;
       }
 }
 
 const statusIconColor = (status) =>{
     switch(status) {
         case "active":
-          return { background: 'rgb(179,0,119)', color: '#fff'}
-          break
+            return { background: 'rgb(179,0,119)', color: '#fff'}
         case "contained":
-          return { background: 'rgb(126, 201, 105)', color: '#fff'}
-          break;
+            return { background: 'rgb(126, 201, 105)', color: '#fff'}
         case "false":
             return { background: 'rgb(204, 104, 106)', color: '#fff'}
-            break;
         default:
             return { background: 'rgb(179,0,119)', color: '#fff'}
-            break;
       }
 }
 
