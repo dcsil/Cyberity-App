@@ -112,6 +112,8 @@ function Users() {
     const [orderBy, setOrderBy] = React.useState("date")
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    // eslint-disable-next-line
+    const [searchTerm, setSearchTerm] = React.useState("");
 
     React.useEffect(() => {
         fetch('/api/getEmployees', {
@@ -158,6 +160,22 @@ function Users() {
         setOrderBy(property);
     };
 
+    const handleSearchTermChange = (event) => {
+        setSearchTerm(event.target.value);
+        const searchRequest = '/api/getEmployees'+ (event.target.value !== "" ? "/" + event.target.value : "");
+        fetch(searchRequest, {
+            method: 'GET',
+            headers: new Headers({
+                "content-type": "application/json",
+            })
+        })
+            .then(response => response.json())
+            .then(data => setRows(data))
+            .catch(err => {
+                console.log(err)
+            });
+    }
+
     return (
         <React.Fragment>
             <form>
@@ -168,12 +186,8 @@ function Users() {
                     label="Search Users"
                     size="small"
                     autoFocus
+                    onChange={handleSearchTermChange}
                 />
-                <Button
-                    variant="contained"
-                    color="primary">
-                    Search
-        </Button>
             </form>
 
             <Paper className={classes.paper}>
