@@ -9,6 +9,7 @@ import SignIn from './pages/SignIn.js';
 import SignUp from './pages/SignUp.js';
 import Nav from './pages/Nav'
 import { makeStyles } from '@material-ui/core/styles';
+import PrivateRoute from './components/PrivateRoute'
 
 const useStyles = makeStyles((theme) => ({
     content: {
@@ -29,9 +30,9 @@ function App() {
                     <Route exact path="/signin" component={SignIn} />
                     <Route exact path="/signup" component={SignUp} />
                     <Route exact path="/">
-                        <Redirect to="/signin"/>
+                        <Redirect to="/signin" />
                     </Route>
-                    <Route path="/app" component={Nav} />
+                    <PrivateRoute path="/app" component={Nav} />
                 </Switch>
             </div>
         </Router>

@@ -6,3 +6,6 @@ pytest-cov
 Flask-PyMongo
 scikit-learn
 pandas
+flask-login
+Werkzeug
+flask-jwt-extended
