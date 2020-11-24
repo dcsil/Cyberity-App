@@ -90,6 +90,120 @@ def getAllThreats(num=None):
     except:
         return "There was an Error", 400
 
+@bp.route('/api/getFalseThreats', methods=["GET"])
+@bp.route("/api/getFalseThreats/<int:num>", methods=["GET"])
+@jwt_required
+def getFalseThreats(num=None):
+    try:
+        if request.method == 'GET':
+            if num:
+                false = list(mongo.db.userThreats.aggregate([
+                    {'$lookup': {
+                        'from': "employees",
+                        'localField': "user_id",
+                        'foreignField': "_id",
+                        'as': "fromItems"
+                    }},
+                    {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
+                    {'$project': { 'fromItems': 0 }},
+                    {'$sort': {'detectionDate': -1}},
+                    { "$limit" : num},
+                    {'$match' : {'status': "false"}}
+                ]))
+            else:
+                false = list(mongo.db.userThreats.aggregate([
+                    {'$lookup': {
+                        'from': "employees",
+                        'localField': "user_id",
+                        'foreignField': "_id",
+                        'as': "fromItems"
+                    }},
+                    {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
+                    {'$project': { 'fromItems': 0 }},
+                    {'$sort': {'detectionDate': -1}},
+                    {'$match' : {'status': "false"}}
+                ]))
+            return Response(json_util.dumps(false), mimetype='application/json'), 200
+        return "Could not get false threats", 400
+    except:
+        return "There was an Error", 400
+
+@bp.route('/api/getActiveThreats', methods=["GET"])
+@bp.route("/api/getActiveThreats/<int:num>", methods=["GET"])
+@jwt_required
+def getActiveThreats(num=None):
+    try:
+        if request.method == 'GET':
+            if num:
+                active = list(mongo.db.userThreats.aggregate([
+                    {'$lookup': {
+                        'from': "employees",
+                        'localField': "user_id",
+                        'foreignField': "_id",
+                        'as': "fromItems"
+                    }},
+                    {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
+                    {'$project': { 'fromItems': 0 }},
+                    {'$sort': {'detectionDate': -1}},
+                    { "$limit" : num},
+                    {'$match' : {'status': "active"}}
+                ]))
+            else:
+                active = list(mongo.db.userThreats.aggregate([
+                    {'$lookup': {
+                        'from': "employees",
+                        'localField': "user_id",
+                        'foreignField': "_id",
+                        'as': "fromItems"
+                    }},
+                    {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
+                    {'$project': { 'fromItems': 0 }},
+                    {'$sort': {'detectionDate': -1}},
+                    {'$match' : {'status': "active"}}
+                ]))
+            return Response(json_util.dumps(active), mimetype='application/json'), 200
+        return "Could not get active threats", 400
+    except:
+        return "There was an Error", 400
+
+@bp.route('/api/getContainedThreats', methods=["GET"])
+@bp.route("/api/getContainedThreats/<int:num>", methods=["GET"])
+@jwt_required
+def getContainedThreats(num=None):
+    try:
+        if request.method == 'GET':
+            if num:
+                contained = list(mongo.db.userThreats.aggregate([
+                    {'$lookup': {
+                        'from': "employees",
+                        'localField': "user_id",
+                        'foreignField': "_id",
+                        'as': "fromItems"
+                    }},
+                    {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
+                    {'$project': { 'fromItems': 0 }},
+                    {'$sort': {'detectionDate': -1}},
+                    { "$limit" : num},
+                    {'$match' : {'status': "contained"}}
+                ]))
+            else:
+                contained = list(mongo.db.userThreats.aggregate([
+                    {'$lookup': {
+                        'from': "employees",
+                        'localField': "user_id",
+                        'foreignField': "_id",
+                        'as': "fromItems"
+                    }},
+                    {'$replaceRoot': { 'newRoot': {'$mergeObjects': [ { '$arrayElemAt': [ "$fromItems", 0 ] }, "$$ROOT" ] } }},
+                    {'$project': { 'fromItems': 0 }},
+                    {'$sort': {'detectionDate': -1}},
+                    {'$match' : {'status': "contained"}}
+                ]))
+            return Response(json_util.dumps(contained), mimetype='application/json'), 200
+        return "Could not get contained threats", 400
+    except:
+        return "There was an Error", 400
+
 @bp.route("/api/getEmployees", methods=["GET"])
 @bp.route("/api/getEmployees/<search>", methods=["GET"])
 @jwt_required

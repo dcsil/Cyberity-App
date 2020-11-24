@@ -31,8 +31,8 @@ export default function TotalInsiderThreats() {
             "color": "hsl(21, 70%, 50%)"
         },
         {
-            "id": "Live",
-            "label": "Live",
+            "id": "Active",
+            "label": "Active",
             "value": 1,
             "color": "hsl(152, 70%, 50%)"
         },
@@ -104,8 +104,8 @@ export default function TotalInsiderThreats() {
                 "color": "hsl(21, 70%, 50%)"
             },
             {
-                "id": "Live",
-                "label": "Live",
+                "id": "Active",
+                "label": "Active",
                 "value": data[1],
                 "color": "hsl(152, 70%, 50%)"
             },
@@ -122,7 +122,7 @@ export default function TotalInsiderThreats() {
     }, []);
 
     return (
-        <Link to="/app/insiderthreats" className={classes.link}>
+        <Link to={{pathname:"/app/insiderthreats", state:{status: "All"}}} className={classes.link}>
             <Paper style={shadow === 0 ? {} : { backgroundColor: "rgba(255, 255, 255, 0.1)" }} varient="elevation" onMouseOut={() => setShadow(0)} onMouseOver={() => setShadow(24)} elevation={shadow} className={classes.card}>
                 <Typography component="h1" variant="h5">
                     Total Insider Threats
@@ -181,7 +181,7 @@ export default function TotalInsiderThreats() {
                             },
                             {
                                 match: {
-                                    id: 'Live'
+                                    id: 'Active'
                                 },
                                 id: 'dots'
                             },

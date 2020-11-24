@@ -46,6 +46,35 @@ def test_getAllThreats(client):
     data = response.get_json()
     assert len(data) == 0 or all(k in data[0] for k in attributes_to_check)
 
+def test_getContainedThreats(client):
+    response = client.post("/api/login", json={
+        "username": "test_admin", "password": "test_admin"
+    })
+    response = client.get("/api/getContainedThreats")
+    assert response.status_code == 200
+    attributes_to_check = ('_id', 'detectionDate', 'status')
+    data = response.get_json()
+    assert len(data) == 0 or all(k in data[0] for k in attributes_to_check)
+
+def test_getActiveThreats(client):
+    response = client.post("/api/login", json={
+        "username": "test_admin", "password": "test_admin"
+    })
+    response = client.get("/api/getActiveThreats")
+    assert response.status_code == 200
+    attributes_to_check = ('_id', 'detectionDate', 'status')
+    data = response.get_json()
+    assert len(data) == 0 or all(k in data[0] for k in attributes_to_check)
+
+def test_getFalseThreats(client):
+    response = client.post("/api/login", json={
+        "username": "test_admin", "password": "test_admin"
+    })
+    response = client.get("/api/getFalseThreats")
+    assert response.status_code == 200
+    attributes_to_check = ('_id', 'detectionDate', 'status')
+    data = response.get_json()
+    assert len(data) == 0 or all(k in data[0] for k in attributes_to_check)
 
 def test_login(client):
     test_register(client)

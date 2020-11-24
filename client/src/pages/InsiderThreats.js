@@ -14,10 +14,25 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
     table: {
         minWidth: 650,
+    },
+    label: {
+        position: "relative",
+        top: "8px",
+        right: "10px"
+    },
+    filter: {
+        backgroundColor: "#913973",
+        display: "flex",
+        justifyContent: "flex-end"
     }
 }));
 
@@ -80,19 +95,19 @@ function Row(props) {
             </TableRow>
         </React.Fragment>
     )
-
 }
 
-function InsiderThreats() {
+function InsiderThreats(props) {
     const classes = useStyles();
     const [rows, setRows] = React.useState([]);
     const [order, setOrder] = React.useState("asc")
     const [orderBy, setOrderBy] = React.useState("dateDetected")
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [selectedFilter, setSelectedFilter] = React.useState(props.location ? (props.location.state ? (props.location.state.status ? props.location.state.status : "All") : "All" ) : 'All');
 
     React.useEffect(() => {
-        fetch('/api/getAllThreats', {
+        fetch('/api/get'+selectedFilter+'Threats', {
             method: 'GET',
             headers: new Headers({
                 "content-type": "application/json",
@@ -103,7 +118,23 @@ function InsiderThreats() {
             .catch(err => {
                 console.log(err)
             })
-    }, []);
+    }, [selectedFilter]);
+
+    const handleFilterChange = (event) => {
+        setSelectedFilter(event.target.value);
+        const filterRequest = '/api/get'+ event.target.value + 'Threats'
+        fetch(filterRequest, {
+            method: 'GET',
+            headers: new Headers({
+                "content-type": "application/json",
+            })
+        })
+            .then(response => response.json())
+            .then(data => setRows(data))
+            .catch(err => {
+                console.log(err)
+            });
+    };
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -138,6 +169,44 @@ function InsiderThreats() {
 
     return (
         <Paper className={classes.paper}>
+            <Paper className={classes.filter}>
+            <Typography className={classes.label} display="inline">
+                Filter Threats: 
+            </Typography>
+            <FormControl component="fieldset">
+                <RadioGroup row aria-label="position" name="position" defaultValue="top">
+                    <FormControlLabel
+                        checked={selectedFilter === 'All'}
+                        onChange={handleFilterChange}
+                        value="All"
+                        control={<Radio color="default" />}
+                        label="All"
+                    />
+                    <FormControlLabel
+                        checked={selectedFilter === 'Contained'}
+                        onChange={handleFilterChange}
+                        value="Contained"
+                        control={<Radio color="default" />}
+                        label="Contained"
+                    />
+                    <FormControlLabel
+                        checked={selectedFilter === 'Active'}
+                        onChange={handleFilterChange}
+                        value="Active"
+                        control={<Radio color="default" />}
+                        label="Active"
+                    />
+                    <FormControlLabel 
+                        checked={selectedFilter === 'False'}
+                        onChange={handleFilterChange}
+                        value="False" 
+                        control={<Radio color="default" />}
+                        label="False Postive" 
+                    />
+                </RadioGroup>
+            </FormControl>
+            </Paper>
+            
             <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead>
