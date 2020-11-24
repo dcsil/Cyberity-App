@@ -5,12 +5,7 @@ from datetime import datetime
 
 def getCurrentTimeStamp():
     return str(datetime.now())
-
-def test_hello(client):
-    response = client.get("/hello")
-    assert response.data == b"Hello, World!"
-
-
+    
 def test_register(client):
     response = client.post("/api/register", json={
         "username": "test_admin", "password": "test_admin", "name": "admin", "email": "admin@gmail.com"
