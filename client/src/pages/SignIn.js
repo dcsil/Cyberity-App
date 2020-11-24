@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -7,46 +7,49 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import CyberityLogo from '../assets/logo_cyberity_text.png';
-import Paper from '@material-ui/core/Paper';
-import {Link} from 'react-router-dom';
+import CyberityLogo from '../assets/logo_cyberity_text_3.png';
+import { Link } from 'react-router-dom';
 import Container from '@material-ui/core/Container';
 import { useHistory } from "react-router-dom";
 
-  
-  const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => ({
     root: {
         height: '100vh',
-      },
-      image: {
-        backgroundImage: `url(${CyberityLogo})` ,
+    },
+    image: {
+        backgroundImage: `url(${CyberityLogo})`,
         backgroundRepeat: 'no-repeat',
         backgroundColor:
-          theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
+            theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
         backgroundSize: 'cover',
         width: "70%",
         backgroundPosition: 'center',
-      },
-      paper: {
+    },
+    paper: {
         margin: theme.spacing(8, 4),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-      },
-      avatar: {
+        marginTop: "30%"
+    },
+    avatar: {
         margin: theme.spacing(1),
         backgroundColor: theme.palette.secondary.main,
-      },
-      form: {
+    },
+    form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(1),
-      },
-      submit: {
+    },
+    submit: {
         margin: theme.spacing(3, 0, 2),
-      },
-  }));
-  
-  export default function SignIn() {
+    },
+    auth: {
+        backgroundColor:
+            theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
+    }
+}));
+
+export default function SignIn() {
     const classes = useStyles();
     const history = useHistory();
     const [userSignInInfo, setUserSignInInfo] = useState({
@@ -62,11 +65,10 @@ import { useHistory } from "react-router-dom";
                 "content-type": "application/json"
             })
         }).then(response => {
-            if(response.status === 403){
+            if (response.status === 403) {
                 alert("Incorrect Credentials");
-            }else if(response.status === 200){
+            } else if (response.status === 200) {
                 response.json().then(data => {
-                    localStorage.setItem("token", data.token);
                     history.push("/app/dashboard")
                 });
             }
@@ -74,82 +76,81 @@ import { useHistory } from "react-router-dom";
             console.log(error)
         });
     }
-  
-    return (
-      <Grid container component="main" className={classes.root}>
-        <CssBaseline />
-        <Grid item xs={false} sm={4} md={7} className={classes.image} />
-        <Grid item xs={12} sm={8} md={5}  component={Paper} elevation={6} square>
-        <Container component="main">
-        <CssBaseline />
 
-          <div className={classes.paper}>
-          <Typography component="h1" variant="h4">
-              Sign In
+    return (
+        <Grid container component="main" className={classes.root}>
+            <CssBaseline />
+            <Grid item xs={false} sm={4} md={7} className={classes.image} />
+            <Grid item xs={12} sm={8} md={5} className={classes.auth} elevation={6} square="true">
+                <Container component="main">
+                    <CssBaseline />
+                    <div className={classes.paper}>
+                        <Typography component="h1" variant="h4">
+                            Sign In
             </Typography>
-            <form className={classes.form} noValidate>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="username"
-                label="Username"
-                name="username"
-                autoComplete="username"
-                autoFocus
-                onChange={event => {
-                    const { value } = event.target;
-                    setUserSignInInfo(Object.assign(userSignInInfo, {"username": value}));
-                }}
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                onChange={event => {
-                    const { value } = event.target;
-                    setUserSignInInfo(Object.assign(userSignInInfo, {"password": value}));
-                }}
-              />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-              <Button
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={login}
-              >
-                Sign In
-              </Button>
-              <Grid container>
-                <Grid item xs>
-                    </Grid>
-                        <Grid item>
+                        <form className={classes.form} noValidate>
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="username"
+                                label="Username"
+                                name="username"
+                                autoComplete="username"
+                                autoFocus
+                                onChange={event => {
+                                    const { value } = event.target;
+                                    setUserSignInInfo(Object.assign(userSignInInfo, { "username": value }));
+                                }}
+                            />
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Password"
+                                type="password"
+                                id="password"
+                                autoComplete="current-password"
+                                onChange={event => {
+                                    const { value } = event.target;
+                                    setUserSignInInfo(Object.assign(userSignInInfo, { "password": value }));
+                                }}
+                            />
+                            <FormControlLabel
+                                control={<Checkbox value="remember" color="primary" />}
+                                label="Remember me"
+                            />
                             <Button
-                            type="submit"
-                            fullWidth
-                            className={classes.submit}
-                            component={Link}
-                            to="/signup"
-                        >
-                        Don't have an account? Sign up!
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                                onClick={login}
+                            >
+                                Sign In
+              </Button>
+                            <Grid container>
+                                <Grid item xs>
+                                </Grid>
+                                <Grid item>
+                                    <Button
+                                        type="submit"
+                                        fullWidth
+                                        className={classes.submit}
+                                        component={Link}
+                                        to="/signup"
+                                    >
+                                        Don't have an account? Sign up!
                         </Button>
-                    </Grid>
-              </Grid>
-            </form>
-          </div>
-          </Container>
+                                </Grid>
+                            </Grid>
+                        </form>
+                    </div>
+                </Container>
+            </Grid>
         </Grid>
-      </Grid>
     );
-  }
+}

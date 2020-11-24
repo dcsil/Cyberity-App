@@ -54,7 +54,7 @@ class UserTimeline extends React.Component {
             <Container>
                 <Card variant="outlined">
                     <CardContent>
-                        <h3 className="vertical-timeline-element-title">{user ? user : "Anonymous"}</h3>
+                        <h3 className="vertical-timeline-element-title">User: {user ? user : "Anonymous"}</h3>
                         <div>
                             <Grid container spacing={3}>
                                 <Grid item>
@@ -64,25 +64,21 @@ class UserTimeline extends React.Component {
                         </div>
                     </CardContent>
                 </Card>
-                <Card variant="outlined">
-                    <CardContent>
-                        <VerticalTimeline >
-                            <VerticalTimelineElement
-                                className="vertical-timeline-element--work"
-                                contentStyle={{ background: 'rgb(255,46,51)', color: '#fff' }}
-                                contentArrowStyle={{ borderRight: '12px solid  rgb(46,46,51)' }}
-                                date={threatDetectedTime}
-                                iconStyle={{ background: 'rgb(179,0,119)', color: '#fff' }}
-                                icon={<ErrorOutlineIcon fontSize='large' />}
-                                position="left"
-                            >
-                                <h3 className="vertical-timeline-element-title">{user ? user : "Anonymous"}</h3>
-                                <h4 className="vertical-timeline-element-subtitle"> Threat detected</h4>
-                            </VerticalTimelineElement>
-                            {elements}
-                        </VerticalTimeline>
-                    </CardContent>
-                </Card>
+                <VerticalTimeline >
+                    <VerticalTimelineElement
+                        className="vertical-timeline-element--work"
+                        contentStyle={{ background: 'rgb(255,46,51)', color: '#fff' }}
+                        contentArrowStyle={{ borderRight: '12px solid  rgb(46,46,51)' }}
+                        date={threatDetectedTime}
+                        iconStyle={{ background: 'rgb(179,0,119)', color: '#fff' }}
+                        icon={<ErrorOutlineIcon fontSize='large' />}
+                        position="left"
+                    >
+                        <h3 className="vertical-timeline-element-title">{user ? user : "Anonymous"}</h3>
+                        <h4 className="vertical-timeline-element-subtitle"> Threat detected</h4>
+                    </VerticalTimelineElement>
+                    {elements}
+                </VerticalTimeline>
             </Container>
         );
     }

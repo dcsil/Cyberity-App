@@ -1,19 +1,18 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import {getAuthTokenHeaderValue} from "../../util/auth"
 
 const useStyles = makeStyles((theme) => ({
     card: {
-      padding: theme.spacing(2),
-      textAlign: 'center',
-      userSelect: 'none',
-      flexGrow: 1,
+        padding: theme.spacing(2),
+        textAlign: 'center',
+        userSelect: 'none',
+        flexGrow: 1,
     },
 }));
 
-export default function SecurityRating() { 
+export default function SecurityRating() {
     const classes = useStyles();
     const [securityRating, setSecurityRating] = useState("F");
 
@@ -22,15 +21,14 @@ export default function SecurityRating() {
             method: 'GET',
             headers: new Headers({
                 "content-type": "application/json",
-                "Authorization": getAuthTokenHeaderValue(),
             })
         })
-        .then(response => response.json())
-        .then(data => setSecurityRating(data))
-        .catch(err => {
-            console.log(err)
-        })
-      },[]);
+            .then(response => response.json())
+            .then(data => setSecurityRating(data))
+            .catch(err => {
+                console.log(err)
+            })
+    }, []);
 
     return (
         <Paper varient="elevation" className={classes.card}>

@@ -4,7 +4,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { ResponsivePie } from '@nivo/pie'
 import { Link } from 'react-router-dom';
-import {getAuthTokenHeaderValue} from "../../util/auth"
 
 const useStyles = makeStyles((theme) => ({
     card: {
@@ -12,6 +11,8 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
         userSelect: 'none',
         flexGrow: 1,
+        height: "100%",
+        width: "100%"
     },
     link: {
         textDecoration: 'none'
@@ -21,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TotalInsiderThreats() {
     const classes = useStyles();
-    const [totalInsiderThreats, setTotalInsiderThreats] = useState(1923);
+    const [totalInsiderThreats, setTotalInsiderThreats] = useState(0);
     const [threatData, setThreatData] = useState([
         {
             "id": "Contained",
@@ -30,12 +31,17 @@ export default function TotalInsiderThreats() {
             "color": "hsl(21, 70%, 50%)"
         },
         {
-            "id": "Live",
-            "label": "Live",
+            "id": "Active",
+            "label": "Active",
             "value": 1,
             "color": "hsl(152, 70%, 50%)"
-        }
-
+        },
+        {
+            "id": "False",
+            "label": "False",
+            "value": 90,
+            "color": "hsl(152, 70%, 50%)"
+        },
     ]);
     const [shadow, setShadow] = useState(0);
 
@@ -63,20 +69,6 @@ export default function TotalInsiderThreats() {
             }
         }
     };
-    /*
-    {
-                    "id": "Contained",
-                    "label": "Contained",
-                    "value": newValue + 20,
-                    "color": "hsl(21, 70%, 50%)"
-                },
-                {
-                    "id": "Live",
-                    "label": "Live",
-                    "value": newValue + 4,
-                    "color": "hsl(152, 70%, 50%)"
-                }
-    */
 
     useEffect(() => {
         Promise.all([
@@ -84,14 +76,18 @@ export default function TotalInsiderThreats() {
                 method: 'GET',
                 headers: new Headers({
                     "content-type": "application/json",
-                    "Authorization": getAuthTokenHeaderValue(),
                 })
             }),
             fetch('/api/numActiveThreats', {
                 method: 'GET',
                 headers: new Headers({
                     "content-type": "application/json",
-                    "Authorization": getAuthTokenHeaderValue(),
+                })
+            }),
+            fetch('/api/numFalseThreats', {
+                method: 'GET',
+                headers: new Headers({
+                    "content-type": "application/json",
                 })
             })
         ]).then(function (responses) {
@@ -100,7 +96,7 @@ export default function TotalInsiderThreats() {
                 return response.json();
             }));
         }).then(function (data) {
-            setTotalInsiderThreats(data[0] + data[1]);
+            setTotalInsiderThreats(data[0] + data[1] + data[2]);
             setThreatData([{
                 "id": "Contained",
                 "label": "Contained",
@@ -108,9 +104,15 @@ export default function TotalInsiderThreats() {
                 "color": "hsl(21, 70%, 50%)"
             },
             {
-                "id": "Live",
-                "label": "Live",
+                "id": "Active",
+                "label": "Active",
                 "value": data[1],
+                "color": "hsl(152, 70%, 50%)"
+            },
+            {
+                "id": "False",
+                "label": "False",
+                "value": data[2],
                 "color": "hsl(152, 70%, 50%)"
             }])
         }).catch(function (error) {
@@ -120,8 +122,8 @@ export default function TotalInsiderThreats() {
     }, []);
 
     return (
-        <Link to="/app/insiderthreats" className={classes.link}>
-            <Paper varient="elevation" onMouseOut={() => setShadow(0)} onMouseOver={() => setShadow(24)} elevation={shadow} className={classes.card}>
+        <Link to={{pathname:"/app/insiderthreats", state:{status: "All"}}} className={classes.link}>
+            <Paper style={shadow === 0 ? {} : { backgroundColor: "rgba(255, 255, 255, 0.1)" }} varient="elevation" onMouseOut={() => setShadow(0)} onMouseOver={() => setShadow(24)} elevation={shadow} className={classes.card}>
                 <Typography component="h1" variant="h5">
                     Total Insider Threats
             </Typography>
@@ -179,7 +181,7 @@ export default function TotalInsiderThreats() {
                             },
                             {
                                 match: {
-                                    id: 'Live'
+                                    id: 'Active'
                                 },
                                 id: 'dots'
                             },

@@ -23,7 +23,7 @@ export default function UserEventTimelineElement(props) {
             contentStyle={{ background: 'rgb(46,46,51)', color: '#fff' }}
             contentArrowStyle={{ borderRight: '12px solid  rgb(46,46,51)' }}
             date={props.date ? props.date : null}
-            iconStyle={{background: "rgb(187,134,252)", color: '#fff' }}
+            iconStyle={{ background: "rgb(187,134,252)", color: '#fff' }}
             icon={<EventIcon fontSize='large' />}
             position="right"
         >

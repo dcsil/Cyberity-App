@@ -2,30 +2,59 @@ import React from 'react';
 import { VerticalTimelineElement } from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
+import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-      flexGrow: 1,
-      width: '100%',/* Magic here */
+        flexGrow: 1,
+        width: '100%',/* Magic here */
     },
-  }));
+}));
+
+const statusIcon = (status) => {
+    switch (status) {
+        case "active":
+            return <ErrorOutlineIcon fontSize='large' />
+        case "contained":
+            return <CheckCircleOutlineIcon fontSize='large' />
+        case "false":
+            return <CancelOutlinedIcon fontSize='large' />
+        default:
+            return <HelpOutlineOutlinedIcon fontSize='large' />
+    }
+}
+
+const statusIconColor = (status) => {
+    switch (status) {
+        case "active":
+            return { background: 'rgb(179,0,119)', color: '#fff' }
+        case "contained":
+            return { background: 'rgb(126, 201, 105)', color: '#fff' }
+        case "false":
+            return { background: 'rgb(204, 104, 106)', color: '#fff' }
+        default:
+            return { background: 'rgb(179,0,119)', color: '#fff' }
+    }
+}
 
 export default function UserTimelineElement(props) {
     const classes = useStyles();
-    
+
     return (
         <VerticalTimelineElement
             className="vertical-timeline-element--work"
-            contentStyle={{ background: 'rgb(46,46,51)', color: '#fff' }}
-            contentArrowStyle={{ borderRight: '12px solid  rgb(46,46,51)' }}
+            contentStyle={{ background: 'rgb(66,66,66)', color: '#fff' }}
+            contentArrowStyle={{ borderRight: '12px solid  rgb(66,66,66)' }}
             date={props.date ? props.date : null}
-            iconStyle={{ background: 'rgb(179,0,119)', color: '#fff'}}
-            icon={<ErrorOutlineIcon fontSize='large' />}
+            iconStyle={statusIconColor(props.status)}
+            icon={statusIcon(props.status)}
         >
             <h3 className="vertical-timeline-element-title">{props.user ? props.user : "Anonymous"}</h3>
             <h4 className="vertical-timeline-element-subtitle">Role: {props.role ? props.role : "Unknown"}</h4>
@@ -39,7 +68,7 @@ export default function UserTimelineElement(props) {
                     </Grid>
                 </Grid>
             </div>
-            
+
         </VerticalTimelineElement>
     );
 }
