@@ -205,9 +205,9 @@ def getContainedThreats(num=None):
         return "There was an Error", 400
 
 @bp.route("/api/getEmployees", methods=["GET"])
-@bp.route("/api/getEmployees/<search>", methods=["GET"])
+@bp.route("/api/getEmployees/<string:search>", methods=["GET"])
 @jwt_required
-def getEmployees(searchTerm=""):
+def getEmployees(search=""):
     """
     Return Format:
     [
@@ -225,7 +225,7 @@ def getEmployees(searchTerm=""):
     ]
     """
     try:
-        employees = list(mongo.db.employees.find({'name': {'$regex': searchTerm, '$options': 'i'}}))
+        employees = list(mongo.db.employees.find({'name': {'$regex': search, '$options': 'i'}}))
         return Response(json_util.dumps(employees), mimetype='application/json'), 200
     
     except:
