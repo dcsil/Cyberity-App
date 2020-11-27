@@ -8,3 +8,4 @@ pandas
 flask-login
 Werkzeug
 flask-jwt-extended
+joblib
