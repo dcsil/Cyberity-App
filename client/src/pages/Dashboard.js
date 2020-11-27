@@ -7,7 +7,7 @@ import LiveInsiderThreats from '../components/dashboard/LiveInsiderThreats.js';
 import SecurityRating from '../components/dashboard/SecurityRating.js';
 import TruePositives from '../components/dashboard/TruePositives.js';
 import RecentInsiderThreat from '../components/dashboard/RecentInsiderThreat.js';
-import InsiderThreatCalender from '../components/dashboard/InsiderThreatCalender.js';
+import InsiderThreatChart from '../components/dashboard/InsiderThreatChart.js';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,7 +27,7 @@ export default function Dashboard() {
         { xs: 4, key: "ContainedInsiderThreats", widget: <ContainedInsiderThreats /> },
         { xs: 4, key: "LiveInsiderThreats", widget: <LiveInsiderThreats /> },
         { xs: 4, key: "SecurityRating", widget: <SecurityRating /> },
-        { xs: 12, key: "InsiderThreatCalender", widget: <InsiderThreatCalender /> },
+        { xs: 12, key: "InsiderThreatChart", widget: <InsiderThreatChart /> },
         { xs: 3, key: "TotalInsiderThreats", widget: <TotalInsiderThreats /> },
         { xs: 3, key: "TruePositives", widget: <TruePositives /> },
         { xs: 6, key: "RecentInsiderThreat", widget: <RecentInsiderThreat /> },

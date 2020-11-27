@@ -58,7 +58,8 @@ export default function SignUp() {
         "email": ""
     });
 
-    function register() {
+    function register(event) {
+        event.preventDefault();
         console.log(userSignUpInfo)
         fetch('/api/register', {
             method: "POST",
@@ -92,7 +93,7 @@ export default function SignUp() {
                         <Typography component="h1" variant="h4">
                             Sign up
         </Typography>
-                        <form className={classes.form} noValidate>
+                        <form className={classes.form} noValidate onSubmit={register}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
                                     <TextField
@@ -160,24 +161,24 @@ export default function SignUp() {
                             </Grid>
                             <Button
                                 fullWidth
+                                type="submit"
                                 variant="contained"
                                 color="primary"
                                 className={classes.submit}
                                 onClick={register}
                             >
                                 Sign Up
-          </Button>
+                            </Button>
                             <Grid container justify="flex-end">
                                 <Grid item>
                                     <Button
-                                        type="submit"
                                         fullWidth
                                         className={classes.submit}
                                         component={Link}
                                         to="/signin"
                                     >
                                         Have an account? Sign In!
-                </Button>
+                                    </Button>
                                 </Grid>
                             </Grid>
                         </form>
