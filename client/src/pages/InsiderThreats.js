@@ -70,7 +70,7 @@ function Row(props) {
 
     return (
         <React.Fragment>
-            <TableRow key={row._id}>
+            <TableRow key={row._id+row.name+row.status+row.detectionDate}>
                 <TableCell component="th" scope="row">
                     {row.name}
                 </TableCell>
@@ -114,7 +114,12 @@ function InsiderThreats(props) {
             })
         })
             .then(response => response.json())
-            .then(data => setRows(data))
+            .then(data => {
+                data.forEach((item) => {
+                    item["detectionDate"] = (new Date(item["detectionDate"]["$date"])).toString()
+                })
+                setRows(data);
+            })
             .catch(err => {
                 console.log(err)
             })
@@ -130,7 +135,12 @@ function InsiderThreats(props) {
             })
         })
             .then(response => response.json())
-            .then(data => setRows(data))
+            .then(data => {
+                data.forEach((item) => {
+                    item["detectionDate"] = (new Date(item["detectionDate"]["$date"])).toString()
+                })
+                setRows(data);
+            })
             .catch(err => {
                 console.log(err)
             });
@@ -244,7 +254,7 @@ function InsiderThreats(props) {
                         {rows.sort(getComparator(order, orderBy))
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map((row) => (
-                                <Row key={row._id} row={row} />
+                                <Row key={row._id["$oid"]} row={row} />
                             ))}
                     </TableBody>
                 </Table>

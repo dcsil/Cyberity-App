@@ -72,7 +72,7 @@ def getAllThreats(num=None):
                 }},
                 {'$replaceRoot': {'newRoot': {'$mergeObjects': [
                     {'$arrayElemAt': ["$fromItems", 0]}, "$$ROOT"]}}},
-                {'$project': {'fromItems': 0}},
+                {'$project': {'fromItems': 0,}},
                 {'$sort': {'detectionDate': -1}},
                 {"$limit": num}
             ]))
@@ -86,7 +86,7 @@ def getAllThreats(num=None):
                 }},
                 {'$replaceRoot': {'newRoot': {'$mergeObjects': [
                     {'$arrayElemAt': ["$fromItems", 0]}, "$$ROOT"]}}},
-                {'$project': {'fromItems': 0}},
+                {'$project': {'fromItems': 0,}},
                 {'$sort': {'detectionDate': -1}},
             ]))
         return Response(json_util.dumps(threats), mimetype='application/json'), 200

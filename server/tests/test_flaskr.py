@@ -95,7 +95,7 @@ def test_numContainedThreats(client):
     response = client.get("/api/numContainedThreats")
     pre_num_contained_threats = int(response.data)
     mongo.db.userThreats.insert_one({
-        "detectionDate": getCurrentTimeStamp(),
+        "detectionDate": getCurrentTimeStamp() - timedelta(days=4),
         "status": "contained",
         "name": "Ross",
         "email": "Ross@gmail.com",
@@ -117,7 +117,7 @@ def test_numActiveThreatsThreats(client):
     response = client.get("/api/numActiveThreats")
     pre_num_active_threats = int(response.data)
     mongo.db.userThreats.insert_one({
-        "detectionDate": getCurrentTimeStamp(),
+        "detectionDate": getCurrentTimeStamp() - timedelta(days=14),
         "status": "active",
         "name": "Ross",
         "email": "Ross@gmail.com",
@@ -139,7 +139,7 @@ def test_numFalseThreatsThreats(client):
     response = client.get("/api/numFalseThreats")
     pre_num_false_threats = int(response.data)
     mongo.db.userThreats.insert_one({
-        "detectionDate": getCurrentTimeStamp(),
+        "detectionDate": getCurrentTimeStamp()- timedelta(days=6),
         "status": "false",
         "name": "Ross",
         "email": "Ross@gmail.com",
@@ -162,7 +162,7 @@ def test_numTotalThreats(client):
     response = client.get("/api/numTotalThreats")
     pre_num_total_threats = int(response.data)
     mongo.db.userThreats.insert_one({
-        "detectionDate": getCurrentTimeStamp(),
+        "detectionDate": getCurrentTimeStamp() - timedelta(days=10),
         "status": "contained",
         "name": "Ross",
         "email": "Ross@gmail.com",
@@ -181,10 +181,10 @@ def test_numThreatsByDate(client):
     response = client.post("/api/login", json={
         "username": "test_admin", "password": "test_admin"
     })
-    d_date = getCurrentTimeStamp() + timedelta(days=40)
+    d_date = getCurrentTimeStamp() - timedelta(days=7)
     s_date = "{}-{}-{}".format(d_date.year, str(d_date.month).zfill(2), str(d_date.day).zfill(2))
     mongo.db.userThreats.insert_one({
-        "detectionDate": getCurrentTimeStamp() + timedelta(days=40),
+        "detectionDate": getCurrentTimeStamp() - timedelta(days=7),
         "status": "contained",
         "name": "Ross",
         "email": "Ross@gmail.com",
@@ -198,7 +198,6 @@ def test_numThreatsByDate(client):
     threats_by_date = response.json
     date_exist = False
     for item in threats_by_date:
-        print(item["date"],s_date)
         if item["date"] == s_date:
             date_exist = True
             break
@@ -220,7 +219,7 @@ def test_truePositiveRate(client):
     response = client.get("/api/truePositiveRate")
     pre_truepositive_rate = float(response.data)
     mongo.db.userThreats.insert_one({
-        "detectionDate": getCurrentTimeStamp(),
+        "detectionDate": getCurrentTimeStamp() - timedelta(days=2),
         "status": "false",
         "name": "Ross",
         "email": "Ross@gmail.com",

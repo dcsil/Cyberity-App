@@ -7,7 +7,7 @@ import { assign } from "lodash";
 
 const useStyles = makeStyles((theme) => ({
     card: {
-        paddingLeft: theme.spacing(5),
+        paddingLeft: theme.spacing(4),
         textAlign: 'center',
         userSelect: 'none',
         flexGrow: 1,
@@ -16,13 +16,38 @@ const useStyles = makeStyles((theme) => ({
 
 export default function InsiderThreatChart() {
     const classes = useStyles();
-    const [zoomDomain, setZoomDomain] = useState({ x: [new Date(1990, 1, 1), new Date(2009, 1, 1)] });
+    const [zoomDomain, setZoomDomain] = useState({});
+    const [threatDataByDate, setThreatDataByDate] = useState([]);
+
+    React.useEffect(() => {
+        let d_i = new Date();
+        let d_f = new Date();
+        d_i.setDate(d_i.getDate() - 7);
+        d_f.setDate(d_f.getDate());
+        setZoomDomain({x: [d_i,d_f]});
+        fetch('/api/numThreatsByDate', {
+            method: 'GET',
+            headers: new Headers({
+                "content-type": "application/json",
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                
+                data.forEach((item) => {
+                    item["date"] = new Date(item["date"] + " 00:00");
+                })
+                setThreatDataByDate(data);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }, []);
 
     const handleZoom = (domain) => {
         setZoomDomain({ zoomDomain: domain });
     }
     
-    // Styles
     const colors = ["#252525", "#525252", "#737373", "#969696", "#bdbdbd", "#d9d9d9", "#f0f0f0"];
     
     const charcoal = "#252525";
@@ -153,7 +178,7 @@ export default function InsiderThreatChart() {
                         zoomDomain={zoomDomain}
                         onZoomDomainChange={handleZoom.bind(this)}
                         voronoiDimension="x"
-                        labels={({ datum }) => `Threats: ${datum.y} Date: ${datum.x}`}
+                        labels={({ datum }) => `Threats: ${datum.threatCount} Date: ${datum.date}`}
                         labelComponent={<VictoryTooltip flyoutStyle={{fill: "rgba(66,66,66, 0.35)"}}/>}
                     />
                 }
@@ -165,33 +190,23 @@ export default function InsiderThreatChart() {
                         data: { stroke: "#913973", strokeWidth: 3 },
                         labels: {fill: "white"}
                     }}
-                    data={[
-                        { x: new Date(1982, 1, 1), y: 125,l: "one" },
-                        { x: new Date(1987, 1, 1), y: 257 },
-                        { x: new Date(1993, 1, 1), y: 345 },
-                        { x: new Date(1997, 1, 1), y: 515 },
-                        { x: new Date(2001, 1, 1), y: 132 },
-                        { x: new Date(2005, 1, 1), y: 305 },
-                        { x: new Date(2011, 1, 1), y: 270 },
-                        { x: new Date(2015, 1, 1), y: 470 }
-                    ]}
-                    x="x"
-                    y="y"
+                    data={threatDataByDate}
+                    x="date"
+                    y="threatCount"
                 />
 
         <VictoryAxis
             label="Date"
             style={{
-                axisLabel: {fill:"#913973", padding: 30 }
+                axisLabel: {fill:"white", padding: 30 }
             }}
           />
           <VictoryAxis dependentAxis
             label="Threat Count"
             style={{
-              axisLabel: {fill:"#913973", padding: 35 }
+              axisLabel: {fill:"white", padding: 35 }
             }}
           />
-
             </VictoryChart>
         </Paper>
     );

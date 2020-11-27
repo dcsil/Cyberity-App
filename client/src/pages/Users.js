@@ -41,19 +41,6 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-// function createData(name, role, email, department, last_activity_date, phone, flagged) {
-//     return { name, role, email, department, last_activity_date, phone, flagged};
-//   }
-
-// const rows = [
-//     createData('Mark Abdullah', "Software Dev", "mark@company.com", "Operations", "10/27/2020 10:05:14", "123-456-7890", false),
-//     createData('Rob Moss', "Software Dev", "rob@company.com", "insiderManz", "10/28/2020 08:14:53", "123-456-7890", true),
-//     createData('Vinay Komaravolu', "Software Dev", "vinay@company.com", "Development", "11/1/2020 09:13:24", "123-456-7890", false),
-//     createData('Dipanker Bagga', "Financial Lead", "dipanker@company.com", "Finance", "10/30/2020 14:14:13", "123-456-7890", false),
-//     createData('Mina Gobrail', "Physician ", "mina@company.com", "Health", "10/13/2020 18:42:31", "123-456-7890", false),
-//     createData('Cora', "Data Analyst", "cora@company.com", "Security", "10/14/2020", "123-456-7890 11:12:13", false)
-// ];
-
 function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);

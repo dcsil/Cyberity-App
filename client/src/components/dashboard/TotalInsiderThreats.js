@@ -109,10 +109,9 @@ export default function TotalInsiderThreats() {
                 <Paper variant="outlined" style={{ height: '275px' }}>
                     <Doughnut
                         data={threatData}
-                        height="205%"
                         options={{
                             responsive: true,
-                            maintainAspectRatio: true,
+                            maintainAspectRatio: false,
                             legend: {
                                 display: true,
                                 position: 'bottom',
