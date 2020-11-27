@@ -2,16 +2,16 @@ from flaskr import create_app
 from flaskr.db import mongo
 from flask import json, jsonify
 from datetime import datetime
+from datetime import timedelta  
 
 def getCurrentTimeStamp():
-    return str(datetime.now())
+    return datetime.now()
     
 def test_register(client):
     response = client.post("/api/register", json={
         "username": "test_admin", "password": "test_admin", "name": "admin", "email": "admin@gmail.com"
     })
     assert response.data == b'Username Already Exists' or response.data == b"User successfully created"
-
 
 def test_login(client):
     test_register(client)
@@ -176,6 +176,33 @@ def test_numTotalThreats(client):
     post_num_total_threats = int(response.data)
     assert response.status_code == 200 and ((pre_num_total_threats + 1) == post_num_total_threats) 
 
+def test_numThreatsByDate(client):
+    test_register(client)
+    response = client.post("/api/login", json={
+        "username": "test_admin", "password": "test_admin"
+    })
+    d_date = getCurrentTimeStamp() + timedelta(days=40)
+    s_date = "{}-{}-{}".format(d_date.year, str(d_date.month).zfill(2), str(d_date.day).zfill(2))
+    mongo.db.userThreats.insert_one({
+        "detectionDate": getCurrentTimeStamp() + timedelta(days=40),
+        "status": "contained",
+        "name": "Ross",
+        "email": "Ross@gmail.com",
+        "role": "Developer",
+        "department": "Software",
+        "last_activity_date": "Today",
+        "phone": "555",
+        "flagged": True
+    })
+    response = client.get("/api/numThreatsByDate") 
+    threats_by_date = response.json
+    date_exist = False
+    for item in threats_by_date:
+        print(item["date"],s_date)
+        if item["date"] == s_date:
+            date_exist = True
+            break
+    assert response.status_code == 200 and date_exist
 
 def test_securityRating(client):
     test_register(client)
