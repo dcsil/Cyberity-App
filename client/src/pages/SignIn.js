@@ -57,7 +57,8 @@ export default function SignIn() {
         "password": "",
     });
 
-    function login() {
+    function login(event) {
+        event.preventDefault();
         fetch('/api/login', {
             method: "POST",
             body: JSON.stringify(userSignInInfo),
@@ -88,7 +89,7 @@ export default function SignIn() {
                         <Typography component="h1" variant="h4">
                             Sign In
             </Typography>
-                        <form className={classes.form} noValidate>
+                        <form className={classes.form} onSubmit={login} noValidate>
                             <TextField
                                 variant="outlined"
                                 margin="normal"
@@ -124,6 +125,7 @@ export default function SignIn() {
                                 label="Remember me"
                             />
                             <Button
+                                type="submit"
                                 fullWidth
                                 variant="contained"
                                 color="primary"
@@ -131,20 +133,19 @@ export default function SignIn() {
                                 onClick={login}
                             >
                                 Sign In
-              </Button>
+                            </Button>
                             <Grid container>
                                 <Grid item xs>
                                 </Grid>
                                 <Grid item>
                                     <Button
-                                        type="submit"
                                         fullWidth
                                         className={classes.submit}
                                         component={Link}
                                         to="/signup"
                                     >
                                         Don't have an account? Sign up!
-                        </Button>
+                                    </Button>
                                 </Grid>
                             </Grid>
                         </form>

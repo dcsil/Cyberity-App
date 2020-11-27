@@ -174,7 +174,7 @@ export default function Navbar() {
                         <ListItemText primary="User Timeline" />
                     </ListItem>
                     <Divider />
-                    <ListItem onClick={logout}>
+                    <ListItem button onClick={logout}>
                         <ListItemIcon><ExitToAppIcon></ExitToAppIcon></ListItemIcon>
                         <ListItemText primary="Sign out" />
                     </ListItem>
