@@ -33,3 +33,4 @@ jobs:
         python -m pytest tests/ --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
       env:
         FLASK_ENV: development
+        COOKIE_PROD: development
