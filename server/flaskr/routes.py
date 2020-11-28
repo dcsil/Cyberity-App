@@ -20,7 +20,6 @@ if environment == "production":
 else:
     bp = Blueprint("routes", __name__)
 
-
 @bp.route("/api/userThreat/<id>", methods=["PATCH"])
 @jwt_required
 def userThreat(id=None):
@@ -38,7 +37,6 @@ def userThreat(id=None):
             return "No user status updated", 404
     except:
         return "Error", 500
-
 
 @bp.route("/api/getAllThreats", methods=["GET"])
 @bp.route("/api/getAllThreats/<int:num>", methods=["GET"])
@@ -94,7 +92,6 @@ def getAllThreats(num=None):
     except:
         return "There was an Error", 400
 
-
 @bp.route('/api/getFalseThreats', methods=["GET"])
 @bp.route("/api/getFalseThreats/<int:num>", methods=["GET"])
 @jwt_required
@@ -134,7 +131,6 @@ def getFalseThreats(num=None):
         return "Could not get false threats", 400
     except:
         return "There was an Error", 400
-
 
 @bp.route('/api/getActiveThreats', methods=["GET"])
 @bp.route("/api/getActiveThreats/<int:num>", methods=["GET"])
@@ -176,7 +172,6 @@ def getActiveThreats(num=None):
     except:
         return "There was an Error", 400
 
-
 @bp.route('/api/getContainedThreats', methods=["GET"])
 @bp.route("/api/getContainedThreats/<int:num>", methods=["GET"])
 @jwt_required
@@ -217,7 +212,6 @@ def getContainedThreats(num=None):
     except:
         return "There was an Error", 400
 
-
 @bp.route("/api/getEmployees", methods=["GET"])
 @bp.route("/api/getEmployees/<string:search>", methods=["GET"])
 @jwt_required
@@ -246,7 +240,6 @@ def getEmployees(search=""):
     except:
         return "There was an Error", 400
 
-
 @bp.route('/api/register', methods=('GET', 'POST'))
 def register():
     try:
@@ -271,24 +264,6 @@ def register():
     except:
         return "There was an Error", 400
 
-
-@bp.route('/api/refreshtoken/', methods=['POST'])
-@jwt_refresh_token_required
-def refresh():
-    try:
-        # Create the new access token
-        current_user = get_jwt_identity()
-        access_token = create_access_token(identity=current_user)
-
-        # Set the access JWT and CSRF double submit protection cookies
-        # in this response
-        resp = jsonify({})
-        set_access_cookies(resp, access_token)
-        return resp, 200
-    except:
-        return "Could not login,", 400
-
-
 @bp.route('/api/logout', methods=['POST'])
 def logout():
     try:
@@ -297,7 +272,6 @@ def logout():
         return resp, 200
     except:
         return "There was an Error", 400
-
 
 @bp.route('/api/login', methods=('GET', 'POST'))
 def login():
@@ -314,11 +288,8 @@ def login():
                 if check_password_hash(user['password'], password):
                     access_token = create_access_token(
                         identity=str(user['_id']))
-                    refresh_token = create_refresh_token(
-                        identity=str(user['_id']))
                     resp = jsonify({})
                     set_access_cookies(resp, access_token)
-                    set_refresh_cookies(resp, refresh_token)
                     return resp, 200
             return "Incorrect credentials", 403
         return "Could not login,", 400
@@ -326,14 +297,12 @@ def login():
     except:
         return "There was an Error", 400
 
-
 @bp.route('/api/checkauth', methods=["GET"])
 @jwt_required
 def checkAuthentication():
     if request.method == 'GET':
         return "Success", 200
     return "Failure", 400
-
 
 @bp.route('/api/truePositiveRate', methods=["GET"])
 @jwt_required
@@ -348,7 +317,6 @@ def truePositiveRate():
     except:
         return "There was an Error", 400
 
-
 @bp.route('/api/numContainedThreats', methods=["GET"])
 @jwt_required
 def numContainedThreats():
@@ -360,7 +328,6 @@ def numContainedThreats():
         return "Could not get number of contained threats", 400
     except:
         return "There was an Error", 400
-
 
 @bp.route('/api/numActiveThreats', methods=["GET"])
 @jwt_required
@@ -374,7 +341,6 @@ def numActiveThreatsThreats():
     except:
         return "There was an Error", 400
 
-
 @bp.route('/api/numFalseThreats', methods=["GET"])
 @jwt_required
 def numFalseThreatsThreats():
@@ -387,7 +353,6 @@ def numFalseThreatsThreats():
     except:
         return "There was an Error", 400
 
-
 @bp.route('/api/numTotalThreats', methods=["GET"])
 @jwt_required
 def numTotalThreats():
@@ -398,7 +363,6 @@ def numTotalThreats():
         return "Could not get number of total threats", 400
     except:
         return "There was an Error", 400
-
 
 @bp.route('/api/numThreatsByDate', methods=["GET"])
 @jwt_required
@@ -425,7 +389,6 @@ def numThreatsByDate():
         return "Could not get number of total threats by date", 400
     except:
         return "There was an Error", 400
-
 
 @bp.route('/api/securityRating', methods=["GET"])
 @jwt_required
