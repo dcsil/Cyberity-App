@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -82,6 +82,21 @@ export default function SignUp() {
         })
     }
 
+    useEffect(() => {
+        fetch('/api/checkauth', {
+            method: "GET",
+            headers: new Headers({
+                "content-type": "application/json"
+            })
+        }).then(response => {
+            if (response.status === 200) {
+                history.push("/app/dashboard")
+            }
+        }).catch((error) => {
+            console.log("NOT WORKING")
+        })
+    },[history]);
+
     return (
         <Grid container component="main" className={classes.root}>
             <CssBaseline />
@@ -92,7 +107,7 @@ export default function SignUp() {
                     <div className={classes.paper}>
                         <Typography component="h1" variant="h4">
                             Sign up
-        </Typography>
+                        </Typography>
                         <form className={classes.form} noValidate onSubmit={register}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>

@@ -44,6 +44,7 @@ case $1 in
     "dev")
         export FLASK_APP=flaskr.py
         export FLASK_ENV=development
+        export COOKIE_PROD=development
         case $2 in
             "client")
                 cd client
@@ -64,6 +65,7 @@ case $1 in
     ;;
     "prod")
         export FLASK_ENV=production
+        export COOKIE_PROD=development
         sudo service mongodb start 
         cd client 
         npm run-script build

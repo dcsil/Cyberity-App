@@ -18,7 +18,7 @@ import TimelineIcon from '@material-ui/icons/Timeline';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {
     Switch,
-    useHistory
+    useHistory,
 } from "react-router-dom";
 import PrivateRoute from '../components/PrivateRoute'
 import Dashboard from './Dashboard';

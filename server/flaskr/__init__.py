@@ -30,11 +30,11 @@ def create_app(test_config=None):
     app.config["JWT_SECRET_KEY"] = "BAfASFBasf9bblkjnGYAGIfa@&b332"
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=1)
     app.config['JWT_TOKEN_LOCATION'] = ['cookies']
-    app.config['JWT_COOKIE_SECURE'] = False
+    if os.environ['COOKIE_PROD'] == "production":
+        app.config['JWT_COOKIE_SECURE'] = True
+    else:
+        app.config['JWT_COOKIE_SECURE'] = False
     app.config['JWT_ACCESS_COOKIE_PATH'] = '/api/'
-    app.config['JWT_REFRESH_COOKIE_PATH'] = '/api/refreshtoken/'
-    app.config['JWT_COOKIE_CSRF_PROTECT'] = True
-
 
     JWTManager(app)
     # Initalize MongoDB
