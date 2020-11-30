@@ -16,6 +16,7 @@ case $1 in
         sudo apt update
         sudo apt upgrade
         sudo apt-get install python3 python3-pip
+        sudo apt-get install python3-flask
         sudo snap install heroku --classic
         sudo apt-get install curl
         sudo apt-get install mongodb
@@ -54,7 +55,7 @@ case $1 in
             "server")
                 sudo service mongodb start 
                 cd server
-                flask run
+                python3 -m flask run
                 cd ..
                 sudo service mongodb stop
             ;;
@@ -81,8 +82,9 @@ case $1 in
     ;;
     "test")
         export FLASK_ENV=development
+        export COOKIE_PROD=development
         cd server
-        python3 -m pytest
+        python3 -m pytest tests/ --doctest-modules -s
         cd ../client
         npm test -- --watchAll=false
         cd ..
