@@ -7,7 +7,7 @@ function PrivateRoute(props) {
         isLoggedIn: false
     });
 
-    useEffect(() => {
+    function loadData(){
         fetch('/api/checkauth', {
             method: "GET",
             headers: new Headers({
@@ -29,8 +29,14 @@ function PrivateRoute(props) {
         }).catch((error) => {
             console.log("NOT WORKING")
         })
-    }, [props.location]);
+    }
 
+    useEffect(() => {
+        const timeInterval = 1000 * 60 * 10 // Conversion from minutes to milliseconds  
+        loadData();
+        const interval = setInterval(() => loadData(), timeInterval);
+        return () => clearInterval(interval);
+    }, [props.location]);
 
     return pageStatus.isLoading ? null :
         pageStatus.isLoggedIn ?
