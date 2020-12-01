@@ -11,14 +11,12 @@ import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Tooltip from '@material-ui/core/Tooltip';
 import ErrorIcon from '@material-ui/icons/Error';
-import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -62,7 +60,7 @@ function Row(props) {
                 <TableCell size="small">
                     {row.flagged &&
                         <Tooltip title={row.name + " has an active threat detected"}>
-                            <IconButton component={Link} to={"/app/usereventtimeline/" + row.name} >
+                            <IconButton>
                                 <ErrorIcon />
                             </IconButton>
                         </Tooltip>}
@@ -75,12 +73,6 @@ function Row(props) {
                             <Typography>Position: {row.role}</Typography>
                             <Typography>Email: {row.email}</Typography>
                             <Typography>Phone: {row.phone}</Typography>
-                            <Button variant="contained" color="primary" className={classes.button}>
-                                Profile
-                        </Button>
-                            <Button variant="contained" color="primary" className={classes.button}>
-                                Timeline
-                        </Button>
                         </Box>
                     </Collapse>
                 </TableCell>
