@@ -2,7 +2,7 @@ from flaskr import create_app
 from flaskr.db import mongo
 from flask import json, jsonify
 from datetime import datetime
-from datetime import timedelta  
+from datetime import timedelta 
 
 def getCurrentTimeStamp():
     return datetime.now()
@@ -139,7 +139,7 @@ def test_numFalseThreatsThreats(client):
     response = client.get("/api/numFalseThreats")
     pre_num_false_threats = int(response.data)
     mongo.db.userThreats.insert_one({
-        "detectionDate": getCurrentTimeStamp()- timedelta(days=6),
+        "detectionDate": getCurrentTimeStamp() - timedelta(days=6),
         "status": "false",
         "name": "Ross",
         "email": "Ross@gmail.com",

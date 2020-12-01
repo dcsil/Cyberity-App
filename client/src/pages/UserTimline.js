@@ -34,7 +34,6 @@ export default function UserTimeline() {
     const [userTimelineElements, setUserTimelineElements] = useState([])
 
     useEffect(() => {
-        // TODO: SORT THEM BY 
         fetch('/api/getAllThreats/' + 50, {
             method: 'GET',
             headers: new Headers({
