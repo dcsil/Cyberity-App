@@ -32,7 +32,7 @@ function PrivateRoute(props) {
     }
 
     useEffect(() => {
-        const timeInterval = 1000 * 60 * 60 // Conversion from minutes to milliseconds  
+        const timeInterval = 1000 * 60 * 10// Conversion from minutes to milliseconds  
         loadData();
         const interval = setInterval(() => loadData(), timeInterval);
         return () => clearInterval(interval);
