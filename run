@@ -3,11 +3,11 @@
 # Initial Deps
 if [[ $_ == $0 ]]; then
     echo "Script must be sourced"
-    echo -e "\nUsage: source `basename $0` [bootstrap,dev,prod,help] [client,server]\n"
+    echo -e "\nUsage: source `basename $0` [bootstrap,dev,prod,tests,help] [client,server]\n"
     exit
 fi
 if [ $# -gt 2 ] || [ $# -lt 1 ]; then
-    echo -e "\nUsage: source `basename $0` [bootstrap,dev,prod,help] [client,server]\n"
+    echo -e "\nUsage: source `basename $0` [bootstrap,dev,prod,tests,help] [client,server]\n"
     return
 fi
 
@@ -60,7 +60,7 @@ case $1 in
                 sudo service mongodb stop
             ;;
             *)
-                echo -e "\nUsage: source `basename $0` [bootstrap,dev,prod,help] [client,server]\n"
+                echo -e "\nUsage: source `basename $0` [bootstrap,dev,prod,tests,help] [client,server]\n"
             ;;
         esac
     ;;
@@ -80,25 +80,27 @@ case $1 in
         npm run-script build
         cd ..
     ;;
-    "test")
+    "tests")
         export FLASK_ENV=development
         export COOKIE_PROD=development
         cd server
-        python3 -m pytest tests/ --doctest-modules -s
+        coverage run --source flaskr/ -m  pytest tests/ --doctest-modules -s
+        coverage report && coverage json && coverage xml && coverage html
         cd ../client
         npm test -- --watchAll=false
         cd ..
     ;;
     "help")
-        echo -e "\nUsage: source `basename $0` [bootstrap,dev,prod,help] [client,server]\n"
+        echo -e "\nUsage: source `basename $0` [bootstrap,dev,prod,tests,help] [client,server]\n"
         echo -e "\tbootstrap: run this to install dependents for the project. Run once before anything else"
         echo -e "\tdev: run everything locally in development mode "
         echo -e "\t\tclient: runs client in dev mode"
         echo -e "\t\tserver: runs server in dev mode"
         echo -e "\tprod: run everything locally in production mode, build and server front end"
+        echo -e "\ttests: run client and server tests and create coverage"
         echo -e "\thelp: usage of `basename $0`"
     ;;
     *)
-        echo -e "\nUsage: source `basename $0` [bootstrap,dev,prod,help] [client,server]\n"
+        echo -e "\nUsage: source `basename $0` [bootstrap,dev,prod,tests,help] [client,server]\n"
     ;;
 esac
