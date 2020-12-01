@@ -395,13 +395,11 @@ def numThreatsByDate():
 def securityRating():
     try:
         if request.method == 'GET':
-            contained_count = mongo.db.userThreats.count_documents(
-                {"status": "contained"})
-            total_count = mongo.db.userThreats.count_documents({})
+            contained_count = float(mongo.db.userThreats.count_documents({"status": "contained"}))
+            total_count = float(mongo.db.userThreats.count_documents({}))
             rating = 'S'
             if total_count != 0:
-                threatContainmentRatio = float(
-                    contained_count) / float(total_count)
+                threatContainmentRatio = contained_count / total_count
                 if threatContainmentRatio >= 0.8:
                     rating = 'S'
                 elif threatContainmentRatio >= 0.7:
@@ -416,7 +414,6 @@ def securityRating():
                     rating = 'E'
                 else:
                     rating = 'F'
-
             return json_util.dumps(rating), 200
         return "Could not get security rating", 400
     except:

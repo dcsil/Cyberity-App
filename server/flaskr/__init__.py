@@ -15,7 +15,6 @@ def create_app(test_config=None):
     environment = os.environ['FLASK_ENV']
     cookie_prod = os.environ['COOKIE_PROD']
     mongo_uri = os.getenv("MONGO_URI", None)
-
     if environment == "production":
         app = Flask(__name__, static_folder='../../client/build',
                     instance_relative_config=True)
@@ -38,13 +37,10 @@ def create_app(test_config=None):
     app.config['JWT_ACCESS_COOKIE_PATH'] = '/api/'
 
     JWTManager(app)
-
     if not mongo_uri:
         mongo_uri = "mongodb://localhost:27017/myDatabase"
     mongo = db.mongo
     mongo.init_app(app, mongo_uri)
-
-    # Register Blueprints
     app.register_blueprint(routes.bp)
 
     @app.route('/', defaults={'path': ''})
