@@ -63,7 +63,7 @@ function Row(props) {
             method: 'PATCH',
             headers: new Headers({
                 "content-type": "application/json",
-                "X-CSRF-TOKEN": Cookies.get("csrf_access_token")+"2"
+                "X-CSRF-TOKEN": Cookies.get("csrf_access_token")
             }),
             body: JSON.stringify({
                 "status": status,
