@@ -30,7 +30,16 @@ jobs:
     - name: Test with pytest
       run: |
         cd server
-        python -m pytest tests/ --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+        coverage run --source flaskr/ -m  pytest tests/ --doctest-modules -s
       env:
         FLASK_ENV: development
         COOKIE_PROD: development
+    - name: Upload
+      uses: paambaati/codeclimate-action@v2.7.4
+      env:
+        CC_TEST_REPORTER_ID: a924e6dfbb60efe7a4a78a09c3683dacdd28fb3e570f831811b362ad5c09d498
+      with:
+        workingDirectory: server
+        coverageCommand: coverage xml
+
+

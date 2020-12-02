@@ -46,6 +46,8 @@ export default function UserTimeline() {
                     key={userdata["_id"]["$oid"]}
                     role={userdata["role"]}
                     user={userdata["name"]}
+                    department={userdata["department"]}
+                    email={userdata["email"]}
                     date={(new Date(userdata["detectionDate"]["$date"])).toString()}
                     status={userdata["status"]}>
                 </UserTimelineElement>)

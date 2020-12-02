@@ -13,19 +13,19 @@ from datetime import timedelta
 def create_app(test_config=None):
     # create and configure the app    
     environment = os.environ['FLASK_ENV']
+    cookie_prod = os.environ['COOKIE_PROD']
+    mongo_uri = os.getenv("MONGO_URI", None)
     if environment == "production":
         app = Flask(__name__, static_folder='../../client/build',
                     instance_relative_config=True)
     else:
         app = Flask(__name__, instance_relative_config=True)
 
-    #CORS(app)
     if test_config is None:
-        # load the instance config, if it exists, when not testing
         app.config.from_pyfile('config.py', silent=True)
     else:
-        # load the test config if passed in
         app.config.from_mapping(test_config)
+
     app.config['SECRET_KEY'] = '11152020bOBrOSsScYbEriTY'
     app.config["JWT_SECRET_KEY"] = "BAfASFBasf9bblkjnGYAGIfa@&b332"
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=1)
@@ -37,25 +37,11 @@ def create_app(test_config=None):
     app.config['JWT_ACCESS_COOKIE_PATH'] = '/api/'
 
     JWTManager(app)
-    # Initalize MongoDB
-    mongo_uri = os.getenv("MONGO_URI", None)
     if not mongo_uri:
         mongo_uri = "mongodb://localhost:27017/myDatabase"
     mongo = db.mongo
     mongo.init_app(app, mongo_uri)
-
-    # Register Blueprints
     app.register_blueprint(routes.bp)
-
-    # a simple page that says hello
-    @app.route('/api/hello', methods=['GET'])
-    def hello():
-        return 'Hello, World!'
-
-    @app.route('/api/testdb', methods=['POST'])
-    def testdb():
-        mongo.db.users.insert({'name': "Mark2.0"})
-        return "Inserted"
 
     @app.route('/', defaults={'path': ''})
     @app.route('/<path:path>')
@@ -66,5 +52,3 @@ def create_app(test_config=None):
             return send_from_directory(app.static_folder, 'index.html')
 
     return app
-
-

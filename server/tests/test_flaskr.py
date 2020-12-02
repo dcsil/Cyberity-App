@@ -1,24 +1,37 @@
 from flaskr import create_app
 from flaskr.db import mongo
 from flask import json, jsonify
-from datetime import datetime
-from datetime import timedelta 
+from datetime import datetime,timedelta 
 
 def getCurrentTimeStamp():
     return datetime.now()
     
 def test_register(client):
+    mongo.db.users.delete_many({})
+    response = client.post("/api/register", json={
+        "username": "", "password": "test_admin", "name": "admin", "email": "admin@gmail.com"
+    })
+    assert response.data == b'Missing/Incorrect Information'
     response = client.post("/api/register", json={
         "username": "test_admin", "password": "test_admin", "name": "admin", "email": "admin@gmail.com"
     })
     assert response.data == b'Username Already Exists' or response.data == b"User successfully created"
 
 def test_login(client):
-    test_register(client)
     response = client.post("/api/login", json={
         "username": "test_admin", "password": "test_admin"
     })
     response = client.get("/api/checkauth")
+    assert response.status_code == 200
+
+def test_logout(client):
+    response = client.post("/api/login", json={
+        "username": "test_admin", "password": "test_admin"
+    })
+    assert response.status_code == 200
+    response = client.post("/api/logout", json={
+        "username": "test_admin", "password": "test_admin"
+    })
     assert response.status_code == 200
 
 def test_getEmployees(client):
@@ -72,7 +85,6 @@ def test_getFalseThreats(client):
     assert len(data) == 0 or all(k in data[0] for k in attributes_to_check)
 
 def test_login(client):
-    test_register(client)
     response = client.post("/api/login", json={
         "username": "test_admin", "password": "test_admin"
     })
@@ -80,7 +92,6 @@ def test_login(client):
     assert response.status_code == 200
 
 def test_truePositiveRate(client):
-    test_register(client)
     response = client.post("/api/login", json={
         "username": "test_admin", "password": "test_admin"
     })
@@ -88,7 +99,6 @@ def test_truePositiveRate(client):
     assert response.status_code == 200
 
 def test_numContainedThreats(client):
-    test_register(client)
     response = client.post("/api/login", json={
         "username": "test_admin", "password": "test_admin"
     })
@@ -110,7 +120,6 @@ def test_numContainedThreats(client):
     assert response.status_code == 200 and ((pre_num_contained_threats + 1) == post_num_contained_threats) 
 
 def test_numActiveThreatsThreats(client):
-    test_register(client)
     response = client.post("/api/login", json={
         "username": "test_admin", "password": "test_admin"
     })
@@ -132,7 +141,6 @@ def test_numActiveThreatsThreats(client):
     assert response.status_code == 200 and ((pre_num_active_threats + 1) == post_num_active_threats) 
 
 def test_numFalseThreatsThreats(client):
-    test_register(client)
     response = client.post("/api/login", json={
         "username": "test_admin", "password": "test_admin"
     })
@@ -155,7 +163,6 @@ def test_numFalseThreatsThreats(client):
 
 
 def test_numTotalThreats(client):
-    test_register(client)
     response = client.post("/api/login", json={
         "username": "test_admin", "password": "test_admin"
     })
@@ -177,7 +184,6 @@ def test_numTotalThreats(client):
     assert response.status_code == 200 and ((pre_num_total_threats + 1) == post_num_total_threats) 
 
 def test_numThreatsByDate(client):
-    test_register(client)
     response = client.post("/api/login", json={
         "username": "test_admin", "password": "test_admin"
     })
@@ -204,7 +210,6 @@ def test_numThreatsByDate(client):
     assert response.status_code == 200 and date_exist
 
 def test_securityRating(client):
-    test_register(client)
     response = client.post("/api/login", json={
         "username": "test_admin", "password": "test_admin"
     })
@@ -212,7 +217,6 @@ def test_securityRating(client):
     assert response.status_code == 200 and response.data 
 
 def test_truePositiveRate(client):
-    test_register(client)
     response = client.post("/api/login", json={
         "username": "test_admin", "password": "test_admin"
     })
