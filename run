@@ -84,8 +84,8 @@ case $1 in
         export FLASK_ENV=development
         export COOKIE_PROD=development
         cd server
-        coverage run --source flaskr/ -m  pytest tests/ --doctest-modules -s
-        coverage report && coverage json && coverage xml
+        python3 -m coverage run --source flaskr/ -m  pytest tests/ --doctest-modules -s
+        python3 -m coverage report && coverage json && coverage xml
         cd ../client
         npm test -- --watchAll=false
         cd ..
