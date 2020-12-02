@@ -27,10 +27,13 @@ jobs:
       uses: supercharge/mongodb-github-action@1.3.0
       with:
         mongodb-version: 3.6
-    - name: Test with pytest
-      run: |
-        cd server
-        python -m pytest tests/ --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+    - name: Test with pytest and Upload
+      uses: paambaati/codeclimate-action@v2.2.4
+      run: cd server
       env:
         FLASK_ENV: development
         COOKIE_PROD: development
+        CC_TEST_REPORTER_ID: a924e6dfbb60efe7a4a78a09c3683dacdd28fb3e570f831811b362ad5c09d498
+      with:
+        coverageCommand: python -m pytest tests/ --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+
