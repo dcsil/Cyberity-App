@@ -10,8 +10,6 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2),
         textAlign: 'center',
         flexGrow: 1,
-        height: '100%',
-        width: '100%'
     },
     progressBarHolder: {
         height: '100%',

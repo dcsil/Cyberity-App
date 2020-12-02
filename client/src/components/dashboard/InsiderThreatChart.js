@@ -143,7 +143,7 @@ export default function InsiderThreatChart() {
           fill: "#f0f0f0",
           pointerEvents: "none"
         },
-        flyoutPadding: 5,
+        flyoutPadding: 9,
         pointerLength: 10
       },
       voronoi: assign(
@@ -169,6 +169,20 @@ export default function InsiderThreatChart() {
       
     const VictoryZoomVoronoiContainer = createContainer("zoom", "voronoi");
 
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+    
+        if (month.length < 2) 
+            month = '0' + month;
+        if (day.length < 2) 
+            day = '0' + day;
+    
+        return [month, day, year].join('-');
+    }
+
     return (
         <Paper className={classes.card}> 
             <VictoryChart width={1200} height={220} scale={{ x: "time" }} theme={chartTheme}
@@ -178,7 +192,7 @@ export default function InsiderThreatChart() {
                         zoomDomain={zoomDomain}
                         onZoomDomainChange={handleZoom.bind(this)}
                         voronoiDimension="x"
-                        labels={({ datum }) => `Threats: ${datum.threatCount} Date: ${datum.date}`}
+                        labels={({ datum }) => `Threats: ${datum.threatCount} Date: ${formatDate(datum.date)}`}
                         labelComponent={<VictoryTooltip flyoutStyle={{fill: "rgba(66,66,66, 0.35)"}}/>}
                     />
                 }
