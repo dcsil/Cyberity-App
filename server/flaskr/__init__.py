@@ -35,6 +35,7 @@ def create_app(test_config=None):
     else:
         app.config['JWT_COOKIE_SECURE'] = False
     app.config['JWT_ACCESS_COOKIE_PATH'] = '/api/'
+    app.config['JWT_COOKIE_CSRF_PROTECT'] = False
 
     JWTManager(app)
     if not mongo_uri:
