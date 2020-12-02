@@ -1,7 +1,6 @@
 flask
 gunicorn
 pytest
-pytest-cov
 Flask-PyMongo
 scikit-learn
 pandas
