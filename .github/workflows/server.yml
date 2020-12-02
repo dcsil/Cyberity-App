@@ -28,12 +28,12 @@ jobs:
       with:
         mongodb-version: 3.6
     - name: Test with pytest and Upload
-      working-directory: server
       uses: paambaati/codeclimate-action@v2.7.4
       env:
         FLASK_ENV: development
         COOKIE_PROD: development
         CC_TEST_REPORTER_ID: a924e6dfbb60efe7a4a78a09c3683dacdd28fb3e570f831811b362ad5c09d498
       with:
-        coverageCommand: cd server && python -m pytest tests/ --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+        working-directory: server
+        coverageCommand: python -m pytest tests/ --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
 
