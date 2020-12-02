@@ -321,41 +321,33 @@ def truePositiveRate():
     except:
         return "There was an Error", 400
 
+# Get Status
+def getNumThreatsBy(status):
+    try:
+        if request.method == 'GET':
+            false_count = mongo.db.userThreats.count_documents(
+                {"status": status})
+            return json_util.dumps(false_count), 200
+        return "Could not get number of threats", 400
+    except:
+        return "There was an Error", 400
+
+
+
 @bp.route('/api/numContainedThreats', methods=["GET"])
 @jwt_required
 def numContainedThreats():
-    try:
-        if request.method == 'GET':
-            contained_count = mongo.db.userThreats.count_documents(
-                {"status": "contained"})
-            return json_util.dumps(contained_count), 200
-        return "Could not get number of contained threats", 400
-    except:
-        return "There was an Error", 400
+    return getNumThreatsBy("contained")
 
 @bp.route('/api/numActiveThreats', methods=["GET"])
 @jwt_required
 def numActiveThreatsThreats():
-    try:
-        if request.method == 'GET':
-            active_count = mongo.db.userThreats.count_documents(
-                {"status": "active"})
-            return json_util.dumps(active_count), 200
-        return "Could not get number of active threats", 400
-    except:
-        return "There was an Error", 400
+    return getNumThreatsBy("active")
 
 @bp.route('/api/numFalseThreats', methods=["GET"])
 @jwt_required
 def numFalseThreatsThreats():
-    try:
-        if request.method == 'GET':
-            false_count = mongo.db.userThreats.count_documents(
-                {"status": "false"})
-            return json_util.dumps(false_count), 200
-        return "Could not get number of false positive threats", 400
-    except:
-        return "There was an Error", 400
+    return getNumThreatsBy("false")
 
 @bp.route('/api/numTotalThreats', methods=["GET"])
 @jwt_required
