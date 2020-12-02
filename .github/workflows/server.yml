@@ -39,7 +39,7 @@ jobs:
       env:
         CC_TEST_REPORTER_ID: a924e6dfbb60efe7a4a78a09c3683dacdd28fb3e570f831811b362ad5c09d498
       with:
-        working-directory: server
-        coverageCommand: coverage xml
+        workingDirectory: server
+        coverageCommand: python -m coverage xml
 
 
