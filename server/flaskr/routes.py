@@ -20,6 +20,7 @@ if environment == "production":
 else:
     bp = Blueprint("routes", __name__)
 
+
 @bp.route("/api/userThreat/<id>", methods=["PATCH"])
 @jwt_required
 def userThreat(id=None):
@@ -37,6 +38,7 @@ def userThreat(id=None):
             return "No user status updated", 404
     except:
         return "Error", 500
+
 
 @bp.route("/api/getAllThreats", methods=["GET"])
 @bp.route("/api/getAllThreats/<int:num>", methods=["GET"])
@@ -70,7 +72,7 @@ def getAllThreats(num=None):
                 }},
                 {'$replaceRoot': {'newRoot': {'$mergeObjects': [
                     {'$arrayElemAt': ["$fromItems", 0]}, "$$ROOT"]}}},
-                {'$project': {'fromItems': 0,}},
+                {'$project': {'fromItems': 0, }},
                 {'$sort': {'detectionDate': -1}},
                 {"$limit": num}
             ]))
@@ -84,13 +86,14 @@ def getAllThreats(num=None):
                 }},
                 {'$replaceRoot': {'newRoot': {'$mergeObjects': [
                     {'$arrayElemAt': ["$fromItems", 0]}, "$$ROOT"]}}},
-                {'$project': {'fromItems': 0,}},
+                {'$project': {'fromItems': 0, }},
                 {'$sort': {'detectionDate': -1}},
             ]))
         return Response(json_util.dumps(threats), mimetype='application/json'), 200
 
     except:
         return "There was an Error", 400
+
 
 @bp.route('/api/getFalseThreats', methods=["GET"])
 @bp.route("/api/getFalseThreats/<int:num>", methods=["GET"])
@@ -132,6 +135,7 @@ def getFalseThreats(num=None):
     except:
         return "There was an Error", 400
 
+
 @bp.route('/api/getActiveThreats', methods=["GET"])
 @bp.route("/api/getActiveThreats/<int:num>", methods=["GET"])
 @jwt_required
@@ -171,6 +175,7 @@ def getActiveThreats(num=None):
         return "Could not get active threats", 400
     except:
         return "There was an Error", 400
+
 
 @bp.route('/api/getContainedThreats', methods=["GET"])
 @bp.route("/api/getContainedThreats/<int:num>", methods=["GET"])
@@ -212,6 +217,7 @@ def getContainedThreats(num=None):
     except:
         return "There was an Error", 400
 
+
 @bp.route("/api/getEmployees", methods=["GET"])
 @bp.route("/api/getEmployees/<string:search>", methods=["GET"])
 @jwt_required
@@ -240,27 +246,25 @@ def getEmployees(search=""):
     except:
         return "There was an Error", 400
 
-@bp.route('/api/register', methods=('GET', 'POST'))
+
+@bp.route('/api/register', methods=["POST"])
 def register():
     try:
-        if request.method == 'POST':
-            if not all(k in request.json for k in ('username', 'password', 'name', 'email')):
-                return "Missing parameters", 404
+        if not all(k in request.json for k in ('username', 'password', 'name', 'email')):
+            return "Missing parameters", 404
 
-            username = request.json['username']
-            password = request.json['password']
-            name = request.json['name']
-            email = request.json['email']
+        username = request.json['username']
+        password = request.json['password']
+        name = request.json['name']
+        email = request.json['email']
 
-            if (username == '') or (password == '') or (name == '') or (email == ''):
-                return "Missing/Incorrect Information", 422
-            if mongo.db.users.find_one({'username': username}):
-                return "Username Already Exists", 403
-            mongo.db.users.insert_one({'username': username, 'password': generate_password_hash(
-                password), 'name': name, 'email': email})
-            return "User successfully created", 201
-        return "Could not register", 400
-
+        if (not username) or (not password) or (not name) or (not email):
+            return "Missing/Incorrect Information", 422
+        if mongo.db.users.find_one({'username': username}):
+            return "Username Already Exists", 403
+        mongo.db.users.insert_one({'username': username, 'password': generate_password_hash(
+            password), 'name': name, 'email': email})
+        return "User successfully created", 201
     except:
         return "There was an Error", 400
 
