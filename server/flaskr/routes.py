@@ -21,7 +21,7 @@ else:
     bp = Blueprint("routes", __name__)
 
 
-@bp.route("/api/userThreat/<string:id>", methods=["PATCH"])
+@bp.route("/api/userThreat/<id>", methods=["PATCH"])
 @jwt_required
 def userThreat(id=None):
     try:

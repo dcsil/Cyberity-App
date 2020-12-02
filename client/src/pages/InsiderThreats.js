@@ -19,6 +19,8 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
+import Cookies from 'js-cookie'
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -40,6 +42,7 @@ function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const history = useHistory();
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -60,10 +63,24 @@ function Row(props) {
             method: 'PATCH',
             headers: new Headers({
                 "content-type": "application/json",
+                "X-CSRF-TOKEN": Cookies.get("csrf_access_token")+"2"
             }),
             body: JSON.stringify({
-                "status": status
+                "status": status,
             })
+        }).then(response => {
+            if (response.status === 401) {
+                fetch('/api/logout', {
+                    method: "POST",
+                    headers: new Headers({
+                        "content-type": "application/json"
+                    })
+                }).then(response => {
+                    history.push("/signin")
+                })
+            }
+        }).catch((error) => {
+            console.log("NOT WORKING")
         })
 
     }
