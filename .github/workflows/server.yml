@@ -28,6 +28,7 @@ jobs:
       with:
         mongodb-version: 3.6
     - name: Test with pytest and Upload
+      working-directory: server
       uses: paambaati/codeclimate-action@v2.7.4
       env:
         FLASK_ENV: development
