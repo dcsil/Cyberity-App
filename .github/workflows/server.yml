@@ -1,10 +1,6 @@
 name: Flask CI
 on: [pull_request]
 
-defaults:
-  run:
-    working-directory: server
-
 jobs:
   BuildServer:
     runs-on: ubuntu-latest
