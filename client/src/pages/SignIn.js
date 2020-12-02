@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -6,58 +6,21 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import CyberityLogo from '../assets/logo_cyberity_text_3.png';
 import { Link } from 'react-router-dom';
 import Container from '@material-ui/core/Container';
 import { useHistory } from "react-router-dom";
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        height: '100vh',
-    },
-    image: {
-        backgroundImage: `url(${CyberityLogo})`,
-        backgroundRepeat: 'no-repeat',
-        backgroundColor:
-            theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
-        backgroundSize: 'cover',
-        width: "70%",
-        backgroundPosition: 'center',
-    },
-    paper: {
-        margin: theme.spacing(8, 4),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        marginTop: "30%"
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
-    auth: {
-        backgroundColor:
-            theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
-    }
-}));
+import {AuthPageStyles} from "../Styles.js";
 
 export default function SignIn() {
-    const classes = useStyles();
+    const classes = AuthPageStyles();
     const history = useHistory();
     const [userSignInInfo, setUserSignInInfo] = useState({
         "username": "",
         "password": "",
     });
 
-    function login() {
+    function login(event) {
+        event.preventDefault();
         fetch('/api/login', {
             method: "POST",
             body: JSON.stringify(userSignInInfo),
@@ -77,6 +40,21 @@ export default function SignIn() {
         });
     }
 
+    useEffect(() => {
+        fetch('/api/checkauth', {
+            method: "GET",
+            headers: new Headers({
+                "content-type": "application/json"
+            })
+        }).then(response => {
+            if (response.status === 200) {
+                history.push("/app/dashboard")
+            }
+        }).catch((error) => {
+            console.log("NOT WORKING")
+        })
+    },[history]);
+
     return (
         <Grid container component="main" className={classes.root}>
             <CssBaseline />
@@ -88,7 +66,7 @@ export default function SignIn() {
                         <Typography component="h1" variant="h4">
                             Sign In
             </Typography>
-                        <form className={classes.form} noValidate>
+                        <form className={classes.form} onSubmit={login} noValidate>
                             <TextField
                                 variant="outlined"
                                 margin="normal"
@@ -124,6 +102,7 @@ export default function SignIn() {
                                 label="Remember me"
                             />
                             <Button
+                                type="submit"
                                 fullWidth
                                 variant="contained"
                                 color="primary"
@@ -131,20 +110,19 @@ export default function SignIn() {
                                 onClick={login}
                             >
                                 Sign In
-              </Button>
+                            </Button>
                             <Grid container>
                                 <Grid item xs>
                                 </Grid>
                                 <Grid item>
                                     <Button
-                                        type="submit"
                                         fullWidth
                                         className={classes.submit}
                                         component={Link}
                                         to="/signup"
                                     >
                                         Don't have an account? Sign up!
-                        </Button>
+                                    </Button>
                                 </Grid>
                             </Grid>
                         </form>

@@ -11,14 +11,12 @@ import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Tooltip from '@material-ui/core/Tooltip';
 import ErrorIcon from '@material-ui/icons/Error';
-import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -41,19 +39,6 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-// function createData(name, role, email, department, last_activity_date, phone, flagged) {
-//     return { name, role, email, department, last_activity_date, phone, flagged};
-//   }
-
-// const rows = [
-//     createData('Mark Abdullah', "Software Dev", "mark@company.com", "Operations", "10/27/2020 10:05:14", "123-456-7890", false),
-//     createData('Rob Moss', "Software Dev", "rob@company.com", "insiderManz", "10/28/2020 08:14:53", "123-456-7890", true),
-//     createData('Vinay Komaravolu', "Software Dev", "vinay@company.com", "Development", "11/1/2020 09:13:24", "123-456-7890", false),
-//     createData('Dipanker Bagga', "Financial Lead", "dipanker@company.com", "Finance", "10/30/2020 14:14:13", "123-456-7890", false),
-//     createData('Mina Gobrail', "Physician ", "mina@company.com", "Health", "10/13/2020 18:42:31", "123-456-7890", false),
-//     createData('Cora', "Data Analyst", "cora@company.com", "Security", "10/14/2020", "123-456-7890 11:12:13", false)
-// ];
-
 function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
@@ -75,7 +60,7 @@ function Row(props) {
                 <TableCell size="small">
                     {row.flagged &&
                         <Tooltip title={row.name + " has an active threat detected"}>
-                            <IconButton component={Link} to={"/app/usereventtimeline/" + row.name} >
+                            <IconButton>
                                 <ErrorIcon />
                             </IconButton>
                         </Tooltip>}
@@ -88,12 +73,6 @@ function Row(props) {
                             <Typography>Position: {row.role}</Typography>
                             <Typography>Email: {row.email}</Typography>
                             <Typography>Phone: {row.phone}</Typography>
-                            <Button variant="contained" color="primary" className={classes.button}>
-                                Profile
-                        </Button>
-                            <Button variant="contained" color="primary" className={classes.button}>
-                                Timeline
-                        </Button>
                         </Box>
                     </Collapse>
                 </TableCell>

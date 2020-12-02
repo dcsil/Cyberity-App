@@ -1,55 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import CyberityLogo from '../assets/logo_cyberity_text.png';
 import { Link } from 'react-router-dom';
 import Container from '@material-ui/core/Container';
 import { useHistory } from "react-router-dom";
+import {AuthPageStyles} from "../Styles.js";
 
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        height: '100vh',
-    },
-    image: {
-        backgroundImage: `url(${CyberityLogo})`,
-        backgroundRepeat: 'no-repeat',
-        backgroundColor:
-            theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
-        backgroundSize: 'cover',
-        width: "70%",
-        backgroundPosition: 'center',
-    },
-    paper: {
-        margin: theme.spacing(8, 4),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        marginTop: "30%"
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
-    auth: {
-        backgroundColor:
-            theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
-    }
-}));
 
 export default function SignUp() {
-    const classes = useStyles();
+    const classes = AuthPageStyles();
     const history = useHistory();
     const [userSignUpInfo, setUserSignUpInfo] = useState({
         "username": "",
@@ -58,7 +20,8 @@ export default function SignUp() {
         "email": ""
     });
 
-    function register() {
+    function register(event) {
+        event.preventDefault();
         console.log(userSignUpInfo)
         fetch('/api/register', {
             method: "POST",
@@ -81,6 +44,21 @@ export default function SignUp() {
         })
     }
 
+    useEffect(() => {
+        fetch('/api/checkauth', {
+            method: "GET",
+            headers: new Headers({
+                "content-type": "application/json"
+            })
+        }).then(response => {
+            if (response.status === 200) {
+                history.push("/app/dashboard")
+            }
+        }).catch((error) => {
+            console.log("NOT WORKING")
+        })
+    },[history]);
+
     return (
         <Grid container component="main" className={classes.root}>
             <CssBaseline />
@@ -91,8 +69,8 @@ export default function SignUp() {
                     <div className={classes.paper}>
                         <Typography component="h1" variant="h4">
                             Sign up
-        </Typography>
-                        <form className={classes.form} noValidate>
+                        </Typography>
+                        <form className={classes.form} noValidate onSubmit={register}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
                                     <TextField
@@ -160,24 +138,24 @@ export default function SignUp() {
                             </Grid>
                             <Button
                                 fullWidth
+                                type="submit"
                                 variant="contained"
                                 color="primary"
                                 className={classes.submit}
                                 onClick={register}
                             >
                                 Sign Up
-          </Button>
+                            </Button>
                             <Grid container justify="flex-end">
                                 <Grid item>
                                     <Button
-                                        type="submit"
                                         fullWidth
                                         className={classes.submit}
                                         component={Link}
                                         to="/signin"
                                     >
                                         Have an account? Sign In!
-                </Button>
+                                    </Button>
                                 </Grid>
                             </Grid>
                         </form>

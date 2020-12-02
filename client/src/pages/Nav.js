@@ -18,14 +18,13 @@ import TimelineIcon from '@material-ui/icons/Timeline';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {
     Switch,
-    useHistory
+    useHistory,
 } from "react-router-dom";
 import PrivateRoute from '../components/PrivateRoute'
 import Dashboard from './Dashboard';
 import InsiderThreats from './InsiderThreats';
 import Users from './Users';
 import UserTimeline from './UserTimline';
-import UserEventTimelineElement from './UserEventTimeline';
 
 
 const drawerWidth = 240;
@@ -174,7 +173,7 @@ export default function Navbar() {
                         <ListItemText primary="User Timeline" />
                     </ListItem>
                     <Divider />
-                    <ListItem onClick={logout}>
+                    <ListItem button onClick={logout}>
                         <ListItemIcon><ExitToAppIcon></ExitToAppIcon></ListItemIcon>
                         <ListItemText primary="Sign out" />
                     </ListItem>
@@ -191,7 +190,6 @@ export default function Navbar() {
                     <PrivateRoute exact={true} path="/app/usertimeline" component={UserTimeline} />
                     <PrivateRoute exact={true} path="/app/users" component={Users} />
                     <PrivateRoute exact={true} path="/app/insiderthreats" component={InsiderThreats} />
-                    <PrivateRoute exact={true} path="/app/usereventtimeline" component={UserEventTimelineElement} />
                 </Switch>
             </main>
         </div>

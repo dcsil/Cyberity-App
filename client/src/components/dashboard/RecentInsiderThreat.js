@@ -35,8 +35,8 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function createData(name, role, status, detectionDate) {
-    return { name, role, status, detectionDate };
+function createData(key, name, role, status, detectionDate) {
+    return {key, name, role, status, detectionDate };
 }
 
 
@@ -54,8 +54,8 @@ export default function RecentInsiderThreat() {
             })
         })
             .then(response => response.json())
-            .then(data => {
-                const elements = data.map((userdata) => createData(userdata["name"], userdata["role"], userdata["status"], userdata["detectionDate"]))
+            .then(data => {;
+                const elements = data.map((userdata) => createData(userdata["_id"]["$oid"],userdata["name"], userdata["role"], userdata["status"], (new Date(userdata["detectionDate"]["$date"])).toString()))
                 setRecentThreatElements(elements)
             })
             .catch(err => {
@@ -81,7 +81,7 @@ export default function RecentInsiderThreat() {
                         </TableHead>
                         <TableBody>
                             {recentThreatElements.map((recentThreatElement) => (
-                                <TableRow key={recentThreatElement.name}>
+                                <TableRow key={recentThreatElement.key}>
                                     <TableCell component="th" scope="row">
                                         {recentThreatElement.name}
                                     </TableCell>

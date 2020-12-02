@@ -1,7 +1,6 @@
 flask
 gunicorn
 pytest
-pytest-cov
 Flask-PyMongo
 scikit-learn
 pandas
@@ -10,3 +9,4 @@ Werkzeug
 flask-jwt-extended
 joblib
 numpy
+coverage
