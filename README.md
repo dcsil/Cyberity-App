@@ -81,7 +81,7 @@ Our tech stack can be found here: https://stackshare.io/dcsil/cyberity
 ## Design and Accessibility
 Adheres to Web accessibility for developers: https://www.wuhcag.com/wcag-checklist/
 
-### Guideline | Summary | Description of how you accommodated this
+### Guideline | Summary | Description of how we accommodated this
 - [x] Non-text Content | Provide text alternatives for non-text content | We have different visuals to convey data in addition to test. For example: charts, timelines, lists, progress bars.
 - [x] Audio-only and Video-only (Pre-recorded) | Provide an alternative to video-only and audio-only content | We do not have video-only or audio-only content. By default, we pass this check.
 - [x] Captions (Pre-recorded) | Provide captions for videos with audio | We do not have video or audio content. By default, we pass this check.
