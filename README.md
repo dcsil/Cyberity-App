@@ -91,7 +91,9 @@ Our demo video can be found [here](https://youtu.be/QVc4tKU43Jg)
 ### Features/Pages
 * Login/Signup Pages
 * Dashboard
-  * This is the main page to give anaylsts an overview of current and recent threat information/statistics
+  * This is the main page to give analysts an overview of current and recent threat information/statistics
+  * Currently data is being automatically fetched every 10 minutes which is customizable based on client needs/limitations
+  * We went for a minimalistic design based on our user research feedback
 * Insider Threats Page
   * Lists detected threats by user and datetime
   * Ability to filter threats by active/contained/false
@@ -103,6 +105,14 @@ Our demo video can be found [here](https://youtu.be/QVc4tKU43Jg)
 * Threat Timeline
   * Displays all threats in a linear timeline fashion
   * Displays each threat user info, detection date and current status
+* Backend Data Processing
+  * We are using an ML autoencoder model to detect threats
+  * We are using the authorization and process logs to train and apply our model
+  * Our model was trained locally and uploaded to our server (Cyberity-App/server/ml/trained_model.sav)
+  * For demo purposes we only have a few hours worth of the logs processed on the server
+  * We preprocess the log data which and upload to the server (our demo data is contained in Cyberity-App/server/ml/data.sav)
+  * We have an api method (POST /api/processLogs) which is used to run the preprocessed data through our model on a seperate server thread and add any new threats to the database
+  * In a real use case we need to grab and preprocess the clients log data then run our model on a periodic schedule (hourly, daily, etc.)
 
 
 ## Design and Accessibility
