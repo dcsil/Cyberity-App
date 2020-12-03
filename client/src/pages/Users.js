@@ -36,6 +36,10 @@ const useStyles = makeStyles((theme) => ({
     },
     button: {
         marginRight: 5,
+    },
+    title: {
+        paddingLeft: "10px",
+        paddingBottom: "5px"
     }
 }));
 
@@ -157,6 +161,9 @@ function Users() {
 
     return (
         <React.Fragment>
+            <Typography className={classes.title} variant="h3" display="inline">
+                Users
+            </Typography>
             <form>
                 <TextField
                     className={classes.textfield}

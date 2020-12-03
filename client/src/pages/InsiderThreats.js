@@ -207,6 +207,9 @@ function InsiderThreats(props) {
 
     return (
         <React.Fragment>
+        <Typography className={classes.title} variant="h3" display="inline">
+            Insider Threats
+        </Typography>
         <Paper className={classes.paper}>
             <Paper className={classes.filter}>
             <Typography className={classes.label} display="inline">

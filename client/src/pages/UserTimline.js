@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         justifyContent: "flex-center"
     },
+    title: {
+        paddingLeft: "10px"
+    }
 }));
 
 export default function UserTimeline() {
@@ -59,6 +62,10 @@ export default function UserTimeline() {
     }, []);
 
     return (
+        <React.Fragment>
+        <Typography className={classes.title} variant="h3" display="inline">
+            User Timeline
+        </Typography>
         <Grid container className={classes.root} spacing={2}>
             <Grid item xs={10}>
                 <VerticalTimeline >
@@ -84,5 +91,6 @@ export default function UserTimeline() {
                 </Paper>
             </Grid>
         </Grid>
+        </React.Fragment>
     );
 }
