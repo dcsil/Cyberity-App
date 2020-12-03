@@ -79,7 +79,7 @@ Follow these instructions if you want to deploy this on heroku.
 Our tech stack can be found here: [Cyberity Stackshare](https://stackshare.io/dcsil/cyberity)
 
 ## Demo Video
-Our demo video can be found [here](youtube.com)
+Our demo video can be found [here](https://youtube.com)
 
 
 * Login/Signup Pages
