@@ -37,6 +37,14 @@ export default function InsiderThreatChart() {
                 data.forEach((item) => {
                     item["date"] = new Date(item["date"] + " 00:00");
                 })
+                if(data[0]){
+                    let d_i = new Date(data[0]["date"]);
+                    let d_f =  new Date(data[0]["date"]);
+                    console.log(d_i, d_f);
+                    d_i.setDate(d_i.getDate() - 7);
+                    d_f.setDate(d_f.getDate());
+                    setZoomDomain({x: [d_i,d_f]});
+                }
                 setThreatDataByDate(data);
             })
             .catch(err => {
