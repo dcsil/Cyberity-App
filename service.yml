@@ -1,6 +1,6 @@
 tools:
   exceptions: echo 'No exceptions yet'
-  logging: echo 'logging on heroku'
+  logging: https://my.papertrailapp.com/systems/cyberity/events
   ci:
     frontend: https://github.com/dcsil/Cyberity-App/actions
     backend: https://github.com/dcsil/Cyberity-App/actions
