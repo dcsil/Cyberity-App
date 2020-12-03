@@ -40,7 +40,6 @@ export default function InsiderThreatChart() {
                 if(data[0]){
                     let d_i = new Date(data[0]["date"]);
                     let d_f =  new Date(data[0]["date"]);
-                    console.log(d_i, d_f);
                     d_i.setDate(d_i.getDate() - 7);
                     d_f.setDate(d_f.getDate());
                     setZoomDomain({x: [d_i,d_f]});
