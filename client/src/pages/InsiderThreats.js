@@ -29,7 +29,14 @@ const useStyles = makeStyles((theme) => ({
     label: {
         position: "relative",
         top: "8px",
-        right: "10px"
+        right: "10px",
+    },
+    setStatus: {
+        position: "relative",
+        right: "8px",
+    },
+    title: {
+        paddingLeft: "10px"
     },
     filter: {
         backgroundColor: "#913973",
@@ -39,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Row(props) {
+    const classes = useStyles();
     const { row } = props;
     const [open, setOpen] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -98,6 +106,9 @@ function Row(props) {
                 <TableCell>{row.phone}</TableCell>
                 <TableCell>
                     <IconButton size="small" onClick={handleClick}>
+                    <Typography className={classes.setStatus} display="inline">
+                        Set Status 
+                    </Typography>
                         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
                     <Menu
@@ -195,6 +206,7 @@ function InsiderThreats(props) {
     };
 
     return (
+        <React.Fragment>
         <Paper className={classes.paper}>
             <Paper className={classes.filter}>
             <Typography className={classes.label} display="inline">
@@ -286,6 +298,7 @@ function InsiderThreats(props) {
                 onChangeRowsPerPage={handleChangeRowsPerPage}
             />
         </Paper>
+        </React.Fragment>
     );
 }
 
