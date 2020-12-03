@@ -73,8 +73,8 @@ def create_app(test_config=None):
                 id = mongo.db.employees.insert({
                     "name": user,
                     "email": f'{user}@cyberity.com',
-                    "role": "General Employee",
-                    "department": "N/A"
+                    "role": "Employee",
+                    "department": "R&D"
                 })
             else:
                 id = employee['_id']
@@ -82,13 +82,13 @@ def create_app(test_config=None):
             # Check if this threat already exists in the DB 
             threat = mongo.db.userThreats.find_one({
                 "user_id": user,
-                "detectionDate": str(start_date + timedelta(hours=hour))
+                "detectionDate": start_date + timedelta(hours=hour)
                 })
 
             if not threat:
                 mongo.db.userThreats.insert({
                         "user_id": id,
-                        "detectionDate": str(start_date + timedelta(hours=hour)),
+                        "detectionDate": start_date + timedelta(hours=hour),
                         "status": "active"
                     })
 
