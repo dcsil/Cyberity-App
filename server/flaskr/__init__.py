@@ -1,4 +1,5 @@
 import os
+import sentry_sdk
 from flask import Flask, send_from_directory
 from flask_pymongo import PyMongo
 from flaskr import routes, db
@@ -14,6 +15,8 @@ from threading import Thread
 import sklearn
 import joblib
 import numpy
+from sentry_sdk.integrations.flask import FlaskIntegration
+
 
 start_date = datetime(2020, 11, 1, 9, 00)
 
@@ -23,11 +26,17 @@ def create_app(test_config=None):
     environment = os.environ['FLASK_ENV']
     cookie_prod = os.environ['COOKIE_PROD']
     mongo_uri = os.getenv("MONGO_URI", None)
+
     if environment == "production":
         app = Flask(__name__, static_folder='../../client/build',
                     instance_relative_config=True)
+        sentry_sdk.init(
+            integrations=[FlaskIntegration()],
+            traces_sample_rate=1.0
+        )
     else:
         app = Flask(__name__, instance_relative_config=True)
+
 
     if test_config is None:
         app.config.from_pyfile('config.py', silent=True)
@@ -97,6 +106,10 @@ def create_app(test_config=None):
         Thread(target = start_processLogs).start()    
         return "Started Data Log Processing", 200
 
+    # Check sentry
+    @app.route('/api/debug-sentry')
+    def trigger_error():
+        division_by_zero = 1 / 0
 
     @app.route('/', defaults={'path': ''})
     @app.route('/<path:path>')

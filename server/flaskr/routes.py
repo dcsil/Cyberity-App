@@ -414,3 +414,4 @@ def securityRating():
         return "Could not get security rating", 400
     except:
         return "There was an Error", 400
+
