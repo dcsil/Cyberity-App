@@ -79,11 +79,18 @@ def create_app(test_config=None):
             else:
                 id = employee['_id']
 
-            mongo.db.userThreats.insert({
-                    "user_id": id,
-                    "detectionDate": str(start_date + timedelta(hours=hour)),
-                    "status": "active"
+            # Check if this threat already exists in the DB 
+            threat = mongo.db.userThreats.find_one({
+                "user_id": user,
+                "detectionDate": str(start_date + timedelta(hours=hour))
                 })
+
+            if not threat:
+                mongo.db.userThreats.insert({
+                        "user_id": id,
+                        "detectionDate": str(start_date + timedelta(hours=hour)),
+                        "status": "active"
+                    })
 
     
         return "Processed Data Logs", 200

@@ -40,7 +40,7 @@ def test_getEmployees(client):
     })
     response = client.get("/api/getEmployees")
     assert response.status_code == 200
-    attributes_to_check = ('_id', 'name', 'email', 'role', 'department', 'last_activity_date', 'phone', 'flagged')
+    attributes_to_check = ('_id', 'name', 'email')
     data = response.get_json()
     assert len(data) == 0 or all(k in data[0] for k in attributes_to_check)
 
@@ -236,3 +236,10 @@ def test_truePositiveRate(client):
     response = client.get("/api/truePositiveRate")
     post_truepositive_rate = float(response.data)
     assert response.status_code == 200 and (pre_truepositive_rate >= post_truepositive_rate)
+
+def test_processLogs(client):
+    response = client.post("/api/login", json={
+        "username": "test_admin", "password": "test_admin"
+    })
+    response = client.post("/api/processLogs")
+    assert response.status_code == 200
