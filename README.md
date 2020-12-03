@@ -23,11 +23,12 @@ Table of Contents
   - [Mongodb Atlas Integration](#mongodb-atlas-integration)
 - [Deployment](#deployment)
 - [Tech Stack](#tech-stack)
+- [Application Demo](#application-demo)
 - [Design & Accessibility](#design-and-accessibility)
 
 ## Architecture
 
-![Architecture](./CyberityArchitecture.jpg)
+![Architecture](./assets/CyberityArchitecture.jpg)
 
 ## Getting Started
 
@@ -81,7 +82,11 @@ Our tech stack can be found here: [Cyberity Stackshare](https://stackshare.io/dc
 ## Demo Video
 Our demo video can be found [here](https://youtu.be/QVc4tKU43Jg)
 
+### Screenshots
+![CyberityScreenshot1](./assets/cyberity1.jpg) ![CyberityScreenshot2](./assets/cyberity2.jpg)
+![CyberityScreenshot3](./assets/cyberity3.jpg) ![CyberityScreenshot4](./assets/cyberity4.jpg)
 
+### Features/Pages
 * Login/Signup Pages
 * Dashboard
   * This is the main page to give anaylsts an overview of current and recent threat information/statistics
