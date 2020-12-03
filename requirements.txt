@@ -10,3 +10,4 @@ flask-jwt-extended
 joblib
 numpy
 coverage
+sentry-sdk[flask]
