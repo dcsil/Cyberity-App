@@ -6,11 +6,11 @@ This repository is intended for application development purposes
 
 ## Webapp
 
-The web application can be found: https://cyberity.herokuapp.com/
+The web application can be found: [Cyberity Application](https://cyberity.herokuapp.com/)
 
 ## Main page
 
-The official cyberity repository can be found: https://github.com/dcsil/Cyberity
+The official cyberity repository can be found: [Cyberity Repo](https://github.com/dcsil/Cyberity)
 
 Table of Contents
 ---
@@ -60,7 +60,7 @@ If you would like to use a cloud database instead of running your database local
 5. Open the "connect" dialog and then "connect to your application" option. Now set the driver as python and version as 3.4. Then modify and save the connection-string/URI somehere as per instructions.
 6. If your running locally, on your system `export MONGO_URI=<Mongodb uri. NOT mongodb+srv uri>`
 
-Full instructions can be found here: https://docs.atlas.mongodb.com/getting-started/
+Full instructions can be found [here](https://docs.atlas.mongodb.com/getting-started/)
 ## Deployment
 
 Follow these instructions if you want to deploy this on heroku.
@@ -72,14 +72,34 @@ Follow these instructions if you want to deploy this on heroku.
 5. Go to your app settings in heroku dashboard, and under settings, set these 2 config vars:
   * FLASK_ENV=production
   * MONGO_URI=<Mongodb uri. NOT mongodb+srv uri>
-6. Follow these instructions to integrate with your forked repo: https://devcenter.heroku.com/articles/github-integration#enabling-github-integration
+6. Follow [these instructions](https://devcenter.heroku.com/articles/github-integration#enabling-github-integration) to integrate with your forked repo:
 
 ## Tech Stack
 
-Our tech stack can be found here: https://stackshare.io/dcsil/cyberity
+Our tech stack can be found here: [Cyberity Stackshare](https://stackshare.io/dcsil/cyberity)
+
+## Demo Video
+Our demo video can be found [here](youtube.com)
+
+
+* Login/Signup Pages
+* Dashboard
+  * This is the main page to give anaylsts an overview of current and recent threat information/statistics
+* Insider Threats Page
+  * Lists detected threats by user and datetime
+  * Ability to filter threats by active/contained/false
+  * Ability for analysts to set a threats status after performing an investigation
+* User Page
+  * Lists all the employees of the company
+  * Each user features a drop-drown menu to show additional user profile info
+  * This user information can be customized to display any user information the client requests
+* Threat Timeline
+  * Displays all threats in a linear timeline fashion
+  * Displays each threat user info, detection date and current status
+
 
 ## Design and Accessibility
-Adheres to Web accessibility for developers: https://www.wuhcag.com/wcag-checklist/
+Adheres to Web accessibility for developers: [WCAG-checklist](https://www.wuhcag.com/wcag-checklist/)
 
 ### Guideline | Summary | Description of how we accommodated this
 - [x] Non-text Content | Provide text alternatives for non-text content | We have different visuals to convey data in addition to test. For example: charts, timelines, lists, progress bars.
