@@ -23,6 +23,7 @@ Table of Contents
   - [Mongodb Atlas Integration](#mongodb-atlas-integration)
 - [Deployment](#deployment)
 - [Tech Stack](#tech-stack)
+- [Design & Accessibility](#design-and-accessibility)
 
 ## Architecture
 
@@ -76,3 +77,33 @@ Follow these instructions if you want to deploy this on heroku.
 ## Tech Stack
 
 Our tech stack can be found here: https://stackshare.io/dcsil/cyberity
+
+## Design and Accessibility
+Adheres to Web accessibility for developers: https://www.wuhcag.com/wcag-checklist/
+
+### Guideline | Summary | Description of how you accommodated this
+- [x] Non-text Content | Provide text alternatives for non-text content | We have different visuals to convey data in addition to test. For example: charts, timelines, lists, progress bars.
+- [x] Audio-only and Video-only (Pre-recorded) | Provide an alternative to video-only and audio-only content | We do not have video-only or audio-only content. By default, we pass this check.
+- [x] Captions (Pre-recorded) | Provide captions for videos with audio | We do not have video or audio content. By default, we pass this check.
+- [x] Audio Description or Media Alternative (Pre-recorded) | Video with audio has a second alternative | We do not have video or audio content. By default, we pass this check.
+- [x] Info and Relationships | Logical structure | Info and data is laid out in a clear, concise manner with tables, charts, headings, and clear formatting choices. We use separate pages for specific content and the dashboard to clearly compress and showcase the data.
+- [x] Meaningful Sequence | Present content in a meaningful order | Our content starts off in the dashboard that showcases the most important data for the user. We then branch of the other pages if the user wants specific data/content. The dashboard displays data from the most important to the least important.
+- [x] Sensory Characteristics | Use more than one sense for instructions | Different visuals like shadows, color changes, and movement allow the user to find out what and what they cannot click on. 
+- [x] Use of Color | Do not use presentation that relies solely on color | Our data is displayed through timelines, charts, lists, and progress bars. We data that is displayed via text and color.
+- [x] Audio Control | Do not play audio automatically | We do not have audio content. By default, we pass this check.
+- [x] Keyboard | Accessible by keyboard only | Everything is easily accessible with keyboard due to the navbar on the left.
+- [x] No Keyboard Trap | Do not trap keyboard users | Keyboard users have full access to everything due to the navbar on left. Keyboard users will not get trapped within the dashboard or pages.
+- [x] Timing Adjustable | Time limits have user controls | We do not have time limits. By default, we pass this check.
+- [x] Pause, Stop, hide | Provide user controls for moving content | The timeline and charts allows the users to traverse the data by scrolling or moving with the mouse. However, there is no blinking, automated moving, or automated scrolling content. The user has full access to how they want to display the data.
+- [x] Three Flashes or Below | No content flashes more than three times per second | Our web app gets data from the server every 10 minutes, thus changing the visuals every 10 minutes to account for new data.
+- [x] Bypass Blocks | Provide a ‘Skip to Content’ link | All data is displayed on 1 with a navbar that allows easy navigation. Users can also search and query to get their data.
+- [x] Page Titled | Use helpful and clear page titles | Each page and dashboard widget are properly labeled.
+- [x] Focus Order | Logical order | Users can navigate to every part of the website using the 'Tab' key as well the mouse. When the user logs in they are redirected to the dashboard where they can choose to navigate to other pages.
+- [x] Link Purpose (In Context) | Every link’s purpose is clear from its context | We do not have hyperlinks. By default, we pass this check.
+- [x] Language of Page | Page has a language assigned | It is assigned to English by default
+- [x] On Focus | Elements do not change when they receive focus | Links/Pages/Content are accessed when they are submitted via the enter key or clicked with the mouse. Users can easily navigate with mouse-only or keyboard-only.
+- [x] On Input | Elements do not change when they receive input | Submitting data will only process when the user clicks a submit button or presses enter. List data will display content as the user queries data in the text field.
+- [x] Error Identification | Clearly identify input errors | Alerts(providing error feedback) occur when the user provides incorrect/incomplete data.
+- [x] Labels or Instructions | Label elements and give instructions | Data/Elements are clearly labeled in Pages, Dashboard widgets, and charts. Icons are clearly defined in the timeline.
+- [x] Parsing | No major code errors | We have good structures for our components. Everything is nested properly or side-by sad. Limiting use of attributes to limit duplicates. We pass code climate and lighthouse scores.
+- [x] Colour Part II | [Colours are chosen in a way that won't make things difficult for colour blind users](https://venngage.com/blog/color-blind-friendly-palette/) | Our website passes lighthouse accessbility test with the lowest being 98%. Our color scheme adheres to the color blind friendly palette by using Magenta, Dark Grey, and Green as our primary colors.
