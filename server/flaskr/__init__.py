@@ -10,6 +10,7 @@ from flask_jwt_extended import (
 )
 from datetime import datetime, timedelta
 from sklearn.neural_network import MLPRegressor
+from threading import Thread
 import sklearn
 import joblib
 import numpy
@@ -52,8 +53,7 @@ def create_app(test_config=None):
     mongo.init_app(app, mongo_uri)
     app.register_blueprint(routes.bp)
 
-    @app.route('/api/processLogs', methods=['POST'])
-    def processLogs():
+    def start_processLogs():
         reg = joblib.load(os.getcwd()+ "/ml/trained_model.sav")
         data = joblib.load(os.getcwd() + "/ml/data.sav")
         time = data[:,0]
@@ -73,8 +73,8 @@ def create_app(test_config=None):
                 id = mongo.db.employees.insert({
                     "name": user,
                     "email": f'{user}@cyberity.com',
-                    "role": "General Employee",
-                    "department": "N/A"
+                    "role": "Employee",
+                    "department": "R&D"
                 })
             else:
                 id = employee['_id']
@@ -82,18 +82,20 @@ def create_app(test_config=None):
             # Check if this threat already exists in the DB 
             threat = mongo.db.userThreats.find_one({
                 "user_id": user,
-                "detectionDate": str(start_date + timedelta(hours=hour))
+                "detectionDate": start_date + timedelta(hours=hour)
                 })
 
             if not threat:
                 mongo.db.userThreats.insert({
                         "user_id": id,
-                        "detectionDate": str(start_date + timedelta(hours=hour)),
+                        "detectionDate": start_date + timedelta(hours=hour),
                         "status": "active"
                     })
 
-    
-        return "Processed Data Logs", 200
+    @app.route('/api/processLogs', methods=['POST'])
+    def processLogs():
+        Thread(target = start_processLogs).start()    
+        return "Started Data Log Processing", 200
 
 
     @app.route('/', defaults={'path': ''})
