@@ -106,11 +106,6 @@ def create_app(test_config=None):
         Thread(target = start_processLogs).start()    
         return "Started Data Log Processing", 200
 
-    # Check sentry
-    @app.route('/api/debug-sentry')
-    def trigger_error():
-        division_by_zero = 1 / 0
-
     @app.route('/', defaults={'path': ''})
     @app.route('/<path:path>')
     def serve(path):

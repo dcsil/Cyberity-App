@@ -1,5 +1,5 @@
 tools:
-  exceptions: echo 'No exceptions yet'
+  exceptions: https://sentry.io/organizations/dcsil/issues/?project=5450615
   logging: https://my.papertrailapp.com/systems/cyberity/events
   ci:
     frontend: https://github.com/dcsil/Cyberity-App/actions
