@@ -1,6 +1,6 @@
 # Cyberity App
 
-Cyberity aims to provide a safer work environment for companies and prevent insider threats. This is a web application to analyze user behavior via logs and idenetify insider threats.
+Cyberity aims to provide a safer work environment for companies and prevent insider threats. This is a web application to analyze user behavior via logs and identify insider threats.
 
 This repository is intended for application development purposes
 
