@@ -8,7 +8,14 @@ from flask_jwt_extended import (
     get_jwt_identity, set_access_cookies,
     set_refresh_cookies, unset_jwt_cookies
 )
-from datetime import timedelta
+from datetime import datetime, timedelta
+from sklearn.neural_network import MLPRegressor
+import sklearn
+import joblib
+import numpy
+
+start_date = datetime(2020, 11, 1, 9, 00)
+
 
 def create_app(test_config=None):
     # create and configure the app    
@@ -44,6 +51,43 @@ def create_app(test_config=None):
     mongo = db.mongo
     mongo.init_app(app, mongo_uri)
     app.register_blueprint(routes.bp)
+
+    @app.route('/api/processLogs', methods=['POST'])
+    def processLogs():
+        reg = joblib.load(os.getcwd()+ "/ml/trained_model.sav")
+        data = joblib.load(os.getcwd() + "/ml/data.sav")
+        time = data[:,0]
+        users = data[:,1]
+        data = data[:,2:]
+
+        flagged = []
+        for i in range(len(data)):
+            pred = reg.predict(data[i].reshape(1, -1))
+            s = sklearn.metrics.r2_score(data[i], pred[0])
+            if s < -3700:
+                flagged.append((users[i], time[i]))
+
+        for (user, hour) in flagged:
+            employee = mongo.db.employees.find_one({'user': user})
+            if not employee:
+                id = mongo.db.employees.insert({
+                    "name": user,
+                    "email": f'{user}@cyberity.com',
+                    "role": "General Employee",
+                    "department": "N/A"
+                })
+            else:
+                id = employee['_id']
+
+            mongo.db.userThreats.insert({
+                    "user_id": id,
+                    "detectionDate": str(start_date + timedelta(hours=hour)),
+                    "status": "active"
+                })
+
+    
+        return "Processed Data Logs", 200
+
 
     @app.route('/', defaults={'path': ''})
     @app.route('/<path:path>')
