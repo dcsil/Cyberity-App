@@ -83,8 +83,8 @@ Our tech stack can be found here: [Cyberity Stackshare](https://stackshare.io/dc
 Our demo video can be found [here](https://youtu.be/QVc4tKU43Jg)
 
 ### Screenshots
-![CyberityScreenshot1](./assets/cyberity1.jpg) ![CyberityScreenshot2](./assets/cyberity2.jpg)
-![CyberityScreenshot3](./assets/cyberity3.jpg) ![CyberityScreenshot4](./assets/cyberity4.jpg)
+![CyberityScreenshot1](./assets/cyberity1.PNG) ![CyberityScreenshot2](./assets/cyberity2.PNG)
+![CyberityScreenshot3](./assets/cyberity3.PNG) ![CyberityScreenshot4](./assets/cyberity4.PNG)
 
 ### Features/Pages
 * Login/Signup Pages
