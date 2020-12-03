@@ -10,6 +10,7 @@ from flask_jwt_extended import (
 )
 from datetime import datetime, timedelta
 from sklearn.neural_network import MLPRegressor
+from threading import Thread
 import sklearn
 import joblib
 import numpy
@@ -52,8 +53,7 @@ def create_app(test_config=None):
     mongo.init_app(app, mongo_uri)
     app.register_blueprint(routes.bp)
 
-    @app.route('/api/processLogs', methods=['POST'])
-    def processLogs():
+    def start_processLogs():
         reg = joblib.load(os.getcwd()+ "/ml/trained_model.sav")
         data = joblib.load(os.getcwd() + "/ml/data.sav")
         time = data[:,0]
@@ -92,8 +92,10 @@ def create_app(test_config=None):
                         "status": "active"
                     })
 
-    
-        return "Processed Data Logs", 200
+    @app.route('/api/processLogs', methods=['POST'])
+    def processLogs():
+        Thread(target = start_processLogs).start()    
+        return "Started Data Log Processing", 200
 
 
     @app.route('/', defaults={'path': ''})
